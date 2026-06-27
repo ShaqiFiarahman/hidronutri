@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/PlusJakartaSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/PlusJakartaSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-hidroponik-dark: #27500A;
+    --color-hidroponik-mid: #3B6D11;
+    --color-hidroponik-light: #639922;
+    --color-hidroponik-pale: #EAF3DE;
+    --color-hidroponik-moss: #C0DD97;
+    --color-hidroponik-offwhite: #F7FAF2;
+
+    --color-brand-black: #0D0D0D;
+    --color-brand-white: #FFFFFF;
+    --color-brand-offwhite: #F7F7F5;
+    --color-brand-green: #2D6A0F;
+    --color-brand-greenlt: #4A9020;
+    --color-brand-greenpal: #E8F5E0;
+    --color-brand-gray: #6B7280;
+    --color-brand-graylt: #E5E7EB;
+    --color-brand-grayultra: #F3F4F6;
+    --color-brand-amber: #D97706;
+    --color-brand-moss: #C0DD97;
+}
+
+/* Custom Slider styles */
+.custom-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #E5E7EB;
+  border-radius: 2px;
+  outline: none;
+  --thumb-color: #0D0D0D;
+}
+.custom-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+  background: var(--thumb-color);
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 0 0 1px var(--thumb-color);
+  transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+}
+.custom-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+
+/* Micro interaction and Animation Utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-50 { animation-delay: 0.05s; }
+.delay-100 { animation-delay: 0.1s; }
+.delay-150 { animation-delay: 0.15s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-250 { animation-delay: 0.25s; }
+.delay-300 { animation-delay: 0.3s; }
+
+
