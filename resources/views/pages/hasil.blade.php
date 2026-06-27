@@ -23,6 +23,7 @@
                 {{ $tanaman->emoji }} {{ $tanaman->nama }}
             </h1>
             <p class="text-brand-gray text-sm font-light">
+                Usia: <span class="font-semibold text-brand-black">{{ $usiaHari }} Hari</span> • 
                 Metode: <span class="font-semibold text-brand-black uppercase">{{ $sistem }}</span> • Kategori: Tanaman Sayur {{ ucwords($tanaman->kategori) }}
             </p>
         </div>
@@ -45,35 +46,47 @@
             <h2 class="text-xl font-bold text-brand-black">Timeline Fase Pertumbuhan</h2>
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 phase-timeline">
+        <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 gap-4 phase-timeline">
             @php
-                $allFases = [
-                    ['id' => 'semai', 'label' => 'Semai', 'icon' => 'fa-seedling', 'info' => 'Hari 1-7'],
-                    ['id' => 'vegetatif_awal', 'label' => 'Vegetatif Awal', 'icon' => 'fa-leaf', 'info' => 'Hari 8-14'],
-                    ['id' => 'vegetatif_akhir', 'label' => 'Vegetatif Akhir', 'icon' => 'fa-plant-wilt', 'info' => 'Hari 15-28'],
-                    ['id' => 'panen', 'label' => 'Panen', 'icon' => 'fa-basket-shopping', 'info' => 'Hari > 28'],
+                // Ambil semua fase untuk tanaman ini dari rule_nutrisi
+                $allFasesDB = \App\Models\RuleNutrisi::where('tanaman_id', $tanaman->id)
+                    ->pluck('fase')
+                    ->toArray();
+
+                // Mapping icon per fase
+                $faseIcons = [
+                    'semai' => 'fa-seedling',
+                    'vegetatif_awal' => 'fa-leaf',
+                    'vegetatif_akhir' => 'fa-plant-wilt',
+                    'panen' => 'fa-basket-shopping',
+                    'vegetatif' => 'fa-leaf',
+                    'pembungaan' => 'fa-sun',
+                    'pembuahan' => 'fa-apple-whole',
+                    'pembesaran' => 'fa-expand',
+                    'transisi' => 'fa-arrows-turn-right',
+                    'pematangan' => 'fa-hourglass-half',
                 ];
-                $faseOrder = ['semai', 'vegetatif_awal', 'vegetatif_akhir', 'panen'];
-                $currentIdx = array_search($fase, $faseOrder);
+
+                $currentIdx = array_search($fase, $allFasesDB);
             @endphp
             
-            @foreach($allFases as $step)
+            @foreach($allFasesDB as $stepIdx => $stepFase)
                 @php
-                    $stepIdx = array_search($step['id'], $faseOrder);
-                    $isActive = $step['id'] == $fase;
+                    $isActive = $stepFase == $fase;
                     $isSelesai = $stepIdx < $currentIdx;
+                    $stepIcon = $faseIcons[$stepFase] ?? 'fa-circle';
+                    $stepLabel = ucwords(str_replace('_', ' ', $stepFase));
                 @endphp
                 <div class="flex sm:flex-col items-center gap-4 sm:gap-3 p-4 rounded-xl border transition-all duration-200 pt-step
                     {{ $isActive ? 'bg-brand-black text-white border-brand-black' : ($isSelesai ? 'bg-brand-greenpal text-brand-green border-brand-green' : 'bg-brand-offwhite text-brand-gray border-brand-graylt') }}">
                     <div class="w-10 h-10 rounded-full flex items-center justify-center 
                         {{ $isActive ? 'bg-brand-green text-white' : ($isSelesai ? 'bg-white text-brand-green' : 'bg-white text-brand-gray') }}">
-                        <i class="fa-solid {{ $step['icon'] }} text-sm"></i>
+                        <i class="fa-solid {{ $stepIcon }} text-sm"></i>
                     </div>
                     <div class="text-left sm:text-center">
                         <span class="block font-bold text-sm">
-                            {{ $step['label'] }}
+                            {{ $stepLabel }}
                         </span>
-                        <span class="text-xs font-light block opacity-80">{{ $step['info'] }}</span>
                         @if($isActive)
                             <span class="inline-block mt-1 bg-brand-greenpal text-brand-green text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                                 Aktif
@@ -92,7 +105,10 @@
             <div>
                 <span class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-3 block">Kadar pH</span>
                 <span class="block text-4xl font-black text-brand-black leading-none">
-                    <span class="metric-value">{{ number_format($rekomendasi['ph_min'], 1) }}</span> - <span class="metric-value">{{ number_format($rekomendasi['ph_max'], 1) }}</span>
+                    <span class="metric-value">{{ number_format($rekomendasi['ph_min'], 1) }}</span>
+                    @if($rekomendasi['ph_min'] != $rekomendasi['ph_max'])
+                        - <span class="metric-value">{{ number_format($rekomendasi['ph_max'], 1) }}</span>
+                    @endif
                 </span>
             </div>
             <div class="mt-4 pt-4 border-t border-brand-graylt text-xs text-brand-green font-medium flex items-center gap-1">
@@ -105,7 +121,10 @@
             <div>
                 <span class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-3 block">Nilai EC</span>
                 <span class="block text-4xl font-black text-brand-black leading-none">
-                    <span class="metric-value">{{ number_format($rekomendasi['ec_min'], 1) }}</span> - <span class="metric-value">{{ number_format($rekomendasi['ec_max'], 1) }}</span>
+                    <span class="metric-value">{{ number_format($rekomendasi['ec_min'], 1) }}</span>
+                    @if($rekomendasi['ec_min'] != $rekomendasi['ec_max'])
+                        - <span class="metric-value">{{ number_format($rekomendasi['ec_max'], 1) }}</span>
+                    @endif
                 </span>
                 <span class="text-xs text-brand-gray block mt-1">mS/cm</span>
             </div>
@@ -119,7 +138,10 @@
             <div>
                 <span class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-3 block">Nilai PPM</span>
                 <span class="block text-4xl font-black text-brand-black leading-none font-sans">
-                    <span class="metric-value">{{ $rekomendasi['ppm_min'] }}</span> - <span class="metric-value">{{ $rekomendasi['ppm_max'] }}</span>
+                    <span class="metric-value">{{ $rekomendasi['ppm_min'] }}</span>
+                    @if($rekomendasi['ppm_min'] != $rekomendasi['ppm_max'])
+                        - <span class="metric-value">{{ $rekomendasi['ppm_max'] }}</span>
+                    @endif
                 </span>
                 <span class="text-xs text-brand-gray block mt-1">PPM</span>
             </div>
@@ -133,7 +155,10 @@
             <div>
                 <span class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-3 block">Suhu Air</span>
                 <span class="block text-4xl font-black text-brand-black leading-none">
-                    <span class="metric-value">{{ $rekomendasi['suhu_min'] ?? 20 }}</span> - <span class="metric-value">{{ $rekomendasi['suhu_max'] ?? 28 }}</span>
+                    <span class="metric-value">{{ $rekomendasi['suhu_min'] ?? 20 }}</span>
+                    @if(($rekomendasi['suhu_min'] ?? 20) != ($rekomendasi['suhu_max'] ?? 28))
+                        - <span class="metric-value">{{ $rekomendasi['suhu_max'] ?? 28 }}</span>
+                    @endif
                 </span>
                 <span class="text-xs text-brand-gray block mt-1">Celcius (°C)</span>
             </div>
@@ -292,8 +317,8 @@
 
             <div class="w-full sm:w-auto">
                 <label for="tanggal_mulai" class="block text-xs font-bold text-brand-gray uppercase mb-2">Tanggal Mulai Tanam:</label>
-                <input type="date" name="tanggal_mulai" id="tanggal_mulai" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}"
-                       class="px-4 py-2 rounded-xl border border-brand-graylt bg-white text-sm text-brand-black font-medium focus:border-brand-green ring-2 ring-brand-greenpal outline-none transition-all w-full">
+                <input type="date" name="tanggal_mulai" id="tanggal_mulai" value="{{ $tanggalMulai }}" readonly
+                       class="px-4 py-2 rounded-xl border border-brand-graylt bg-brand-offwhite text-sm text-brand-gray font-medium w-full cursor-not-allowed" title="Tanggal tanam disalin dari input Anda sebelumnya">
             </div>
 
             <button type="submit" 

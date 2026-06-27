@@ -99,7 +99,7 @@
           </div>
           
           <div class="text-center">
-            <div class="text-5xl font-black text-white stat-number" data-target="52" data-suffix="">0</div>
+            <div class="text-5xl font-black text-white stat-number" data-target="22" data-suffix="">0</div>
             <div class="text-sm text-white/60 leading-relaxed mt-2">
               Rule pengetahuan dalam sistem pakar HidroNutri
             </div>
@@ -205,13 +205,13 @@
                 <div class="flex justify-between text-xs">
                   <span class="text-brand-gray">Sayuran daun</span>
                   <span class="font-semibold text-brand-black">
-                    0.5 – 1.8 mS/cm
+                    1.0 – 2.4 mS/cm
                   </span>
                 </div>
                 <div class="flex justify-between text-xs">
                   <span class="text-brand-gray">Sayuran buah</span>
                   <span class="font-semibold text-brand-black">
-                    0.8 – 3.0 mS/cm
+                    1.6 – 3.0 mS/cm
                   </span>
                 </div>
               </div>
@@ -351,42 +351,38 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           <!-- Artikel besar -->
-          <div class="bg-brand-offwhite rounded-3xl overflow-hidden 
-                      hover:shadow-sm transition-shadow duration-200 gsap-left">
-            <div class="relative h-64">
+          <a href="https://hidroponikpedia.com/kepadatan-tanam-salah-produktivitas-hidroponik/" target="_blank" class="block bg-brand-offwhite rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 gsap-left group">
+            <div class="relative h-64 overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&q=80&auto=format&fit=crop"
-                alt="Tips memulai hidroponik"
-                class="w-full h-full object-cover"
+                src="https://hidroponikpedia.com/wp-content/uploads/2026/02/kepadatan-tanam-hidroponik-yang-salah.jpg"
+                alt="Jarak tanam hidroponik"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
               >
               <div class="absolute inset-0 bg-gradient-to-t 
                           from-black/60 to-transparent"></div>
               <span class="absolute top-4 left-4 bg-brand-green 
                            text-white text-xs font-semibold 
-                           px-3 py-1 rounded-full">
-                Untuk Pemula
+                           px-3 py-1 rounded-full shadow-sm">
+                Produktivitas
               </span>
             </div>
             <div class="p-6">
               <h3 class="font-black text-brand-black text-xl 
-                         leading-tight mb-3">
-                5 Kesalahan Umum Pemula Hidroponik yang Harus Dihindari
+                         leading-tight mb-3 group-hover:text-brand-green transition-colors">
+                Kepadatan Tanam Salah? Ini Pengaruhnya Pada Produktivitas Hidroponik
               </h3>
               <p class="text-sm text-brand-gray leading-relaxed">
-                Banyak pemula gagal di awal karena hal-hal sepele: 
-                pH tidak dicek rutin, dosis nutrisi asal-asalan, 
-                sampai memilih sistem yang terlalu kompleks. 
-                Kenali kesalahannya sebelum terjadi.
+                Menanam terlalu rapat dengan harapan panen berlimpah justru sering menjadi bumerang. Jarak tanam yang ideal menjamin sirkulasi udara dan distribusi nutrisi cahaya yang maksimal bagi setiap tanaman.
               </p>
               <div class="mt-4 flex gap-3 flex-wrap">
                 <span class="bg-brand-greenpal text-brand-green 
                              text-xs px-3 py-1 rounded-full font-medium">
-                  pH
+                  Jarak Tanam
                 </span>
                 <span class="bg-brand-greenpal text-brand-green 
                              text-xs px-3 py-1 rounded-full font-medium">
-                  Nutrisi
+                  Sirkulasi
                 </span>
                 <span class="bg-brand-greenpal text-brand-green 
                              text-xs px-3 py-1 rounded-full font-medium">
@@ -394,18 +390,18 @@
                 </span>
               </div>
             </div>
-          </div>
+          </a>
           
           <!-- 2 artikel kecil kanan (stack vertikal) -->
           <div class="flex flex-col gap-6 gsap-right">
             
-            <div class="bg-brand-offwhite rounded-3xl overflow-hidden 
-                        flex hover:shadow-sm transition-shadow duration-200">
-              <div class="relative w-36 flex-shrink-0">
+            <a href="https://farmee.id/tips-trik-penggunaan-nutrisi-ab-mix/" target="_blank" class="bg-brand-offwhite rounded-3xl overflow-hidden 
+                        flex hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+              <div class="relative w-36 flex-shrink-0 overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=300&q=80&auto=format&fit=crop"
+                  src="https://farmee.id/wp-content/uploads/2020/09/IMG_20200923_194353-1600x900.jpg"
                   alt="Perbedaan AB Mix"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 >
               </div>
@@ -415,43 +411,39 @@
                   Nutrisi
                 </span>
                 <h3 class="font-bold text-brand-black text-sm 
-                           leading-tight mt-1 mb-2">
-                  Mengenal AB Mix: Nutrisi A, Nutrisi B, dan Cara Mencampurnya
+                           leading-tight mt-1 mb-2 group-hover:text-brand-green transition-colors">
+                  Tips & Trik Manajemen Nutrisi AB Mix pada Tanaman Hidroponik
                 </h3>
                 <p class="text-xs text-brand-gray leading-relaxed">
-                  AB Mix adalah pupuk 2 komponen yang jadi 
-                  standar hidroponik. Pelajari cara mencampur 
-                  yang benar agar tidak terjadi pengendapan.
+                  Bagi kalangan hidroponik pasti tidak asing dengan nutrisi AB mix. Pelajari cara manajemen mulai dari dosis penggunaan hingga penyimpanannya agar awet.
                 </p>
               </div>
-            </div>
+            </a>
             
-            <div class="bg-brand-offwhite rounded-3xl overflow-hidden 
-                        flex hover:shadow-sm transition-shadow duration-200">
-              <div class="relative w-36 flex-shrink-0">
+            <a href="https://npkmutiara.com/post/pentingnya-ph-dalam-budidaya-sistem-hidroponik" target="_blank" class="bg-brand-offwhite rounded-3xl overflow-hidden 
+                        flex hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+              <div class="relative w-36 flex-shrink-0 overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&q=80&auto=format&fit=crop"
-                  alt="Fase pertumbuhan tanaman"
-                  class="w-full h-full object-cover"
+                  src="https://npkmutiara-prod.s3.ap-southeast-1.amazonaws.com/2025/09/13-large.jpg"
+                  alt="Pentingnya pH Hidroponik"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 >
               </div>
               <div class="p-5">
                 <span class="text-xs font-semibold text-brand-green 
                              uppercase tracking-wider">
-                  Pertumbuhan
+                  Kualitas Air
                 </span>
                 <h3 class="font-bold text-brand-black text-sm 
-                           leading-tight mt-1 mb-2">
-                  Mengapa Kebutuhan Nutrisi Berubah di Setiap Fase Tumbuh?
+                           leading-tight mt-1 mb-2 group-hover:text-brand-green transition-colors">
+                  Pentingnya pH dalam Budidaya Sistem Hidroponik
                 </h3>
                 <p class="text-xs text-brand-gray leading-relaxed">
-                  Dari semai sampai panen, kebutuhan EC dan PPM 
-                  terus berubah. Inilah dasar dari sistem 
-                  rekomendasi HidroNutri.
+                  Pengaturan pH larutan nutrisi sangat menentukan keberhasilan tanaman dalam menyerap nutrisi dengan maksimal. Pahami kisaran idealnya.
                 </p>
               </div>
-            </div>
+            </a>
             
           </div>
         </div>

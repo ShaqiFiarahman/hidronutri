@@ -201,11 +201,7 @@
           .from('.jadwal-header', { y: -20, opacity: 0, duration: 0.4 })
           .from('.progress-card', { 
             scale: 0.95, opacity: 0, duration: 0.5, 
-            ease: 'back.out(1.2)' }, '-=0.1')
-          .from('.sched-row', { 
-            x: -20, opacity: 0, stagger: 0.08, duration: 0.4 }, '-=0.2')
-          .from('.next-phase-card', { 
-            y: 20, opacity: 0, duration: 0.4 }, '-=0.2');
+            ease: 'back.out(1.2)' }, '-=0.1');
 
         // Animasi progress bar
         const progressFill = document.querySelector('.progress-fill');

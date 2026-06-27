@@ -103,7 +103,7 @@
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
                         <span>0.0 (Asam Kuat)</span>
-                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ph_min, 1) }} - {{ number_format($rule->ph_max, 1) }}</span>
+                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ph_min, 1) }}{{ $rule->ph_min != $rule->ph_max ? ' - ' . number_format($rule->ph_max, 1) : '' }}</span>
                         <span>14.0 (Basa Kuat)</span>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
                         <span>0.0 mS/cm</span>
-                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ec_min, 1) }} - {{ number_format($rule->ec_max, 1) }}</span>
+                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ec_min, 1) }}{{ $rule->ec_min != $rule->ec_max ? ' - ' . number_format($rule->ec_max, 1) : '' }}</span>
                         <span>5.0 mS/cm</span>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
                         <span>0 PPM</span>
-                        <span class="text-brand-green font-semibold">Ideal: {{ $rule->ppm_min }} - {{ $rule->ppm_max }} PPM</span>
+                        <span class="text-brand-green font-semibold">Ideal: {{ $rule->ppm_min }}{{ $rule->ppm_min != $rule->ppm_max ? ' - ' . $rule->ppm_max : '' }} PPM</span>
                         <span>2500 PPM</span>
                     </div>
                 </div>

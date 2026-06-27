@@ -32,10 +32,10 @@ class TanamanSeeder extends Seeder
                 'foto_url' => 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=400&q=80&auto=format&fit=crop',
             ],
             [
-                'nama' => 'Tomat',
-                'emoji' => '🍅',
+                'nama' => 'Melon',
+                'emoji' => '🍈',
                 'kategori' => 'buah',
-                'foto_url' => 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&q=80&auto=format&fit=crop',
+                'foto_url' => 'https://images.unsplash.com/photo-1571575173700-afb9492e6a50?w=400&q=80&auto=format&fit=crop',
             ],
             [
                 'nama' => 'Cabai',

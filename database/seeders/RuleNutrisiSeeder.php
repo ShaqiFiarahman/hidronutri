@@ -10,240 +10,176 @@ class RuleNutrisiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * 
+     * Data berdasarkan tabel referensi narasumber:
+     * - RULE pH: universal 5.5 - 6.5 (optimal 5.8 - 6.2)
+     * - RULE PPM: spesifik per tanaman & fase
+     * - RULE Koreksi: 5ml A + 5ml B per 1000ml air = 1000 PPM
+     * - RULE Suhu Air: 22°C - 28°C
+     * - EC dihitung otomatis: EC = PPM / 500
      */
     public function run(): void
     {
         $tanamanMap = Tanaman::all()->pluck('id', 'nama');
 
+        // pH universal: 5.5 - 6.5 (berlaku semua tanaman & fase)
+        // Suhu air universal: 22°C - 28°C
+        // Dosis: (target_ppm_midpoint / 1000) * 5 ml per liter
+        // EC: PPM / 500
+
         $rulesData = [
-            // SELADA
+            // ═══════════════════════════════════════════════════
+            // SELADA (4 fase) — RPPM-01 s/d RPPM-04
+            // ═══════════════════════════════════════════════════
             [
-                'tanaman' => 'Selada',
-                'fase' => 'semai',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 0.6, 'ec_max' => 0.8,
-                'ppm_min' => 300, 'ppm_max' => 400,
-                'dosis_a' => 2.5, 'dosis_b' => 2.5,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 26,
-                'peringatan' => 'Dosis rendah, akar belum kuat'
-            ],
-            [
-                'tanaman' => 'Selada',
-                'fase' => 'vegetatif_awal',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 1.2, 'ec_max' => 1.6,
-                'ppm_min' => 600, 'ppm_max' => 800,
-                'dosis_a' => 3.0, 'dosis_b' => 3.0,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 26,
-                'peringatan' => 'Pantau ketat, fase pertumbuhan aktif'
-            ],
-            [
-                'tanaman' => 'Selada',
-                'fase' => 'vegetatif_akhir',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 1.6, 'ec_max' => 2.0,
-                'ppm_min' => 800, 'ppm_max' => 1000,
-                'dosis_a' => 4.0, 'dosis_b' => 4.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 24,
-                'peringatan' => 'Jaga suhu air tetap sejuk'
-            ],
-            [
-                'tanaman' => 'Selada',
-                'fase' => 'panen',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 1.4, 'ec_max' => 1.8,
-                'ppm_min' => 700, 'ppm_max' => 900,
-                'dosis_a' => 3.5, 'dosis_b' => 3.5,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 25,
-                'peringatan' => 'Turunkan EC agar rasa tidak pahit'
-            ],
-
-            // KANGKUNG
-            [
-                'tanaman' => 'Kangkung',
-                'fase' => 'semai',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 0.5, 'ec_max' => 0.7,
-                'ppm_min' => 280, 'ppm_max' => 350,
-                'dosis_a' => 2.0, 'dosis_b' => 2.0,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 22, 'suhu_max' => 30,
-                'peringatan' => 'Kangkung toleran suhu tinggi'
-            ],
-            [
-                'tanaman' => 'Kangkung',
-                'fase' => 'vegetatif_awal',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 1.0, 'ec_max' => 1.4,
+                'tanaman' => 'Selada', 'fase' => 'semai',
                 'ppm_min' => 500, 'ppm_max' => 700,
-                'dosis_a' => 2.5, 'dosis_b' => 2.5,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 22, 'suhu_max' => 30,
-                'peringatan' => null
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Dosis rendah, akar belum kuat. Semai selada butuh 10-14 hari sebelum pindah tanam.'
             ],
             [
-                'tanaman' => 'Kangkung',
-                'fase' => 'vegetatif_akhir',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 1.4, 'ec_max' => 1.8,
-                'ppm_min' => 700, 'ppm_max' => 900,
-                'dosis_a' => 3.5, 'dosis_b' => 3.5,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 22, 'suhu_max' => 30,
-                'peringatan' => null
+                'tanaman' => 'Selada', 'fase' => 'vegetatif_awal',
+                'ppm_min' => 800, 'ppm_max' => 1000,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Pantau ketat, fase pertumbuhan aktif. Daun sejati mulai tumbuh lebar.'
             ],
             [
-                'tanaman' => 'Kangkung',
-                'fase' => 'panen',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 1.2, 'ec_max' => 1.6,
-                'ppm_min' => 600, 'ppm_max' => 800,
-                'dosis_a' => 3.0, 'dosis_b' => 3.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 22, 'suhu_max' => 28,
-                'peringatan' => null
+                'tanaman' => 'Selada', 'fase' => 'vegetatif_akhir',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Jaga suhu air tetap sejuk. Fase pembesaran batang dan daun rimbun.'
+            ],
+            [
+                'tanaman' => 'Selada', 'fase' => 'panen',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Turunkan konsentrasi EC 3 hari sebelum panen agar rasa sayur manis dan tidak pahit. Total hingga panen ~40 hari.'
             ],
 
-            // PAKCOY
+            // ═══════════════════════════════════════════════════
+            // KANGKUNG (4 fase) — RPPM-05 s/d RPPM-08
+            // ═══════════════════════════════════════════════════
             [
-                'tanaman' => 'Pakcoy',
-                'fase' => 'semai',
-                'ph_min' => 6.0, 'ph_max' => 7.0,
-                'ec_min' => 0.7, 'ec_max' => 0.9,
-                'ppm_min' => 350, 'ppm_max' => 450,
-                'dosis_a' => 2.5, 'dosis_b' => 2.5,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => 'pH toleransi lebih tinggi'
+                'tanaman' => 'Kangkung', 'fase' => 'semai',
+                'ppm_min' => 500, 'ppm_max' => 700,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Kangkung toleran suhu tinggi. Semai 7-10 hari sebelum pindah tanam.'
             ],
             [
-                'tanaman' => 'Pakcoy',
-                'fase' => 'vegetatif_awal',
-                'ph_min' => 6.0, 'ph_max' => 7.0,
-                'ec_min' => 1.2, 'ec_max' => 1.6,
-                'ppm_min' => 600, 'ppm_max' => 800,
-                'dosis_a' => 3.0, 'dosis_b' => 3.0,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => null
-            ],
-            [
-                'tanaman' => 'Pakcoy',
-                'fase' => 'vegetatif_akhir',
-                'ph_min' => 6.0, 'ph_max' => 7.0,
-                'ec_min' => 1.6, 'ec_max' => 2.0,
+                'tanaman' => 'Kangkung', 'fase' => 'vegetatif_awal',
                 'ppm_min' => 800, 'ppm_max' => 1000,
-                'dosis_a' => 4.0, 'dosis_b' => 4.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 26,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
                 'peringatan' => null
             ],
             [
-                'tanaman' => 'Pakcoy',
-                'fase' => 'panen',
-                'ph_min' => 6.0, 'ph_max' => 7.0,
-                'ec_min' => 1.8, 'ec_max' => 2.0,
+                'tanaman' => 'Kangkung', 'fase' => 'vegetatif_akhir',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => null
+            ],
+            [
+                'tanaman' => 'Kangkung', 'fase' => 'panen',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Total hingga panen ~21 hari.'
+            ],
+
+            // ═══════════════════════════════════════════════════
+            // PAKCOY (4 fase) — RPPM-09 s/d RPPM-12
+            // ═══════════════════════════════════════════════════
+            [
+                'tanaman' => 'Pakcoy', 'fase' => 'semai',
+                'ppm_min' => 500, 'ppm_max' => 700,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Semai 7-10 hari sebelum pindah tanam.'
+            ],
+            [
+                'tanaman' => 'Pakcoy', 'fase' => 'vegetatif_awal',
+                'ppm_min' => 800, 'ppm_max' => 1000,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => null
+            ],
+            [
+                'tanaman' => 'Pakcoy', 'fase' => 'vegetatif_akhir',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => null
+            ],
+            [
+                'tanaman' => 'Pakcoy', 'fase' => 'panen',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Total hingga panen ~28-30 hari.'
+            ],
+
+            // ═══════════════════════════════════════════════════
+            // CABAI (5 fase) — RPPM-13 s/d RPPM-17
+            // Fase: semai, vegetatif, pembungaan, pembuahan, pembesaran
+            // ═══════════════════════════════════════════════════
+            [
+                'tanaman' => 'Cabai', 'fase' => 'semai',
+                'ppm_min' => 800, 'ppm_max' => 800,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Semai cabai dari bibit 21-30 hari sebelum pindah tanam.'
+            ],
+            [
+                'tanaman' => 'Cabai', 'fase' => 'vegetatif',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => null
+            ],
+            [
+                'tanaman' => 'Cabai', 'fase' => 'pembungaan',
+                'ppm_min' => 1300, 'ppm_max' => 1500,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Masuk fase generatif ±45 hari (dari bibit). Tingkatkan nutrisi untuk bunga.'
+            ],
+            [
+                'tanaman' => 'Cabai', 'fase' => 'pembuahan',
+                'ppm_min' => 1500, 'ppm_max' => 1500,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Butuh nutrisi paling tinggi untuk pengisian buah.'
+            ],
+            [
+                'tanaman' => 'Cabai', 'fase' => 'pembesaran',
+                'ppm_min' => 1200, 'ppm_max' => 1200,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Kurangi air saat buah mulai memerah.'
+            ],
+
+            // ═══════════════════════════════════════════════════
+            // MELON (5 fase) — RPPM-18 s/d RPPM-22
+            // Fase: vegetatif, transisi, pembesaran, pematangan, panen
+            // ═══════════════════════════════════════════════════
+            [
+                'tanaman' => 'Melon', 'fase' => 'semai',
                 'ppm_min' => 900, 'ppm_max' => 1000,
-                'dosis_a' => 4.0, 'dosis_b' => 4.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 26,
-                'peringatan' => 'Siap panen hari 25-35'
-            ],
-
-            // TOMAT
-            [
-                'tanaman' => 'Tomat',
-                'fase' => 'semai',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 0.8, 'ec_max' => 1.2,
-                'ppm_min' => 400, 'ppm_max' => 600,
-                'dosis_a' => 3.0, 'dosis_b' => 3.0,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => 'Tomat butuh cahaya penuh'
+                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Semai melon 14 hari sebelum pindah tanam.'
             ],
             [
-                'tanaman' => 'Tomat',
-                'fase' => 'vegetatif_awal',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 1.6, 'ec_max' => 2.0,
-                'ppm_min' => 800, 'ppm_max' => 1000,
-                'dosis_a' => 4.0, 'dosis_b' => 4.0,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => null
+                'tanaman' => 'Melon', 'fase' => 'vegetatif',
+                'ppm_min' => 1200, 'ppm_max' => 1500,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Masuk fase generatif ±25-30 hari.'
             ],
             [
-                'tanaman' => 'Tomat',
-                'fase' => 'vegetatif_akhir',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 2.0, 'ec_max' => 2.5,
-                'ppm_min' => 1000, 'ppm_max' => 1250,
-                'dosis_a' => 5.0, 'dosis_b' => 5.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => 'Mulai persiapan penyerbukan'
+                'tanaman' => 'Melon', 'fase' => 'pembesaran',
+                'ppm_min' => 1500, 'ppm_max' => 1500,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Butuh nutrisi paling tinggi untuk pembesaran buah.'
             ],
             [
-                'tanaman' => 'Tomat',
-                'fase' => 'panen',
-                'ph_min' => 5.5, 'ph_max' => 6.5,
-                'ec_min' => 2.0, 'ec_max' => 3.0,
-                'ppm_min' => 1000, 'ppm_max' => 1500,
-                'dosis_a' => 5.0, 'dosis_b' => 5.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => 'Tingkatkan kalium untuk kualitas buah'
-            ],
-
-            // CABAI
-            [
-                'tanaman' => 'Cabai',
-                'fase' => 'semai',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 0.8, 'ec_max' => 1.2,
-                'ppm_min' => 400, 'ppm_max' => 600,
-                'dosis_a' => 3.0, 'dosis_b' => 3.0,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => 'Butuh kelembaban tinggi saat semai'
+                'tanaman' => 'Melon', 'fase' => 'pematangan',
+                'ppm_min' => 1200, 'ppm_max' => 1300,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Kurangi nutrisi agar gula dalam buah meningkat.'
             ],
             [
-                'tanaman' => 'Cabai',
-                'fase' => 'vegetatif_awal',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 1.4, 'ec_max' => 1.8,
-                'ppm_min' => 700, 'ppm_max' => 900,
-                'dosis_a' => 3.5, 'dosis_b' => 3.5,
-                'ganti_larutan' => 7,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => null
-            ],
-            [
-                'tanaman' => 'Cabai',
-                'fase' => 'vegetatif_akhir',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 1.8, 'ec_max' => 2.2,
-                'ppm_min' => 900, 'ppm_max' => 1100,
-                'dosis_a' => 4.5, 'dosis_b' => 4.5,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => null
-            ],
-            [
-                'tanaman' => 'Cabai',
-                'fase' => 'panen',
-                'ph_min' => 6.0, 'ph_max' => 6.5,
-                'ec_min' => 2.0, 'ec_max' => 2.8,
-                'ppm_min' => 1000, 'ppm_max' => 1400,
-                'dosis_a' => 5.0, 'dosis_b' => 5.0,
-                'ganti_larutan' => 5,
-                'isi_ulang' => 2, 'cek_ph_ec' => 1, 'suhu_min' => 20, 'suhu_max' => 28,
-                'peringatan' => 'Kurangi air saat buah mulai memerah'
+                'tanaman' => 'Melon', 'fase' => 'panen',
+                'ppm_min' => 1100, 'ppm_max' => 1100,
+                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
+                'peringatan' => 'Siap panen. Ciri kematangan: tangkai mulai retak, aroma harum kuat.'
             ],
         ];
 
@@ -251,25 +187,31 @@ class RuleNutrisiSeeder extends Seeder
             $tanamanId = $tanamanMap[$rule['tanaman']] ?? null;
 
             if ($tanamanId) {
+                // Hitung EC dan dosis dari PPM sesuai formula referensi
+                $ppmMid = ($rule['ppm_min'] + $rule['ppm_max']) / 2;
+                $ecMin = round($rule['ppm_min'] / 500, 2);
+                $ecMax = round($rule['ppm_max'] / 500, 2);
+                $dosis = round(($ppmMid / 1000) * 5, 2);
+
                 RuleNutrisi::updateOrCreate(
                     [
                         'tanaman_id' => $tanamanId,
                         'fase' => $rule['fase']
                     ],
                     [
-                        'ph_min' => $rule['ph_min'],
-                        'ph_max' => $rule['ph_max'],
-                        'ec_min' => $rule['ec_min'],
-                        'ec_max' => $rule['ec_max'],
+                        'ph_min' => 5.5,  // Universal (RpH-01 s/d RpH-04)
+                        'ph_max' => 6.5,
+                        'ec_min' => $ecMin,
+                        'ec_max' => $ecMax,
                         'ppm_min' => $rule['ppm_min'],
                         'ppm_max' => $rule['ppm_max'],
-                        'dosis_a' => $rule['dosis_a'],
-                        'dosis_b' => $rule['dosis_b'],
+                        'dosis_a' => $dosis,  // Formula: (PPM/1000) * 5 ml/L
+                        'dosis_b' => $dosis,
                         'ganti_larutan' => $rule['ganti_larutan'],
                         'isi_ulang' => $rule['isi_ulang'],
                         'cek_ph_ec' => $rule['cek_ph_ec'],
-                        'suhu_min' => $rule['suhu_min'],
-                        'suhu_max' => $rule['suhu_max'],
+                        'suhu_min' => 22,  // RSuhu-02: batas bawah
+                        'suhu_max' => 28,  // RSuhu-01: batas atas aman
                         'peringatan' => $rule['peringatan'],
                     ]
                 );

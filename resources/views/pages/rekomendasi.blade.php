@@ -79,7 +79,6 @@
         
         <!-- Hidden Inputs for JS Integration -->
         <input type="hidden" name="tanaman_id" id="selected-tanaman-id" value="{{ old('tanaman_id') }}">
-        <input type="hidden" name="fase" id="selected-fase" value="{{ old('fase') }}">
 
         <!-- 1. Pilih Tanaman (Grid 4 Kolom) -->
         <div class="space-y-6">
@@ -134,7 +133,7 @@
                     $dummies = [
                         ['nama' => 'Bayam', 'emoji' => '🥬', 'kategori' => 'daun', 'foto_url' => 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80&auto=format&fit=crop'],
                         ['nama' => 'Stroberi', 'emoji' => '🍓', 'kategori' => 'buah', 'foto_url' => 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400&q=80&auto=format&fit=crop'],
-                        ['nama' => 'Melon', 'emoji' => '🍈', 'kategori' => 'buah', 'foto_url' => 'https://images.unsplash.com/photo-1571575173700-afb9492e6a50?w=400&q=80&auto=format&fit=crop'],
+                        ['nama' => 'Tomat', 'emoji' => '🍅', 'kategori' => 'buah', 'foto_url' => 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&q=80&auto=format&fit=crop'],
                     ];
                 @endphp
                 @foreach($dummies as $d)
@@ -172,39 +171,42 @@
             @enderror
         </div>
 
-        <!-- 2. Pilih Fase Pertumbuhan -->
+        <!-- 2. Pilih Tanggal Mulai Tanam -->
         <div class="space-y-6">
             <div class="flex items-center">
                 <span class="w-7 h-7 rounded-lg bg-brand-black text-white text-xs font-bold flex items-center justify-center mr-3 flex-shrink-0">2</span>
-                <h2 class="text-2xl font-bold tracking-tight text-brand-black">Fase Pertumbuhan</h2>
+                <h2 class="text-2xl font-bold tracking-tight text-brand-black">Tanggal Semai / Tanam Biji</h2>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fase-container">
-                @php
-                    $fases = [
-                        ['value' => 'semai', 'label' => 'Semai', 'desc' => 'Penyemaian benih', 'icon' => 'fa-seedling'],
-                        ['value' => 'vegetatif_awal', 'label' => 'Vegetatif Awal', 'desc' => 'Daun awal tumbuh', 'icon' => 'fa-leaf'],
-                        ['value' => 'vegetatif_akhir', 'label' => 'Vegetatif Akhir', 'desc' => 'Pertumbuhan rimbun', 'icon' => 'fa-plant-wilt'],
-                        ['value' => 'panen', 'label' => 'Panen / Berbuah', 'desc' => 'Kematangan optimal', 'icon' => 'fa-basket-shopping'],
-                    ];
-                @endphp
-
-                @foreach($fases as $f)
-                    @php
-                        $isFaseSelected = old('fase') == $f['value'];
-                    @endphp
-                    <button type="button" 
-                            data-value="{{ $f['value'] }}"
-                            class="fase-btn flex flex-col items-center justify-center p-5 rounded-xl border {{ $isFaseSelected ? 'bg-brand-black text-white border-brand-black font-semibold' : 'border-brand-graylt text-brand-gray bg-brand-white' }} text-center cursor-pointer transition-all duration-200 hover:border-brand-green hover:text-brand-black hover:bg-brand-offwhite">
-                        <i class="fa-solid {{ $f['icon'] }} text-xl mb-2 {{ $isFaseSelected ? 'text-brand-greenpal' : 'text-brand-gray' }}"></i>
-                        <span class="text-sm font-semibold block">{{ $f['label'] }}</span>
-                        <span class="text-[10px] mt-1 opacity-70 block">{{ $f['desc'] }}</span>
-                    </button>
-                @endforeach
+            <div class="bg-white border border-brand-graylt rounded-2xl p-6">
+                <p class="text-sm text-brand-gray mb-4">
+                    Pilih tanggal kapan benih mulai disemai. Sistem akan secara otomatis menghitung usia tanaman dan menentukan fase pertumbuhannya saat ini.
+                </p>
+                <div class="flex flex-col gap-4">
+                    <div class="w-full md:w-1/2">
+                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" value="{{ old('tanggal_mulai', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}"
+                               class="w-full px-4 py-3 rounded-xl border border-brand-graylt bg-white text-brand-black font-medium focus:border-brand-green ring-2 ring-brand-greenpal outline-none transition-all">
+                        
+                        @error('tanggal_mulai')
+                            <p class="mt-2 text-sm text-red-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <!-- Live Preview Box -->
+                    <div id="phase-preview-box" class="w-full md:w-1/2 bg-brand-offwhite border border-brand-graylt rounded-xl p-4 hidden transition-all duration-300">
+                        <div class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-1">Prediksi Fase Saat Ini</div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-white text-brand-green flex items-center justify-center shadow-sm border border-brand-graylt/50">
+                                <i id="preview-icon" class="fa-solid fa-seedling text-sm"></i>
+                            </div>
+                            <div>
+                                <div id="preview-usia" class="text-xs text-brand-gray font-medium">Usia: 0 Hari</div>
+                                <div id="preview-fase" class="text-brand-black font-bold text-lg leading-tight">Semai</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            @error('fase')
-                <p class="mt-2 text-sm text-red-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</p>
-            @enderror
         </div>
 
         <!-- 3. Pilih Sistem Hidroponik -->
@@ -403,6 +405,81 @@
 </div>
 
 <script>
+    const durasiMap = @json($durasiMap);
+    const tanamanMap = @json($tanamanMap);
+
+    const faseMetadata = {
+        'semai':           { label: 'Semai',           desc: 'Penyemaian benih',     icon: 'fa-seedling' },
+        'vegetatif_awal':  { label: 'Vegetatif Awal',  desc: 'Daun awal tumbuh',     icon: 'fa-leaf' },
+        'vegetatif_akhir': { label: 'Vegetatif Akhir', desc: 'Pertumbuhan rimbun',   icon: 'fa-plant-wilt' },
+        'panen':           { label: 'Panen',           desc: 'Kematangan optimal',   icon: 'fa-basket-shopping' },
+        'vegetatif':       { label: 'Vegetatif',       desc: 'Pertumbuhan daun',     icon: 'fa-leaf' },
+        'pembungaan':      { label: 'Pembungaan',      desc: 'Pembentukan bunga',    icon: 'fa-sun' },
+        'pembuahan':       { label: 'Pembuahan',       desc: 'Pengisian buah',       icon: 'fa-apple-whole' },
+        'pembesaran':      { label: 'Pembesaran',      desc: 'Pembesaran buah',      icon: 'fa-expand' },
+        'transisi':        { label: 'Transisi',        desc: 'Menuju generatif',     icon: 'fa-arrows-turn-right' },
+        'pematangan':      { label: 'Pematangan',      desc: 'Pematangan buah',      icon: 'fa-hourglass-half' },
+    };
+
+    function updatePhasePreview() {
+        const tanamanId = document.getElementById('selected-tanaman-id').value;
+        const tanggalMulai = document.getElementById('tanggal_mulai').value;
+        const previewBox = document.getElementById('phase-preview-box');
+        
+        if (!tanamanId || !tanggalMulai) {
+            previewBox.classList.add('hidden');
+            return;
+        }
+
+        const namaTanaman = tanamanMap[tanamanId];
+        const mapFase = durasiMap[namaTanaman];
+
+        if (!mapFase) {
+            previewBox.classList.add('hidden');
+            return;
+        }
+
+        // Hitung usia dalam hari
+        const tglMulaiObj = new Date(tanggalMulai);
+        tglMulaiObj.setHours(0,0,0,0);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        
+        const diffTime = Math.max(0, today.getTime() - tglMulaiObj.getTime());
+        const usiaHari = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        // Tentukan fase
+        let determinedFaseKey = 'semai';
+        let found = false;
+        
+        for (const [key, data] of Object.entries(mapFase)) {
+            if (usiaHari <= data.kumulatif) {
+                determinedFaseKey = key;
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+            // Ambil fase terakhir
+            const keys = Object.keys(mapFase);
+            determinedFaseKey = keys[keys.length - 1];
+        }
+
+        // Update UI
+        const meta = faseMetadata[determinedFaseKey] || { label: determinedFaseKey.replace(/_/g, ' '), icon: 'fa-leaf' };
+        
+        document.getElementById('preview-usia').innerText = `Usia: ${usiaHari} Hari`;
+        document.getElementById('preview-fase').innerText = meta.label;
+        document.getElementById('preview-icon').className = `fa-solid ${meta.icon} text-sm`;
+        
+        previewBox.classList.remove('hidden');
+        
+        // Animasi kecil
+        gsap.fromTo(previewBox, { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.5)' });
+    }
+
+
     // Global function for system selection
     function selectSistem(el, nilai) {
         // Reset semua card
@@ -463,6 +540,8 @@
         const tanamanCards = document.querySelectorAll('.tanaman-card');
         const hiddenTanamanInput = document.getElementById('selected-tanaman-id');
         
+        document.getElementById('tanggal_mulai').addEventListener('change', updatePhasePreview);
+
         // Handle plant cards click
         tanamanCards.forEach(card => {
             card.addEventListener('click', function() {
@@ -497,34 +576,14 @@
                 
                 hiddenTanamanInput.value = id;
                 animateCardSelect(this);
+                updatePhasePreview();
             });
         });
 
-        const faseBtns = document.querySelectorAll('.fase-btn');
-        const hiddenFaseInput = document.getElementById('selected-fase');
-
-        // Handle phase buttons click
-        faseBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const val = this.getAttribute('data-value');
-                
-                faseBtns.forEach(b => {
-                    b.className = "fase-btn flex flex-col items-center justify-center p-5 rounded-xl border border-brand-graylt text-brand-gray bg-brand-white text-center cursor-pointer transition-all duration-200 hover:border-brand-green hover:text-brand-black hover:bg-brand-offwhite";
-                    const icon = b.querySelector('i');
-                    if (icon) {
-                        icon.className = icon.className.replace('text-brand-greenpal', 'text-brand-gray');
-                    }
-                });
-                
-                this.className = "fase-btn flex flex-col items-center justify-center p-5 rounded-xl border bg-brand-black text-white border-brand-black font-semibold text-center cursor-pointer transition-all duration-200 hover:border-brand-green hover:text-brand-black hover:bg-brand-offwhite";
-                const icon = this.querySelector('i');
-                if (icon) {
-                    icon.className = icon.className.replace('text-brand-gray', 'text-brand-greenpal');
-                }
-                
-                hiddenFaseInput.value = val;
-            });
-        });
+        // Jika ada old value tanaman, render preview
+        if (hiddenTanamanInput.value) {
+            updatePhasePreview();
+        }
 
         // ─── GSAP PAGE-SPECIFIC ANIMATIONS ──────────────────────────
         // Heading hero
@@ -550,19 +609,6 @@
             ease: 'power3.out',
             stagger: 0.08,
             delay: 0.4
-          }
-        );
-
-        // Fase button stagger (dijalankan langsung)
-        gsap.fromTo('.fase-btn', 
-          { x: -20, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.4,
-            ease: 'power2.out',
-            stagger: 0.1,
-            delay: 0.6
           }
         );
 
