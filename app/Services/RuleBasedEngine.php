@@ -43,9 +43,10 @@ class RuleBasedEngine
      * @param float $phAktual
      * @param float $ecAktual
      * @param int $ppmAktual
+     * @param float|null $suhuAktual
      * @return array
      */
-    public function diagnosaAbnormal($tanamanId, $fase, $phAktual, $ecAktual, $ppmAktual)
+    public function diagnosaAbnormal($tanamanId, $fase, $phAktual, $ecAktual, $ppmAktual, $suhuAktual = null)
     {
         $rule = RuleNutrisi::where('tanaman_id', $tanamanId)
             ->where('fase', $fase)
@@ -116,8 +117,32 @@ class RuleBasedEngine
                 'kondisi' => 'tinggi',
                 'nilai_aktual' => $ppmAktual,
                 'nilai_target' => $rule->ppm_min . ' - ' . $rule->ppm_max,
-                'tindakan' => $tindakan->has('PPM') ? $tindakan['PPM']->where('kondisi', 'tinggi')->first()->tindakan ?? 'Encerkan larutan.' : 'Encerkan larutan.',
+                'tindakan' => $tindakan->has('PPM') ? $tindakan['PPM']->where('kondisi', 'tinggi')->first()->tindakan ?? 'Encerkan larutan dengan menambahkan air murni.' : 'Encerkan larutan dengan menambahkan air murni.',
             ];
+        }
+
+        // Rule Suhu (Suhu tidak ada di DB tindakan_korektif awalnya, kita set manual)
+        if ($suhuAktual !== null) {
+            $suhuMin = $rule->suhu_min ?? 22;
+            $suhuMax = $rule->suhu_max ?? 28;
+            
+            if ($suhuAktual < $suhuMin) {
+                $hasil[] = [
+                    'parameter' => 'Suhu',
+                    'kondisi' => 'rendah',
+                    'nilai_aktual' => $suhuAktual,
+                    'nilai_target' => $suhuMin . ' - ' . $suhuMax,
+                    'tindakan' => 'Suhu air terlalu dingin. Gunakan pemanas air akuarium (heater) jika suhu terus drop, atau kurangi intensitas pendingin jika menggunakan water chiller.',
+                ];
+            } elseif ($suhuAktual > $suhuMax) {
+                $hasil[] = [
+                    'parameter' => 'Suhu',
+                    'kondisi' => 'tinggi',
+                    'nilai_aktual' => $suhuAktual,
+                    'nilai_target' => $suhuMin . ' - ' . $suhuMax,
+                    'tindakan' => 'Suhu air terlalu panas. Tambahkan bongkahan es batu bersih (atau di dalam botol tertutup) ke dalam tandon, pindahkan tandon ke area yang lebih teduh, atau lapisi tandon dengan styrofoam/aluminium foil.',
+                ];
+            }
         }
 
         return $hasil;

@@ -8,6 +8,8 @@ use App\Http\Controllers\SesiTanamController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\DashboardController;
 
+use App\Http\Controllers\LogPerawatanController;
+
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi');
@@ -19,3 +21,4 @@ Route::get('/jadwal', [SesiTanamController::class, 'jadwal'])->name('jadwal');
 Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat');
 Route::post('/sesi-tanam', [SesiTanamController::class, 'store']);
 Route::patch('/sesi-tanam/{id}/panen', [SesiTanamController::class, 'panen']);
+Route::post('/log-perawatan', [LogPerawatanController::class, 'store']);

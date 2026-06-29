@@ -82,7 +82,7 @@
 
                         <!-- Actions Buttons -->
                         <div class="pt-2 flex justify-between gap-3 items-center">
-                            <a href="/jadwal" class="bg-white text-brand-black border border-brand-graylt rounded-xl px-4 py-2 text-xs font-medium hover:border-brand-green hover:text-brand-green transition-colors duration-200 flex items-center gap-1.5">
+                            <a href="/hasil?sesi_id={{ $sesi->id }}#jadwal" class="bg-white text-brand-black border border-brand-graylt rounded-xl px-4 py-2 text-xs font-medium hover:border-brand-green hover:text-brand-green transition-colors duration-200 flex items-center gap-1.5">
                                 <i class="fa-solid fa-calendar-check text-xs"></i> Agenda Perawatan
                             </a>
                             
@@ -156,16 +156,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         gsap.from('.riwayat-header', { y: -20, opacity: 0, duration: 0.4 });
 
-        gsap.from('.riwayat-card', {
-          y: 30, opacity: 0,
-          stagger: 0.12, duration: 0.5,
-          ease: 'power3.out',
-          delay: 0.2,
-          scrollTrigger: {
-            trigger: '.riwayat-list',
-            start: 'top 85%'
-          }
-        });
+        // Removed riwayat-card gsap to prevent items getting stuck with opacity 0
 
         // Progress bar tiap tanaman
         document.querySelectorAll('.riwayat-progress').forEach(bar => {

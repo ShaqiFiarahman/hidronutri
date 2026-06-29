@@ -122,10 +122,7 @@
                 </p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="/rekomendasi"
-                    class="bg-white text-brand-black border border-brand-graylt rounded-xl px-6 py-3 text-sm font-medium hover:border-brand-green hover:text-brand-green transition-colors duration-200 flex items-center gap-2">
-                    <i class="fa-solid fa-rotate-left text-xs"></i> Sesuaikan Input
-                </a>
+
                 <a href="/cek-kondisi"
                     class="bg-brand-black text-white rounded-xl px-6 py-3 text-sm font-semibold hover:bg-brand-green transition-colors duration-200 flex items-center gap-2">
                     <i class="fa-solid fa-vial-virus text-xs"></i> Cek Kondisi Aktual
@@ -346,76 +343,255 @@
                 </div>
             </div>
 
-            <!-- Jadwal Perawatan Card -->
+            <!-- Panduan Pencampuran AB Mix Card -->
             <div class="bg-white border border-brand-graylt rounded-2xl p-6 flex flex-col justify-between jadwal-card">
                 <div>
-                    <h3 class="text-base font-bold text-brand-black mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left text-brand-green"></i> Jadwal Pemeliharaan Rutin
-                    </h3>
-                    <p class="text-xs text-brand-gray mb-6 leading-relaxed">
-                        Sistem merekomendasikan jadwal pengecekan dan penggantian air nutrisi berikut berdasarkan rules fase
-                        ini:
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-brand-black flex items-center gap-2">
+                            <i class="fa-solid fa-flask-vial text-brand-green"></i> Panduan Melarutkan AB Mix
+                        </h3>
+                    </div>
+                    <p class="text-xs text-brand-gray mb-5 leading-relaxed font-light">
+                        Ikuti langkah pencampuran nutrisi yang benar agar pekat A dan B tidak menggumpal (kristalisasi) saat dilarutkan ke dalam air.
                     </p>
 
-                    <!-- Jadwal Rows -->
-                    <div class="space-y-3">
-                        <!-- Ganti Larutan -->
-                        <div
-                            class="flex items-center justify-between p-4 rounded-xl hover:bg-brand-offwhite transition-colors duration-150 border border-brand-graylt">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-9 h-9 rounded-xl bg-brand-offwhite border border-brand-graylt flex items-center justify-center text-xs font-bold text-brand-gray">
-                                    <i class="fa-solid fa-dumpster-fire text-red-500"></i>
-                                </div>
-                                <div>
-                                    <span class="block font-semibold text-sm text-brand-black">Kuras & Ganti Air</span>
-                                    <span class="block text-[10px] text-brand-gray">Penggantian total larutan</span>
-                                </div>
+                    <!-- Steps List -->
+                    <div class="space-y-3.5">
+                        <!-- Step 1 -->
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-brand-offwhite/60 border border-brand-graylt/70">
+                            <div class="w-7 h-7 rounded-lg bg-brand-black text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                                1
                             </div>
-                            <span
-                                class="bg-brand-greenpal text-brand-green text-xs font-semibold px-3 py-1 rounded-full border border-brand-green/30">
-                                Setiap {{ $rekomendasi['ganti_larutan'] }} Hari
-                            </span>
+                            <div>
+                                <span class="block font-semibold text-xs text-brand-black">Siapkan Air Bersih</span>
+                                <span class="block text-[11px] text-brand-gray font-light mt-0.5">Siapkan wadah berisi air baku/bersih sesuai volume tangki yang ingin dilarutkan.</span>
+                            </div>
                         </div>
 
-                        <!-- Isi Ulang Air -->
-                        <div
-                            class="flex items-center justify-between p-4 rounded-xl hover:bg-brand-offwhite transition-colors duration-150 border border-brand-graylt">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-9 h-9 rounded-xl bg-brand-offwhite border border-brand-graylt flex items-center justify-center text-xs font-bold text-brand-gray">
-                                    <i class="fa-solid fa-fill-drip text-blue-500"></i>
-                                </div>
-                                <div>
-                                    <span class="block font-semibold text-sm text-brand-black">Isi Ulang Nutrisi</span>
-                                    <span class="block text-[10px] text-brand-gray">Pemberian air & pupuk susulan</span>
-                                </div>
+                        <!-- Step 2 -->
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-brand-offwhite/60 border border-brand-graylt/70">
+                            <div class="w-7 h-7 rounded-lg bg-brand-green text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                                2
                             </div>
-                            <span
-                                class="bg-brand-greenpal text-brand-green text-xs font-semibold px-3 py-1 rounded-full border border-brand-green/30">
-                                Setiap {{ $rekomendasi['isi_ulang'] ?? 2 }} Hari
-                            </span>
+                            <div>
+                                <span class="block font-semibold text-xs text-brand-black">Tuang Pekat Nutrisi A</span>
+                                <span class="block text-[11px] text-brand-gray font-light mt-0.5">Masukkan takaran ml pekat A sesuai hasil kalkulasi di samping, lalu aduk hingga tercampur rata.</span>
+                            </div>
                         </div>
 
-                        <!-- Cek pH/EC -->
-                        <div
-                            class="flex items-center justify-between p-4 rounded-xl hover:bg-brand-offwhite transition-colors duration-150 border border-brand-graylt">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-9 h-9 rounded-xl bg-brand-offwhite border border-brand-graylt flex items-center justify-center text-xs font-bold text-brand-gray">
-                                    <i class="fa-solid fa-magnifying-glass-chart text-amber-500"></i>
-                                </div>
-                                <div>
-                                    <span class="block font-semibold text-sm text-brand-black">Cek pH & EC Larutan</span>
-                                    <span class="block text-[10px] text-brand-gray">Monitoring rutin berkala</span>
-                                </div>
+                        <!-- Step 3 -->
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-red-50/60 border border-red-200/80">
+                            <div class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-triangle-exclamation text-[10px]"></i>
                             </div>
-                            <span
-                                class="bg-brand-greenpal text-brand-green text-xs font-semibold px-3 py-1 rounded-full border border-brand-green/30">
-                                Setiap {{ $rekomendasi['cek_ph_ec'] ?? 1 }} Hari
-                            </span>
+                            <div>
+                                <span class="block font-semibold text-xs text-red-900">Jangan Campur A & B Langsung!</span>
+                                <span class="block text-[11px] text-red-700 font-light mt-0.5">Dilarang mencampur pekat A dan B tanpa air karena akan menghasilkan endapan kalsium sulfat yang tidak bisa diserap tanaman.</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-brand-offwhite/60 border border-brand-graylt/70">
+                            <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                                3
+                            </div>
+                            <div>
+                                <span class="block font-semibold text-xs text-brand-black">Tuang Pekat Nutrisi B</span>
+                                <span class="block text-[11px] text-brand-gray font-light mt-0.5">Setelah air dan Nutrisi A merata, masukkan takaran ml pekat B lalu aduk kembali hingga sempurna.</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+    </div>
+
+    <!-- Unified Jadwal & Progress Section -->
+    <div id="jadwal" class="mt-12 space-y-8 pt-8 border-t border-brand-graylt/80">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-extrabold tracking-tight text-brand-black flex items-center gap-2.5">
+                    <i class="fa-solid fa-calendar-check text-brand-green"></i> Jadwal & Progress Pemeliharaan
+                </h2>
+                <p class="text-xs text-brand-gray mt-1">Pantau siklus pertumbuhan dan agenda pemeliharaan rutin otomatis tanaman Anda</p>
+            </div>
+        </div>
+
+        <!-- Active Session Progress Panel -->
+        @if(isset($progressPersen))
+        <div class="bg-white border border-brand-graylt rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xs progress-card">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center space-x-4">
+                    <span class="text-4xl bg-brand-offwhite w-16 h-16 rounded-2xl flex items-center justify-center border border-brand-graylt/50">
+                        {{ $tanaman->emoji }}
+                    </span>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-extrabold text-xl text-brand-black">{{ $tanaman->nama }}</span>
+                        </div>
+                        <span class="text-xs text-brand-gray block mt-0.5 font-light">
+                            Hari Ke-<strong>{{ $usiaHari }}</strong> sejak ditanam
+                        </span>
+                    </div>
+                </div>
+
+                <div class="text-left md:text-right space-y-1">
+                    <span class="text-[10px] text-brand-gray font-bold uppercase tracking-wider block">Fase Saat Ini</span>
+                    <div class="flex items-center gap-2 md:justify-end">
+                        <span class="bg-brand-black text-white font-semibold text-xs px-3.5 py-1 rounded-full uppercase tracking-wide">
+                            {{ str_replace('_', ' ', $fase) }}
+                        </span>
+                    </div>
+                    @if(!empty($estimasiPindahFase))
+                    <span class="text-xs text-brand-amber bg-amber-50 px-2.5 py-0.5 rounded-full border border-brand-amber/20 inline-block font-medium mt-1">
+                        <i class="fa-solid fa-circle-notch animate-spin mr-1 text-[10px]"></i> {{ $estimasiPindahFase }}
+                    </span>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="space-y-2">
+                <div class="w-full bg-brand-graylt rounded-full h-2.5 overflow-hidden">
+                    <div class="bg-brand-green h-full rounded-full transition-all duration-700 ease-out progress-fill" style="width: {{ $progressPersen }}%"></div>
+                </div>
+                <div class="flex justify-between items-center text-xs text-brand-gray">
+                    <span class="font-medium">Kemajuan Siklus Tanam</span>
+                    <span class="font-semibold text-brand-black">{{ number_format($progressPersen, 0) }}% (Estimasi {{ max(0, ($durasiTotal ?? 35) - $usiaHari) }} Hari Sisa)</span>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Interactive Calendar (Col Span 2) -->
+            <div class="lg:col-span-2 space-y-6" id="calendar-container">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-brand-black flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-brand-green"></i> Kalender Pemeliharaan
+                    </h3>
+                    <div class="flex items-center gap-4 text-sm font-semibold">
+                        <span class="text-brand-black">{{ \Carbon\Carbon::today()->translatedFormat('F Y') }}</span>
+                    </div>
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="bg-white rounded-2xl border border-brand-graylt overflow-hidden shadow-2xs">
+                    <div class="grid grid-cols-7 border-b border-brand-graylt bg-brand-offwhite/50 text-center text-[10px] sm:text-xs font-bold text-brand-gray py-3 uppercase tracking-wider">
+                        <div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div><div>Min</div>
+                    </div>
+                    <div class="grid grid-cols-7 auto-rows-[60px] sm:auto-rows-[80px] text-sm">
+                        @foreach($kalenderBulan as $day)
+                            @php
+                                $hasTask = count($day['kegiatan']) > 0;
+                                $isAllDone = false;
+                                if ($hasTask) {
+                                    $isAllDone = true;
+                                    foreach($day['kegiatan'] as $k) {
+                                        $logExists = collect($day['logs'])->where('tipe', $k['tipe'])->first();
+                                        if (!$logExists || $logExists->status !== 'selesai') {
+                                            $isAllDone = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                $cellBg = $day['isToday'] ? 'bg-brand-greenpal/20 ring-inset ring-2 ring-brand-green' : '';
+                                if ($hasTask && $day['isPast'] && !$isAllDone && !$day['isToday']) {
+                                    $cellBg = 'bg-red-50/30 ring-inset ring-1 ring-red-200';
+                                }
+                            @endphp
+                            <div class="border-b border-r border-brand-graylt/50 p-1.5 sm:p-2 flex flex-col justify-between relative cursor-pointer hover:bg-brand-offwhite transition-colors {{ $day['isCurrentMonth'] ? 'text-brand-black' : 'text-brand-graylt' }} {{ $cellBg }}" 
+                                 onclick="openDayDetail('{{ $day['date'] }}')" id="cal-cell-{{ $day['date'] }}">
+                                
+                                <span class="block text-right font-medium text-xs sm:text-sm {{ $day['isToday'] ? 'text-brand-green font-bold' : '' }}">
+                                    {{ $day['day'] }}
+                                </span>
+                                
+                                @if($hasTask)
+                                    <div class="flex items-center justify-center gap-1 sm:gap-1.5 mb-1 flex-wrap" id="cal-indicator-{{ $day['date'] }}">
+                                        @foreach($day['kegiatan'] as $k)
+                                            @php
+                                                $logExists = collect($day['logs'])->where('tipe', $k['tipe'])->first();
+                                                $isDone = $logExists && $logExists->status === 'selesai';
+                                                $isWarning = $logExists && $logExists->status === 'perlu_perhatian';
+                                                $iconClass = $k['tipe'] === 'cek' ? 'fa-eye-dropper' : 'fa-flask';
+                                                
+                                                if ($isDone) {
+                                                    $colorClass = 'bg-brand-green text-white border-brand-green';
+                                                } elseif ($isWarning) {
+                                                    $colorClass = 'bg-amber-500 text-white border-amber-600 ring-2 ring-amber-300';
+                                                } elseif ($day['isPast'] && !$day['isToday']) {
+                                                    $colorClass = 'bg-red-100 text-red-600 border-red-300';
+                                                } elseif ($day['isToday']) {
+                                                    $colorClass = 'bg-amber-100 text-amber-700 border-amber-400 ring-1 ring-amber-400 animate-pulse';
+                                                } else {
+                                                    $colorClass = 'bg-blue-50 text-blue-600 border-blue-200';
+                                                }
+                                            @endphp
+                                            <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border flex items-center justify-center text-[10px] sm:text-xs shadow-2xs transition-transform hover:scale-110 {{ $colorClass }}" title="{{ $k['judul'] }} {{ $isDone ? '(Normal)' : ($isWarning ? '(Perlu Koreksi)' : '') }}">
+                                                <i class="fa-solid {{ $iconClass }}"></i>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Day Detail Panel (Hidden by default, shown via JS) -->
+                <div id="day-detail-panel" class="hidden bg-white p-6 rounded-2xl border border-brand-graylt shadow-2xs mt-4">
+                    <div class="flex items-center justify-between mb-4 border-b border-brand-graylt pb-4">
+                        <h4 class="font-bold text-brand-black flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-list text-brand-green"></i> Tugas pada <span id="detail-date-title"></span>
+                        </h4>
+                        <button onclick="closeDayDetail()" class="text-brand-gray hover:text-brand-black transition-colors">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div id="detail-tasks-container" class="space-y-4">
+                        <!-- Tasks injected via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes & Context Info (Col Span 1) -->
+            <div class="space-y-6">
+                @if(!empty($faseBerikutnya))
+                <!-- Info Fase Berikutnya -->
+                <div class="border-l-4 border-brand-green bg-brand-offwhite p-6 rounded-r-2xl rounded-l-md space-y-4 next-phase-card">
+                    <h3 class="font-bold text-base flex items-center gap-2 text-brand-green">
+                        <i class="fa-solid fa-circle-info text-brand-green"></i> Persiapan Fase Berikutnya
+                    </h3>
+                    <div class="space-y-1">
+                        <span class="text-xs text-brand-gray block">Fase Selanjutnya:</span>
+                        <span class="text-lg font-extrabold text-brand-black block">Fase {{ $faseBerikutnya }}</span>
+                    </div>
+                    <p class="text-xs text-brand-gray leading-relaxed font-light">
+                        {{ $catatanFaseBerikutnya }}
+                    </p>
+                </div>
+                @endif
+
+                @if(!empty($sesiAktif))
+                <!-- Mark Harvest Card -->
+                <div class="bg-red-50/50 p-6 rounded-2xl border border-red-100 space-y-4">
+                    <h3 class="font-bold text-xs text-red-800 uppercase tracking-wider">
+                        Siklus Penanaman Selesai
+                    </h3>
+                    <p class="text-xs text-brand-gray leading-relaxed font-light">
+                        Jika Anda sudah melakukan pemanenan total tanaman ini, harap tandai penanaman ini sebagai telah dipanen untuk disimpan ke riwayat.
+                    </p>
+                    
+                    <form action="/sesi-tanam/{{ $sesiAktif->id }}/panen" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menyelesaikan sesi tanam ini dan menandainya sebagai telah panen?');">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" 
+                                class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-semibold text-xs py-3 rounded-xl block transition-colors duration-200">
+                            <i class="fa-solid fa-basket-shopping mr-1 text-[10px]"></i> Tandai Telah Panen
+                        </button>
+                    </form>
+                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -477,6 +653,204 @@
                     });
                 }
             });
+            
+            // GSAP Calendar elements
+            tlHasil
+                .from('#calendar-container', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
+                .from('.progress-card', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
+                .from('.next-phase-card', { x: 20, opacity: 0, duration: 0.4 }, '-=0.2');
+
+            // Animasi progress bar
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                const targetWidth = progressFill.style.width;
+                progressFill.style.width = '0%';
+                gsap.to(progressFill, {
+                    width: targetWidth,
+                    duration: 1.2,
+                    ease: 'power2.out',
+                    delay: 0.5
+                });
+            }
         });
+        
+        // Pass PHP data to JS (outside DOMContentLoaded so functions can access them easily)
+        const kalenderData = @json($kalenderBulan ?? []);
+        const sesiAktifId = {{ $sesiAktif ? $sesiAktif->id : 'null' }};
+        const csrfToken = '{{ csrf_token() }}';
+
+        function openDayDetail(dateStr) {
+            const dayData = kalenderData.find(d => d.date === dateStr);
+            if (!dayData) return;
+
+            const panel = document.getElementById('day-detail-panel');
+            const title = document.getElementById('detail-date-title');
+            const container = document.getElementById('detail-tasks-container');
+
+            // Format Title
+            const d = new Date(dateStr);
+            title.textContent = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            container.innerHTML = '';
+
+            if (dayData.kegiatan.length === 0) {
+                container.innerHTML = '<div class="text-sm text-brand-gray italic">Tidak ada agenda perawatan pada tanggal ini.</div>';
+            } else {
+                dayData.kegiatan.forEach((keg) => {
+                    const logExists = dayData.logs.find(l => l.tipe === keg.tipe);
+                    const isDone = logExists && logExists.status === 'selesai';
+                    const isWarning = logExists && logExists.status === 'perlu_perhatian';
+                    const isToday = dayData.isToday;
+
+                    let cardBg = isDone ? 'bg-brand-greenpal/20 border-brand-green/30' : (isWarning ? 'bg-amber-50/70 border-amber-300' : 'bg-brand-offwhite');
+                    let iconHtml = isDone ? '<i class="fa-solid fa-circle-check text-lg text-brand-green"></i>' : (isWarning ? '<i class="fa-solid fa-triangle-exclamation text-lg text-amber-600"></i>' : (keg.tipe === 'cek' ? '<i class="fa-solid fa-eye-dropper text-lg text-brand-gray"></i>' : '<i class="fa-solid fa-flask text-lg text-brand-gray"></i>'));
+
+                    let html = `
+                    <div class="border border-brand-graylt rounded-xl p-4 transition-colors ${cardBg}">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start gap-3">
+                                <div class="mt-0.5">${iconHtml}</div>
+                                <div>
+                                    <h5 class="font-bold text-brand-black text-sm">${keg.judul}</h5>
+                                    <p class="text-xs text-brand-gray mt-1">${keg.deskripsi}</p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                    if (isDone || isWarning) {
+                        if (isDone) {
+                            html += `<div class="mt-3 text-xs text-brand-green font-semibold bg-white inline-block px-2.5 py-1 rounded-md border border-brand-green/20 shadow-2xs"><i class="fa-solid fa-check mr-1"></i>Selesai (Normal)</div>`;
+                        } else {
+                            html += `<div class="mt-3 text-xs text-amber-700 font-bold bg-amber-100 inline-block px-2.5 py-1 rounded-md border border-amber-300 shadow-2xs"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Selesai (Perlu Tindakan Koreksi)</div>`;
+                        }
+
+                        if (keg.tipe === 'cek') {
+                            html += `<div class="mt-2 text-[10px] text-brand-gray grid grid-cols-3 gap-2">
+                                <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">pH: <strong>${logExists.ph ?? '-'}</strong></div>
+                                <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">PPM: <strong>${logExists.ppm ?? '-'}</strong></div>
+                                <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">Suhu: <strong>${logExists.suhu ?? '-'}°C</strong></div>
+                            </div>`;
+                        }
+
+                        if (isWarning && logExists.catatan) {
+                            html += `<div class="mt-3 bg-amber-100/90 border-l-4 border-amber-500 p-3.5 rounded-r-xl text-xs text-amber-950 space-y-1.5 shadow-2xs">
+                                <div class="font-bold flex items-center gap-1.5 text-amber-900">
+                                    <i class="fa-solid fa-stethoscope text-amber-600"></i> Panduan Tindakan Koreksi:
+                                </div>
+                                <div class="whitespace-pre-line text-[11px] leading-relaxed font-medium pl-1">${logExists.catatan}</div>
+                            </div>`;
+                        }
+
+                        if (isToday && keg.tipe === 'cek') {
+                            html += `<a href="/cek-kondisi" class="mt-3.5 inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-brand-greenpal/20 text-brand-green border border-brand-green/30 rounded-xl text-xs font-bold transition-all shadow-2xs group">
+                                <i class="fa-solid fa-rotate transition-transform group-hover:rotate-180"></i>
+                                <span>Update Pengukuran & Diagnosa Ulang di Halaman Cek Kondisi ➔</span>
+                            </a>`;
+                        }
+                    } else if (isToday && keg.tipe === 'cek') {
+                        html += `
+                        <a href="/cek-kondisi" class="mt-4 block w-full bg-brand-green hover:bg-brand-green/90 text-white text-xs font-bold py-3 px-4 rounded-xl transition-all text-center shadow-sm hover:shadow group">
+                            <span class="flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-stethoscope text-sm transition-transform group-hover:scale-110"></i>
+                                <span>Lakukan Cek Kondisi Air & Diagnosa Sekarang</span>
+                                <i class="fa-solid fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </a>
+                        `;
+                    } else if (isToday && keg.tipe === 'isi_ulang') {
+                        html += `
+                        <form onsubmit="submitLog(event, '${keg.tipe}', '${dateStr}')" class="mt-4">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition-all text-center shadow-sm hover:shadow">
+                                Tandai Sudah Diisi Ulang
+                            </button>
+                        </form>
+                        `;
+                    } else if (dayData.isPast) {
+                        html += `<div class="mt-3 text-[10px] font-bold text-brand-amber bg-amber-50 inline-block px-2 py-1 rounded-md border border-amber-200">Terlewat</div>`;
+                    } else {
+                        html += `<div class="mt-3 text-[10px] font-bold text-brand-gray bg-brand-offwhite inline-block px-2 py-1 rounded-md border border-brand-graylt">Terjadwal</div>`;
+                    }
+
+                    html += `</div>`;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            }
+
+            panel.classList.remove('hidden');
+            gsap.fromTo(panel, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 });
+            
+            // Highlight selected cell
+            document.querySelectorAll('[id^="cal-cell-"]').forEach(el => el.classList.remove('ring-4', 'ring-brand-green/30'));
+            const activeCell = document.getElementById(`cal-cell-${dateStr}`);
+            if (activeCell) activeCell.classList.add('ring-4', 'ring-brand-green/30');
+        }
+
+        function closeDayDetail() {
+            const panel = document.getElementById('day-detail-panel');
+            gsap.to(panel, { y: 10, opacity: 0, duration: 0.2, onComplete: () => panel.classList.add('hidden') });
+            document.querySelectorAll('[id^="cal-cell-"]').forEach(el => el.classList.remove('ring-4', 'ring-brand-green/30'));
+        }
+
+        async function submitLog(e, tipe, dateStr) {
+            e.preventDefault();
+            
+            let payload = {
+                sesi_tanam_id: sesiAktifId,
+                tanggal: dateStr,
+                tipe: tipe,
+                _token: csrfToken
+            };
+
+            if (tipe === 'cek') {
+                payload.ph = document.getElementById(`input-ph-${tipe}`).value;
+                payload.ppm = document.getElementById(`input-ppm-${tipe}`).value;
+                payload.suhu = document.getElementById(`input-suhu-${tipe}`).value || null;
+            }
+
+            try {
+                const response = await fetch('/log-perawatan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const res = await response.json();
+                
+                if (res.success) {
+                    // Update data in JS variable
+                    const dayData = kalenderData.find(d => d.date === dateStr);
+                    const existIdx = dayData.logs.findIndex(l => l.tipe === res.data.tipe);
+                    if (existIdx >= 0) {
+                        dayData.logs[existIdx] = res.data;
+                    } else {
+                        dayData.logs.push(res.data);
+                    }
+                    
+                    // Re-render panel
+                    openDayDetail(dateStr);
+
+                    // Update kalender cell UI
+                    const indicator = document.getElementById(`cal-indicator-${dateStr}`);
+                    if (indicator) {
+                        let indicatorHtml = '';
+                        dayData.kegiatan.forEach(k => {
+                            const logEx = dayData.logs.find(l => l.tipe === k.tipe);
+                            const done = logEx && logEx.status === 'selesai';
+                            const warn = logEx && logEx.status === 'perlu_perhatian';
+                            const iconCls = k.tipe === 'cek' ? 'fa-eye-dropper' : 'fa-flask';
+                            const colCls = done ? 'bg-brand-green text-white border-brand-green' : (warn ? 'bg-amber-500 text-white border-amber-600 ring-2 ring-amber-300' : 'bg-amber-100 text-amber-700 border-amber-400 ring-1 ring-amber-400 animate-pulse');
+                            indicatorHtml += `<div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border flex items-center justify-center text-[10px] sm:text-xs shadow-2xs transition-transform hover:scale-110 ${colCls}" title="${k.judul} ${done ? '(Normal)' : (warn ? '(Perlu Koreksi)' : '')}"><i class="fa-solid ${iconCls}"></i></div>`;
+                        });
+                        indicator.innerHTML = indicatorHtml;
+                        gsap.fromTo(indicator.children, { scale: 0 }, { scale: 1, duration: 0.4, stagger: 0.1, ease: "back.out(2)" });
+                    }
+                } else {
+                    alert('Gagal menyimpan data.');
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan koneksi.');
+                console.error(err);
+            }
+        }
     </script>
 @endsection

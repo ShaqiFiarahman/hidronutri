@@ -137,14 +137,11 @@
                     <a href="/rekomendasi" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 {{ request()->is('rekomendasi*') ? 'text-brand-black font-semibold' : 'text-brand-gray hover:text-brand-black' }}">
                         Rekomendasi
                     </a>
-                    <a href="/hasil" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 {{ request()->is('hasil*') ? 'text-brand-black font-semibold' : 'text-brand-gray hover:text-brand-black' }}">
-                        Hasil Rekomendasi
+                    <a href="/hasil" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 {{ request()->is('hasil*') || request()->is('jadwal*') ? 'text-brand-black font-semibold' : 'text-brand-gray hover:text-brand-black' }}">
+                        Hasil & Jadwal
                     </a>
                     <a href="/cek-kondisi" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 {{ request()->is('cek-kondisi*') ? 'text-brand-black font-semibold' : 'text-brand-gray hover:text-brand-black' }}">
                         Cek Kondisi
-                    </a>
-                    <a href="/jadwal" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 {{ request()->is('jadwal*') ? 'text-brand-black font-semibold' : 'text-brand-gray hover:text-brand-black' }}">
-                        Jadwal
                     </a>
                     <a href="/riwayat" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 {{ request()->is('riwayat*') ? 'text-brand-black font-semibold' : 'text-brand-gray hover:text-brand-black' }}">
                         Riwayat
@@ -170,14 +167,11 @@
                 <a href="/rekomendasi" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('rekomendasi*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
                     Rekomendasi
                 </a>
-                <a href="/hasil" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('hasil*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
-                    Hasil Rekomendasi
+                <a href="/hasil" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('hasil*') || request()->is('jadwal*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
+                    Hasil & Jadwal
                 </a>
                 <a href="/cek-kondisi" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('cek-kondisi*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
                     Cek Kondisi
-                </a>
-                <a href="/jadwal" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('jadwal*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
-                    Jadwal
                 </a>
                 <a href="/riwayat" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('riwayat*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
                     Riwayat
@@ -269,7 +263,7 @@
                             transition-colors duration-150
                             hover:translate-x-1 inline-block">
                 Cek Kondisi</a></li>
-              <li><a href="{{ route('jadwal') }}" 
+              <li><a href="/hasil#jadwal" 
                      class="text-sm text-white/70 hover:text-white 
                             transition-colors duration-150
                             hover:translate-x-1 inline-block">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SesiTanam;
 use App\Models\RiwayatDiagnosa;
+use App\Models\LogPerawatan;
 use App\Models\RuleNutrisi;
 use App\Models\Tanaman;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ class DiagnosaController extends Controller
             'ph_aktual' => 'required|numeric|min:0|max:14',
             'ec_aktual' => 'required|numeric|min:0|max:10',
             'ppm_aktual' => 'required|integer|min:0|max:5000',
+            'suhu_aktual' => 'nullable|numeric|min:0|max:50',
             'sesi_tanam_id' => 'nullable|exists:sesi_tanam,id',
             'tanaman_id' => 'nullable|exists:tanaman,id',
             'fase' => 'nullable|string',
@@ -86,7 +88,8 @@ class DiagnosaController extends Controller
             $fase,
             $validated['ph_aktual'],
             $validated['ec_aktual'],
-            $validated['ppm_aktual']
+            $validated['ppm_aktual'],
+            $validated['suhu_aktual'] ?? null
         );
 
         // Simpan ke database jika ada sesi tanam aktif
@@ -98,6 +101,32 @@ class DiagnosaController extends Controller
                 'ppm_aktual' => $validated['ppm_aktual'],
                 'hasil_diagnosa' => $hasil,
             ]);
+
+            $status = 'selesai';
+            $catatanPanduan = null;
+            if (!empty($hasil)) {
+                $status = 'perlu_perhatian';
+                $panduanList = [];
+                foreach ($hasil as $diag) {
+                    $panduanList[] = "• [" . $diag['parameter'] . " " . ucfirst($diag['kondisi']) . "]: " . $diag['tindakan'];
+                }
+                $catatanPanduan = implode("\n", $panduanList);
+            }
+
+            LogPerawatan::updateOrCreate(
+                [
+                    'sesi_tanam_id' => $sesiTanamId,
+                    'tanggal' => now()->format('Y-m-d'),
+                    'tipe' => 'cek',
+                ],
+                [
+                    'ph' => $validated['ph_aktual'],
+                    'ppm' => $validated['ppm_aktual'],
+                    'suhu' => $validated['suhu_aktual'] ?? null,
+                    'catatan' => $catatanPanduan,
+                    'status' => $status,
+                ]
+            );
         }
 
         return redirect('/cek-kondisi')->with([
@@ -105,6 +134,7 @@ class DiagnosaController extends Controller
             'ph_input' => $validated['ph_aktual'],
             'ec_input' => $validated['ec_aktual'],
             'ppm_input' => $validated['ppm_aktual'],
+            'suhu_input' => $validated['suhu_aktual'] ?? null,
             'success_diagnosa' => true
         ]);
     }

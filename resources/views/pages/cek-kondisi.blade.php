@@ -37,43 +37,25 @@
         <!-- Context Card -->
         <div class="bg-white border border-brand-graylt rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 konteks-card">
             <div class="flex items-center space-x-4">
-                <span class="text-4xl bg-brand-offwhite w-16 h-16 rounded-2xl flex items-center justify-center border border-brand-graylt/50">
+                <span class="text-4xl bg-brand-offwhite w-16 h-16 rounded-2xl flex items-center justify-center border border-brand-graylt/50 flex-shrink-0">
                     {{ $tanaman->emoji }}
                 </span>
-                <div>
+                <div class="flex flex-col justify-center">
                     <span class="text-[10px] text-brand-gray font-bold uppercase tracking-wider block">Konteks Monitoring Aktual</span>
                     <span class="font-extrabold text-lg text-brand-black block">
                         {{ $tanaman->nama }} (Fase {{ ucwords(str_replace('_', ' ', $fase)) }})
                     </span>
-                    @if($sesiTanam)
-                        <span class="inline-flex items-center gap-1.5 text-xs text-brand-green bg-brand-greenpal px-2.5 py-0.5 rounded-full border border-brand-greenlt/20 mt-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse"></span>
-                            Sesi Tanam Aktif #{{ $sesiTanam->id }} (Mulai: {{ \Carbon\Carbon::parse($sesiTanam->tanggal_mulai)->translatedFormat('d M Y') }})
-                        </span>
-                    @else
-                        <span class="inline-flex items-center gap-1 text-xs text-brand-amber bg-amber-50 px-2.5 py-0.5 rounded-full border border-brand-amber/20 mt-1">
-                            <i class="fa-solid fa-clock-rotate-left"></i> Mode Simulasi (Belum Disimpan)
-                        </span>
-                    @endif
+
                 </div>
             </div>
             
-            <!-- Target Badges -->
+            <!-- Target Badges (Variabel PHP tetap dipertahankan untuk evaluasi slider) -->
             @php
                 $ec_min = round($rule->ppm_min / 500, 2);
                 $ec_max = round($rule->ppm_max / 500, 2);
+                $suhu_min = $rule->suhu_min ?? 22;
+                $suhu_max = $rule->suhu_max ?? 28;
             @endphp
-            <div class="flex flex-wrap gap-2 text-xs">
-                <span class="bg-brand-offwhite border border-brand-graylt text-brand-black px-3 py-1.5 rounded-xl font-medium">
-                    Target pH: <strong class="text-brand-green">{{ number_format($rule->ph_min, 1) }} - {{ number_format($rule->ph_max, 1) }}</strong>
-                </span>
-                <span class="bg-brand-offwhite border border-brand-graylt text-brand-black px-3 py-1.5 rounded-xl font-medium">
-                    Target EC: <strong class="text-brand-green">{{ number_format($ec_min, 1) }} - {{ number_format($ec_max, 1) }}</strong>
-                </span>
-                <span class="bg-brand-offwhite border border-brand-graylt text-brand-black px-3 py-1.5 rounded-xl font-medium">
-                    Target PPM: <strong class="text-brand-green">{{ $rule->ppm_min }} - {{ $rule->ppm_max }}</strong>
-                </span>
-            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -159,6 +141,31 @@
                         <span>0 PPM</span>
                         <span class="text-brand-green font-semibold">Ideal: {{ $rule->ppm_min }}{{ $rule->ppm_min != $rule->ppm_max ? ' - ' . $rule->ppm_max : '' }} PPM</span>
                         <span>2500 PPM</span>
+                    </div>
+                </div>
+
+                <!-- 4. Suhu Air Slider -->
+                <div class="space-y-3 slider-card">
+                    <div class="flex items-center justify-between">
+                        <label for="suhu_aktual" class="font-bold text-brand-black flex items-center gap-1.5">
+                            <i class="fa-solid fa-temperature-half text-brand-green"></i> Parameter Suhu Air
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-black text-brand-black" id="suhu-val-display">{{ old('suhu_aktual', session('suhu_input', round(($suhu_min + $suhu_max) / 2, 1))) }}</span>
+                            <span id="suhu-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full border">
+                                Normal
+                            </span>
+                        </div>
+                    </div>
+                    <div class="relative py-2">
+                        <input type="range" name="suhu_aktual" id="suhu_aktual" min="15" max="40" step="0.5" 
+                               value="{{ old('suhu_aktual', session('suhu_input', round(($suhu_min + $suhu_max) / 2, 1))) }}"
+                               class="custom-range-slider">
+                    </div>
+                    <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
+                        <span>15°C</span>
+                        <span class="text-brand-green font-semibold">Ideal: {{ $suhu_min }} - {{ $suhu_max }}°C</span>
+                        <span>40°C</span>
                     </div>
                 </div>
 
@@ -259,6 +266,8 @@
         const ecMax = parseFloat("{{ $ec_max ?? 1.6 }}");
         const ppmMin = parseInt("{{ $rule->ppm_min ?? 600 }}");
         const ppmMax = parseInt("{{ $rule->ppm_max ?? 800 }}");
+        const suhuMin = parseFloat("{{ $suhu_min ?? 22 }}");
+        const suhuMax = parseFloat("{{ $suhu_max ?? 28 }}");
 
         // Elements
         const phInput = document.getElementById('ph_aktual');
@@ -272,6 +281,10 @@
         const ppmInput = document.getElementById('ppm_aktual');
         const ppmDisplay = document.getElementById('ppm-val-display');
         const ppmBadge = document.getElementById('ppm-status-badge');
+
+        const suhuInput = document.getElementById('suhu_aktual');
+        const suhuDisplay = document.getElementById('suhu-val-display');
+        const suhuBadge = document.getElementById('suhu-status-badge');
 
         function evaluateSlider(input, display, badge, min, max, label) {
             const val = parseFloat(input.value);
@@ -312,10 +325,13 @@
             evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
         });
 
+        suhuInput.addEventListener('input', () => evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu'));
+
         // Initialize values
         evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH');
         evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
         evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
+        evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu');
 
         // Masuk halaman
         gsap.from('.cek-header', { y: -30, opacity: 0, duration: 0.5 });

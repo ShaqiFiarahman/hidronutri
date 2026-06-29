@@ -31,4 +31,9 @@ class SesiTanam extends Model
     {
         return $this->hasMany(RiwayatDiagnosa::class, 'sesi_tanam_id');
     }
+
+    public function logPerawatans(): HasMany
+    {
+        return $this->hasMany(LogPerawatan::class, 'sesi_tanam_id');
+    }
 }
