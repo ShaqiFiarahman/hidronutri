@@ -75,7 +75,7 @@
                 </div>
                 <div class="flex justify-between items-center text-xs text-brand-gray">
                     <span class="font-medium">Kemajuan Siklus Tanam</span>
-                    <span class="font-semibold text-brand-black">{{ number_format($progressPersen, 0) }}% (Estimasi {{ max(0, 35 - $usiaHari) }} Hari Sisa)</span>
+                    <span class="font-semibold text-brand-black">{{ number_format($progressPersen, 0) }}% (Estimasi {{ max(0, $durasiTotal - $usiaHari) }} Hari Sisa)</span>
                 </div>
             </div>
         </div>
@@ -184,7 +184,7 @@
                         @method('PATCH')
                         <button type="submit" 
                                 class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-semibold text-xs py-3 rounded-xl block transition-colors duration-200">
-                            <i class="fa-solid fa-basket-shopping mr-1 text-[10px]"></i> Tandai Telah Panen ✓
+                            <i class="fa-solid fa-basket-shopping mr-1 text-[10px]"></i> Tandai Telah Panen
                         </button>
                     </form>
                 </div>

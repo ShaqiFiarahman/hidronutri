@@ -14,8 +14,6 @@ class RuleNutrisi extends Model
         'fase',
         'ph_min',
         'ph_max',
-        'ec_min',
-        'ec_max',
         'ppm_min',
         'ppm_max',
         'dosis_a',
@@ -31,8 +29,6 @@ class RuleNutrisi extends Model
     protected $casts = [
         'ph_min' => 'decimal:2',
         'ph_max' => 'decimal:2',
-        'ec_min' => 'decimal:2',
-        'ec_max' => 'decimal:2',
         'dosis_a' => 'decimal:2',
         'dosis_b' => 'decimal:2',
         'ppm_min' => 'integer',

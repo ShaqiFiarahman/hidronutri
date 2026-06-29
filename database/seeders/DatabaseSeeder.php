@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TanamanSeeder::class,
             RuleNutrisiSeeder::class,
+            TindakanKorektifSeeder::class,
         ]);
     }
 }

@@ -136,7 +136,7 @@
                                     <td class="px-6 py-4 uppercase font-medium text-brand-gray">{{ $sesi->sistem_hidroponik }}</td>
                                     <td class="px-6 py-4">{{ \Carbon\Carbon::parse($sesi->tanggal_mulai)->translatedFormat('d M Y') }}</td>
                                     <td class="px-6 py-4">{{ \Carbon\Carbon::parse($sesi->updated_at)->translatedFormat('d M Y') }}</td>
-                                    <td class="px-6 py-4 font-bold text-brand-green">{{ $sesi->durasi_hari }} Hari Tanam</td>
+                                    <td class="px-6 py-4 font-bold text-brand-green">{{ number_format($sesi->durasi_hari, 0) }} Hari Tanam</td>
                                     <td class="px-6 py-4 text-center">
                                         <span class="inline-flex items-center gap-1 bg-brand-greenpal text-brand-green border border-brand-greenlt/20 px-2.5 py-1 rounded-full font-bold text-[10px]">
                                             Panen <i class="fa-solid fa-check text-[10px]"></i>

@@ -187,10 +187,8 @@ class RuleNutrisiSeeder extends Seeder
             $tanamanId = $tanamanMap[$rule['tanaman']] ?? null;
 
             if ($tanamanId) {
-                // Hitung EC dan dosis dari PPM sesuai formula referensi
+                // Hitung dosis dari PPM sesuai formula referensi
                 $ppmMid = ($rule['ppm_min'] + $rule['ppm_max']) / 2;
-                $ecMin = round($rule['ppm_min'] / 500, 2);
-                $ecMax = round($rule['ppm_max'] / 500, 2);
                 $dosis = round(($ppmMid / 1000) * 5, 2);
 
                 RuleNutrisi::updateOrCreate(
@@ -201,8 +199,6 @@ class RuleNutrisiSeeder extends Seeder
                     [
                         'ph_min' => 5.5,  // Universal (RpH-01 s/d RpH-04)
                         'ph_max' => 6.5,
-                        'ec_min' => $ecMin,
-                        'ec_max' => $ecMax,
                         'ppm_min' => $rule['ppm_min'],
                         'ppm_max' => $rule['ppm_max'],
                         'dosis_a' => $dosis,  // Formula: (PPM/1000) * 5 ml/L

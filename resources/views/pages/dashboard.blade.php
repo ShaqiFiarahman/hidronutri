@@ -170,7 +170,7 @@
               <div class="mt-2 flex justify-between text-xs 
                           text-brand-gray">
                 <span>0</span>
-                <span class="font-semibold text-brand-green">5.5–6.5 ✓</span>
+                <span class="font-semibold text-brand-green">5.5–6.5</span>
                 <span>14</span>
               </div>
             </div>
@@ -351,16 +351,16 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           <!-- Artikel besar -->
-          <a href="https://hidroponikpedia.com/kepadatan-tanam-salah-produktivitas-hidroponik/" target="_blank" class="block bg-brand-offwhite rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 gsap-left group">
+          <a href="https://hidroponikpedia.com/kepadatan-tanam-salah-produktivitas-hidroponik/" target="_blank" class="block bg-brand-offwhite rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-brand-green/5 hover:-translate-y-2 transition-all duration-500 ease-out gsap-left group">
             <div class="relative h-64 overflow-hidden">
               <img 
                 src="https://hidroponikpedia.com/wp-content/uploads/2026/02/kepadatan-tanam-hidroponik-yang-salah.jpg"
                 alt="Jarak tanam hidroponik"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
                 loading="lazy"
               >
               <div class="absolute inset-0 bg-gradient-to-t 
-                          from-black/60 to-transparent"></div>
+                           from-black/60 to-transparent"></div>
               <span class="absolute top-4 left-4 bg-brand-green 
                            text-white text-xs font-semibold 
                            px-3 py-1 rounded-full shadow-sm">
@@ -369,7 +369,7 @@
             </div>
             <div class="p-6">
               <h3 class="font-black text-brand-black text-xl 
-                         leading-tight mb-3 group-hover:text-brand-green transition-colors">
+                         leading-tight mb-3 group-hover:text-brand-green transition-colors duration-300">
                 Kepadatan Tanam Salah? Ini Pengaruhnya Pada Produktivitas Hidroponik
               </h3>
               <p class="text-sm text-brand-gray leading-relaxed">
@@ -396,12 +396,12 @@
           <div class="flex flex-col gap-6 gsap-right">
             
             <a href="https://farmee.id/tips-trik-penggunaan-nutrisi-ab-mix/" target="_blank" class="bg-brand-offwhite rounded-3xl overflow-hidden 
-                        flex hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                        flex hover:shadow-xl hover:shadow-brand-green/5 hover:-translate-y-2 transition-all duration-500 ease-out group">
               <div class="relative w-36 flex-shrink-0 overflow-hidden">
                 <img 
                   src="https://farmee.id/wp-content/uploads/2020/09/IMG_20200923_194353-1600x900.jpg"
                   alt="Perbedaan AB Mix"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-112"
                   loading="lazy"
                 >
               </div>
@@ -411,7 +411,7 @@
                   Nutrisi
                 </span>
                 <h3 class="font-bold text-brand-black text-sm 
-                           leading-tight mt-1 mb-2 group-hover:text-brand-green transition-colors">
+                           leading-tight mt-1 mb-2 group-hover:text-brand-green transition-colors duration-300">
                   Tips & Trik Manajemen Nutrisi AB Mix pada Tanaman Hidroponik
                 </h3>
                 <p class="text-xs text-brand-gray leading-relaxed">
@@ -421,12 +421,12 @@
             </a>
             
             <a href="https://npkmutiara.com/post/pentingnya-ph-dalam-budidaya-sistem-hidroponik" target="_blank" class="bg-brand-offwhite rounded-3xl overflow-hidden 
-                        flex hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                        flex hover:shadow-xl hover:shadow-brand-green/5 hover:-translate-y-2 transition-all duration-500 ease-out group">
               <div class="relative w-36 flex-shrink-0 overflow-hidden">
                 <img 
                   src="https://npkmutiara-prod.s3.ap-southeast-1.amazonaws.com/2025/09/13-large.jpg"
                   alt="Pentingnya pH Hidroponik"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-112"
                   loading="lazy"
                 >
               </div>
@@ -436,7 +436,7 @@
                   Kualitas Air
                 </span>
                 <h3 class="font-bold text-brand-black text-sm 
-                           leading-tight mt-1 mb-2 group-hover:text-brand-green transition-colors">
+                           leading-tight mt-1 mb-2 group-hover:text-brand-green transition-colors duration-300">
                   Pentingnya pH dalam Budidaya Sistem Hidroponik
                 </h3>
                 <p class="text-xs text-brand-gray leading-relaxed">

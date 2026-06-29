@@ -94,6 +94,7 @@
                         $isSelected = old('tanaman_id') == $t->id;
                     @endphp
                     <div data-id="{{ $t->id }}" 
+                         data-nama="{{ strtolower($t->nama) }}"
                          class="tanaman-card group relative bg-white border {{ $isSelected ? 'border-brand-green bg-brand-greenpal ring-2 ring-brand-greenpal/20' : 'border-brand-graylt' }} rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm active:scale-95">
                         
                         <!-- Foto tanaman (atas card) -->
@@ -480,6 +481,77 @@
     }
 
 
+    // Global function to update system availability based on selected plant
+    function updateSistemAvailability(tanamanNama) {
+        if (!tanamanNama) return;
+        const isRestricted = (tanamanNama === 'cabai' || tanamanNama === 'melon');
+        const restrictedSystems = ['wick', 'rakit_apung'];
+        
+        const selectedSistemInput = document.getElementById('sistem_hidroponik');
+        let currentSelected = selectedSistemInput.value;
+
+        document.querySelectorAll('.sistem-card').forEach(card => {
+            const val = card.getAttribute('data-value');
+            const imgContainer = card.querySelector('.relative.h-40');
+            const info = card.querySelector('.p-4');
+            const title = card.querySelector('.font-semibold');
+            
+            if (isRestricted && restrictedSystems.includes(val)) {
+                // Nonaktifkan kartu sistem
+                card.classList.add('pointer-events-none', 'relative');
+                card.classList.remove('cursor-pointer', 'hover:border-brand-green', 'hover:shadow-sm');
+                
+                // Gambar dan teks dibuat memudar (opacity-50) & hitam putih persis seperti Segera Hadir
+                if (imgContainer) imgContainer.classList.add('grayscale', 'opacity-50');
+                if (info) info.classList.add('opacity-50');
+                
+                // Ubah warna judul
+                if (title) {
+                    title.classList.remove('text-brand-black');
+                    title.classList.add('text-brand-gray');
+                }
+                
+                // Deselect jika sebelumnya terpilih
+                if (currentSelected === val) {
+                    card.classList.remove('border-brand-green', 'bg-brand-offwhite');
+                    card.classList.add('border-brand-graylt');
+                    const check = card.querySelector('.selected-check');
+                    if (check) {
+                        check.classList.add('hidden');
+                        check.classList.remove('flex');
+                    }
+                    selectedSistemInput.value = '';
+                }
+                
+                // Tambah badge merah MENYALA (tidak kena efek opacity) di level kartu terluar
+                let badge = card.querySelector('.tidak-disarankan-badge');
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'tidak-disarankan-badge absolute top-3 left-3 bg-red-500 text-white rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider z-20 shadow-sm';
+                    badge.innerText = 'Tidak Disarankan';
+                    card.appendChild(badge); // Pasang di luar imgContainer!
+                }
+            } else {
+                // Aktifkan kembali kartu sistem
+                card.classList.remove('pointer-events-none', 'relative');
+                card.classList.add('cursor-pointer', 'hover:border-brand-green', 'hover:shadow-sm');
+                
+                if (imgContainer) imgContainer.classList.remove('grayscale', 'opacity-50');
+                if (info) info.classList.remove('opacity-50');
+                
+                if (title) {
+                    title.classList.remove('text-brand-gray');
+                    title.classList.add('text-brand-black');
+                }
+                
+                const badge = card.querySelector('.tidak-disarankan-badge');
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        });
+    }
+
     // Global function for system selection
     function selectSistem(el, nilai) {
         // Reset semua card
@@ -546,6 +618,7 @@
         tanamanCards.forEach(card => {
             card.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
+                const nama = this.getAttribute('data-nama');
                 
                 // Toggle active classes on card
                 tanamanCards.forEach(c => {
@@ -577,12 +650,18 @@
                 hiddenTanamanInput.value = id;
                 animateCardSelect(this);
                 updatePhasePreview();
+                updateSistemAvailability(nama);
             });
         });
 
-        // Jika ada old value tanaman, render preview
+        // Jika ada old value tanaman, render preview dan update ketersediaan sistem
         if (hiddenTanamanInput.value) {
             updatePhasePreview();
+            const activeCard = document.querySelector(`.tanaman-card[data-id="${hiddenTanamanInput.value}"]`);
+            if (activeCard) {
+                const nama = activeCard.getAttribute('data-nama');
+                updateSistemAvailability(nama);
+            }
         }
 
         // ─── GSAP PAGE-SPECIFIC ANIMATIONS ──────────────────────────

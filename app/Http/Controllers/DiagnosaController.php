@@ -20,8 +20,14 @@ class DiagnosaController extends Controller
 
     public function index()
     {
-        // Cari sesi tanam aktif di database
-        $sesiTanam = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
+        $aktifSesiId = session('aktif_sesi_id');
+        $sesiTanam = null;
+        if ($aktifSesiId) {
+            $sesiTanam = SesiTanam::where('id', $aktifSesiId)->where('status', 'aktif')->with('tanaman')->first();
+        }
+        if (!$sesiTanam) {
+            $sesiTanam = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
+        }
         
         $tanaman = null;
         $fase = null;

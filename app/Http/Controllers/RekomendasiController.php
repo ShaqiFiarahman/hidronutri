@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tanaman;
+use App\Models\SesiTanam;
 use Illuminate\Http\Request;
 use App\Services\RuleBasedEngine;
 
@@ -58,7 +59,17 @@ class RekomendasiController extends Controller
             return back()->withErrors(['tanaman_id' => 'Gagal menentukan fase yang valid untuk usia tanaman ini.'])->withInput();
         }
 
+        // Otomatis simpan sebagai Sesi Tanam Aktif
+        $sesi = SesiTanam::create([
+            'tanaman_id' => $validated['tanaman_id'],
+            'sistem_hidroponik' => $validated['sistem_hidroponik'],
+            'fase_saat_ini' => $fase,
+            'tanggal_mulai' => $validated['tanggal_mulai'],
+            'status' => 'aktif',
+        ]);
+
         session([
+            'aktif_sesi_id' => $sesi->id,
             'rekomendasi_tanaman_id' => $validated['tanaman_id'],
             'rekomendasi_fase' => $fase,
             'rekomendasi_sistem' => $validated['sistem_hidroponik'],
@@ -66,11 +77,24 @@ class RekomendasiController extends Controller
             'rekomendasi_usia_hari' => $usiaHari,
         ]);
 
-        return redirect('/hasil');
+        return redirect('/hasil?sesi_id=' . $sesi->id);
     }
 
-    public function hasil()
+    public function hasil(Request $request)
     {
+        if ($request->has('sesi_id')) {
+            $sesi = \App\Models\SesiTanam::findOrFail($request->sesi_id);
+            session([
+                'aktif_sesi_id' => $sesi->id,
+                'rekomendasi_tanaman_id' => $sesi->tanaman_id,
+                'rekomendasi_fase' => $sesi->fase_saat_ini,
+                'rekomendasi_sistem' => $sesi->sistem_hidroponik,
+                'rekomendasi_tanggal_mulai' => $sesi->tanggal_mulai,
+                'rekomendasi_usia_hari' => \Carbon\Carbon::parse($sesi->tanggal_mulai)->diffInDays(\Carbon\Carbon::today()),
+            ]);
+            return redirect('/hasil');
+        }
+
         $tanamanId = session('rekomendasi_tanaman_id');
         $fase = session('rekomendasi_fase');
         $sistem = session('rekomendasi_sistem');

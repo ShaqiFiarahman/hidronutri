@@ -31,7 +31,7 @@ class SesiTanamController extends Controller
         }
 
         // Cek jika ada sesi tanam aktif sebelumnya, selesaikan secara otomatis (atau boleh ada banyak, tapi untuk kemudahan monitoring, kita selesaikan sesi aktif sebelumnya)
-        SesiTanam::where('status', 'aktif')->update(['status' => 'panen']);
+        // SesiTanam::where('status', 'aktif')->update(['status' => 'panen']);
 
         $sesi = SesiTanam::create([
             'tanaman_id' => $validated['tanaman_id'],
@@ -61,7 +61,14 @@ class SesiTanamController extends Controller
 
     public function jadwal()
     {
-        $sesi = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
+        $aktifSesiId = session('aktif_sesi_id');
+        $sesi = null;
+        if ($aktifSesiId) {
+            $sesi = SesiTanam::where('id', $aktifSesiId)->where('status', 'aktif')->with('tanaman')->first();
+        }
+        if (!$sesi) {
+            $sesi = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
+        }
 
         if (!$sesi) {
             return view('pages.jadwal', ['sesi' => null]);
@@ -141,8 +148,8 @@ class SesiTanamController extends Controller
             if ($totalHariSejakMulai % $intervalCek === 0) {
                 $kegiatan[] = [
                     'tipe' => 'cek',
-                    'judul' => 'Cek Kondisi Air (pH, EC, PPM, Suhu)',
-                    'deskripsi' => "Target: pH {$rule->ph_min}-{$rule->ph_max}, EC {$rule->ec_min}-{$rule->ec_max} mS/cm, PPM {$rule->ppm_min}-{$rule->ppm_max}, Suhu Air {$rule->suhu_min}-{$rule->suhu_max}°C."
+                    'judul' => 'Cek Kondisi Air (pH, PPM, Suhu)',
+                    'deskripsi' => "Target: pH {$rule->ph_min}-{$rule->ph_max}, PPM {$rule->ppm_min}-{$rule->ppm_max}, Suhu Air {$rule->suhu_min}-{$rule->suhu_max}°C."
                 ];
             }
 
@@ -204,7 +211,7 @@ class SesiTanamController extends Controller
         }
 
         return view('pages.jadwal', compact(
-            'sesi', 'rule', 'usiaHari', 'progressPersen', 
+            'sesi', 'rule', 'usiaHari', 'progressPersen', 'durasiTotal',
             'estimasiPindahFase', 'jadwalSeminggu', 'faseBerikutnya', 'catatanFaseBerikutnya'
         ));
     }

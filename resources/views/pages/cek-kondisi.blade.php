@@ -59,12 +59,16 @@
             </div>
             
             <!-- Target Badges -->
+            @php
+                $ec_min = round($rule->ppm_min / 500, 2);
+                $ec_max = round($rule->ppm_max / 500, 2);
+            @endphp
             <div class="flex flex-wrap gap-2 text-xs">
                 <span class="bg-brand-offwhite border border-brand-graylt text-brand-black px-3 py-1.5 rounded-xl font-medium">
                     Target pH: <strong class="text-brand-green">{{ number_format($rule->ph_min, 1) }} - {{ number_format($rule->ph_max, 1) }}</strong>
                 </span>
                 <span class="bg-brand-offwhite border border-brand-graylt text-brand-black px-3 py-1.5 rounded-xl font-medium">
-                    Target EC: <strong class="text-brand-green">{{ number_format($rule->ec_min, 1) }} - {{ number_format($rule->ec_max, 1) }}</strong>
+                    Target EC: <strong class="text-brand-green">{{ number_format($ec_min, 1) }} - {{ number_format($ec_max, 1) }}</strong>
                 </span>
                 <span class="bg-brand-offwhite border border-brand-graylt text-brand-black px-3 py-1.5 rounded-xl font-medium">
                     Target PPM: <strong class="text-brand-green">{{ $rule->ppm_min }} - {{ $rule->ppm_max }}</strong>
@@ -90,7 +94,7 @@
                             <i class="fa-solid fa-droplet text-brand-green"></i> Parameter pH Aktual
                         </label>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xl font-black text-brand-black" id="ph-val-display">6.2</span>
+                            <span class="text-xl font-black text-brand-black" id="ph-val-display">{{ old('ph_aktual', session('ph_input', round(($rule->ph_min + $rule->ph_max) / 2, 1))) }}</span>
                             <span id="ph-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full border">
                                 Normal
                             </span>
@@ -98,7 +102,7 @@
                     </div>
                     <div class="relative py-2">
                         <input type="range" name="ph_aktual" id="ph_aktual" min="0" max="14" step="0.1" 
-                               value="{{ old('ph_aktual', session('ph_input', 6.2)) }}"
+                               value="{{ old('ph_aktual', session('ph_input', round(($rule->ph_min + $rule->ph_max) / 2, 1))) }}"
                                class="custom-range-slider">
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
@@ -115,7 +119,7 @@
                             <i class="fa-solid fa-bolt text-brand-green"></i> Parameter EC Aktual
                         </label>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xl font-black text-brand-black" id="ec-val-display">1.4</span>
+                            <span class="text-xl font-black text-brand-black" id="ec-val-display">{{ old('ec_aktual', session('ec_input', round((($rule->ppm_min + $rule->ppm_max) / 2) / 500, 1))) }}</span>
                             <span id="ec-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full border">
                                 Normal
                             </span>
@@ -123,12 +127,12 @@
                     </div>
                     <div class="relative py-2">
                         <input type="range" name="ec_aktual" id="ec_aktual" min="0" max="5.0" step="0.1" 
-                               value="{{ old('ec_aktual', session('ec_input', 1.4)) }}"
+                               value="{{ old('ec_aktual', session('ec_input', round((($rule->ppm_min + $rule->ppm_max) / 2) / 500, 1))) }}"
                                class="custom-range-slider">
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
                         <span>0.0 mS/cm</span>
-                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ec_min, 1) }}{{ $rule->ec_min != $rule->ec_max ? ' - ' . number_format($rule->ec_max, 1) : '' }}</span>
+                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($ec_min, 1) }}{{ $ec_min != $ec_max ? ' - ' . number_format($ec_max, 1) : '' }}</span>
                         <span>5.0 mS/cm</span>
                     </div>
                 </div>
@@ -140,7 +144,7 @@
                             <i class="fa-solid fa-gauge-high text-brand-green"></i> Parameter PPM Aktual
                         </label>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xl font-black text-brand-black" id="ppm-val-display">700</span>
+                            <span class="text-xl font-black text-brand-black" id="ppm-val-display">{{ old('ppm_aktual', session('ppm_input', intval(($rule->ppm_min + $rule->ppm_max) / 2))) }}</span>
                             <span id="ppm-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full border">
                                 Normal
                             </span>
@@ -148,7 +152,7 @@
                     </div>
                     <div class="relative py-2">
                         <input type="range" name="ppm_aktual" id="ppm_aktual" min="0" max="2500" step="10" 
-                               value="{{ old('ppm_aktual', session('ppm_input', 700)) }}"
+                               value="{{ old('ppm_aktual', session('ppm_input', intval(($rule->ppm_min + $rule->ppm_max) / 2))) }}"
                                class="custom-range-slider">
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
@@ -158,10 +162,10 @@
                     </div>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit" 
-                            class="btn-diagnosa w-full bg-brand-black hover:bg-brand-green text-white font-semibold px-6 py-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-stethoscope text-xs"></i> <span>Diagnosa Kondisi Aktual</span>
+                <div class="pt-4 mt-8">
+                    <button type="submit" id="btn-submit-diagnosa"
+                            class="w-full bg-brand-black hover:bg-brand-green text-white font-semibold px-6 py-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+                        <i class="fa-solid fa-stethoscope text-xs"></i> <span>Mulai Diagnosa Kondisi Aktual</span>
                     </button>
                 </div>
             </form>
@@ -251,8 +255,8 @@
         // Range Target boundaries
         const phMin = parseFloat("{{ $rule->ph_min ?? 6.0 }}");
         const phMax = parseFloat("{{ $rule->ph_max ?? 6.5 }}");
-        const ecMin = parseFloat("{{ $rule->ec_min ?? 1.2 }}");
-        const ecMax = parseFloat("{{ $rule->ec_max ?? 1.6 }}");
+        const ecMin = parseFloat("{{ $ec_min ?? 1.2 }}");
+        const ecMax = parseFloat("{{ $ec_max ?? 1.6 }}");
         const ppmMin = parseInt("{{ $rule->ppm_min ?? 600 }}");
         const ppmMax = parseInt("{{ $rule->ppm_max ?? 800 }}");
 
@@ -293,8 +297,20 @@
 
         // Bind events
         phInput.addEventListener('input', () => evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH'));
-        ecInput.addEventListener('input', () => evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC'));
-        ppmInput.addEventListener('input', () => evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM'));
+        
+        ecInput.addEventListener('input', () => {
+            evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
+            // Sinkronisasi otomatis ke PPM (PPM = EC * 500)
+            ppmInput.value = Math.round(parseFloat(ecInput.value) * 500);
+            evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
+        });
+        
+        ppmInput.addEventListener('input', () => {
+            evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
+            // Sinkronisasi otomatis ke EC (EC = PPM / 500)
+            ecInput.value = (parseFloat(ppmInput.value) / 500).toFixed(1);
+            evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
+        });
 
         // Initialize values
         evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH');
@@ -309,9 +325,6 @@
         });
         gsap.from('.slider-card', { 
           y: 30, opacity: 0, stagger: 0.15, duration: 0.5, delay: 0.3 
-        });
-        gsap.from('.btn-diagnosa', { 
-          y: 20, opacity: 0, duration: 0.4, delay: 0.7 
         });
 
         // Animasi saat diagnosa selesai
