@@ -17,7 +17,7 @@
     }
 </style>
     <div class="max-w-5xl mx-auto space-y-12 animate-fade-in page-wrapper">
-        <!-- Breadcrumb -->
+        <!-- Tautan navigasi hierarki halaman -->
         <div class="flex items-center space-x-2 text-xs text-brand-gray font-medium mb-2 breadcrumb">
             <a href="/rekomendasi" class="hover:text-brand-black transition-colors">Rekomendasi</a>
             <span>/</span>
@@ -26,7 +26,7 @@
             <span class="text-brand-black font-semibold">Fase {{ ucwords(str_replace('_', ' ', $fase)) }}</span>
         </div>
 
-        <!-- Header Summary -->
+        <!-- Ringkasan informasi utama di bagian atas halaman -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-brand-graylt pb-8 mt-6">
             <div class="space-y-2">
                 @php
@@ -34,7 +34,7 @@
                 @endphp
                 @if($activeSessions->count() > 0)
                     <div class="relative inline-block text-left" id="tanamanDropdownContainer">
-                        <!-- Trigger Button -->
+                        <!-- Tombol pemantik untuk membuka menu turun -->
                         <button type="button" onclick="toggleTanamanDropdown()" class="group inline-flex items-center gap-3.5 text-left focus:outline-none">
                             <h1 class="text-4xl font-extrabold tracking-tight text-brand-black group-hover:text-brand-green transition-colors duration-200 flex items-center gap-3">
                                 <span>{{ $tanaman->emoji }} {{ $tanaman->nama }}</span>
@@ -45,7 +45,7 @@
                             </div>
                         </button>
 
-                        <!-- Dropdown Menu -->
+                        <!-- Menu pilihan turun untuk daftar sesi -->
                         <div id="tanamanDropdownMenu" class="absolute left-0 mt-3 w-80 z-50">
                             <div class="bg-white rounded-2xl border border-brand-graylt shadow-xl overflow-hidden p-2 ring-1 ring-black/5">
                                 <div class="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-brand-gray border-b border-brand-graylt/60 mb-1 flex items-center justify-between">
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        <!-- Phase Timeline: Horizontal Modern Card -->
+        <!-- Kartu linimasa fase pertumbuhan secara horizontal -->
         <div class="bg-white border border-brand-graylt rounded-3xl p-6 md:p-8 shadow-sm mt-8 space-y-6">
             <div class="flex items-center justify-between border-b border-brand-graylt pb-4">
                 <div class="flex items-center">
@@ -171,14 +171,14 @@
 
             <div class="pt-6 pb-16 px-4 md:px-8">
                 <div class="relative flex justify-between items-center w-full">
-                    {{-- Track background garis --}}
+                    {{-- Garis latar belakang lintasan --}}
                     <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1.5 bg-brand-graylt rounded-full z-0 overflow-hidden">
-                        {{-- Track progress garis hijau --}}
+                        {{-- Garis hijau penanda progres bergeser secara dinamis --}}
                         <div class="h-full bg-brand-green rounded-full transition-all duration-700"
                              style="width: {{ $progressPct }}%;"></div>
                     </div>
 
-                    {{-- Node-node fase --}}
+                    {{-- Titik-titik penanda setiap fase --}}
                     @foreach($allFasesDB as $stepIdx => $stepFase)
                         @php
                             $isActive  = $stepFase === $fase;
@@ -188,7 +188,7 @@
                         @endphp
 
                         <div class="relative z-10 flex flex-col items-center">
-                            {{-- Lingkaran Node --}}
+                            {{-- Lingkaran penanda titik fase --}}
                             <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-base transition-all duration-300 shadow-sm
                                 @if($isActive)
                                     bg-brand-green text-white ring-8 ring-brand-greenpal scale-110 shadow-md
@@ -205,7 +205,7 @@
                                 @endif
                             </div>
 
-                            {{-- Label & Badge di bawah lingkaran --}}
+                            {{-- Teks label dan lencana di bawah lingkaran --}}
                             <div class="absolute top-16 left-1/2 -translate-x-1/2 w-28 md:w-36 flex flex-col items-center gap-1">
                                 <span class="text-xs md:text-sm font-bold text-center leading-tight
                                     {{ $isActive ? 'text-brand-green' : ($isSelesai ? 'text-brand-black' : 'text-brand-gray') }}">
@@ -224,9 +224,9 @@
             </div>
         </div>
 
-        <!-- 3 Metric Cards -->
+        <!-- Tiga kartu metrik utama -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- pH Metric -->
+            <!-- Kartu nilai target pH -->
             <div
                 class="bg-white border border-brand-graylt rounded-2xl p-6 hover:border-brand-green transition-colors duration-200 flex flex-col justify-between metric-card">
                 <div>
@@ -244,7 +244,7 @@
                 </div>
             </div>
 
-            <!-- PPM Metric -->
+            <!-- Kartu nilai target PPM -->
             <div
                 class="bg-white border border-brand-graylt rounded-2xl p-6 hover:border-brand-green transition-colors duration-200 flex flex-col justify-between metric-card">
                 <div>
@@ -264,7 +264,7 @@
                 </div>
             </div>
 
-            <!-- Suhu Air Metric -->
+            <!-- Kartu nilai target Suhu Air -->
             <div
                 class="bg-white border border-brand-graylt rounded-2xl p-6 hover:border-brand-green transition-colors duration-200 flex flex-col justify-between metric-card">
                 <div>
@@ -284,7 +284,7 @@
             </div>
         </div>
 
-        <!-- Peringatan Box -->
+        <!-- Kotak pesan peringatan khusus -->
         @if(!empty($rekomendasi['peringatan']))
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start warning-box">
                 <div class="flex-shrink-0 text-brand-amber mt-0.5">
@@ -300,7 +300,7 @@
         @endif
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Dosis Nutrisi AB Mix Card (Formula Card) -->
+            <!-- Kartu perhitungan kalkulator dosis nutrisi -->
             <div
                 class="bg-white border border-brand-graylt rounded-2xl overflow-hidden flex flex-col justify-between formula-card">
                 <div>
@@ -343,7 +343,7 @@
                 </div>
             </div>
 
-            <!-- Panduan Pencampuran AB Mix Card -->
+            <!-- Kartu panduan langkah demi langkah pelarutan nutrisi -->
             <div class="bg-white border border-brand-graylt rounded-2xl p-6 flex flex-col justify-between jadwal-card">
                 <div>
                     <div class="flex items-center justify-between mb-4">
@@ -355,9 +355,9 @@
                         Ikuti langkah pencampuran nutrisi yang benar agar pekat A dan B tidak menggumpal (kristalisasi) saat dilarutkan ke dalam air.
                     </p>
 
-                    <!-- Steps List -->
+                    <!-- Daftar urutan tahapan pelaksanaan -->
                     <div class="space-y-3.5">
-                        <!-- Step 1 -->
+                        <!-- Langkah pertama -->
                         <div class="flex items-start space-x-3 p-3 rounded-xl bg-brand-offwhite/60 border border-brand-graylt/70">
                             <div class="w-7 h-7 rounded-lg bg-brand-black text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                                 1
@@ -368,7 +368,7 @@
                             </div>
                         </div>
 
-                        <!-- Step 2 -->
+                        <!-- Langkah kedua -->
                         <div class="flex items-start space-x-3 p-3 rounded-xl bg-brand-offwhite/60 border border-brand-graylt/70">
                             <div class="w-7 h-7 rounded-lg bg-brand-green text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                                 2
@@ -379,7 +379,7 @@
                             </div>
                         </div>
 
-                        <!-- Step 3 -->
+                        <!-- Langkah ketiga -->
                         <div class="flex items-start space-x-3 p-3 rounded-xl bg-red-50/60 border border-red-200/80">
                             <div class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                                 <i class="fa-solid fa-triangle-exclamation text-[10px]"></i>
@@ -390,7 +390,7 @@
                             </div>
                         </div>
 
-                        <!-- Step 4 -->
+                        <!-- Langkah keempat -->
                         <div class="flex items-start space-x-3 p-3 rounded-xl bg-brand-offwhite/60 border border-brand-graylt/70">
                             <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                                 3
@@ -405,7 +405,7 @@
             </div>
     </div>
 
-    <!-- Unified Jadwal & Progress Section -->
+    <!-- Bagian gabungan jadwal dan kemajuan pemeliharaan -->
     <div id="jadwal" class="mt-12 space-y-8 pt-8 border-t border-brand-graylt/80">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -416,7 +416,7 @@
             </div>
         </div>
 
-        <!-- Active Session Progress Panel -->
+        <!-- Panel indikator progres sesi aktif -->
         @if(isset($progressPersen))
         <div class="bg-white border border-brand-graylt rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xs progress-card">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -449,7 +449,7 @@
                 </div>
             </div>
 
-            <!-- Progress Bar -->
+            <!-- Bilah persentase pencapaian siklus -->
             <div class="space-y-2">
                 <div class="w-full bg-brand-graylt rounded-full h-2.5 overflow-hidden">
                     <div class="bg-brand-green h-full rounded-full transition-all duration-700 ease-out progress-fill" style="width: {{ $progressPersen }}%"></div>
@@ -463,7 +463,7 @@
         @endif
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Interactive Calendar (Col Span 2) -->
+            <!-- Area kalender pemeliharaan interaktif -->
             <div class="lg:col-span-2 space-y-6" id="calendar-container">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg font-bold text-brand-black flex items-center gap-2">
@@ -474,7 +474,7 @@
                     </div>
                 </div>
 
-                <!-- Calendar Grid -->
+                <!-- Tata letak kotak penanggalan -->
                 <div class="bg-white rounded-2xl border border-brand-graylt overflow-hidden shadow-2xs">
                     <div class="grid grid-cols-7 border-b border-brand-graylt bg-brand-offwhite/50 text-center text-[10px] sm:text-xs font-bold text-brand-gray py-3 uppercase tracking-wider">
                         <div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div><div>Min</div>
@@ -538,7 +538,7 @@
                     </div>
                 </div>
                 
-                <!-- Day Detail Panel (Hidden by default, shown via JS) -->
+                <!-- Panel rincian harian yang awalnya tersembunyi -->
                 <div id="day-detail-panel" class="hidden bg-white p-6 rounded-2xl border border-brand-graylt shadow-2xs mt-4">
                     <div class="flex items-center justify-between mb-4 border-b border-brand-graylt pb-4">
                         <h4 class="font-bold text-brand-black flex items-center gap-2">
@@ -549,15 +549,15 @@
                         </button>
                     </div>
                     <div id="detail-tasks-container" class="space-y-4">
-                        <!-- Tasks injected via JS -->
+                        <!-- Tugas-tugas akan dimuat melalui JavaScript -->
                     </div>
                 </div>
             </div>
 
-            <!-- Notes & Context Info (Col Span 1) -->
+            <!-- Area catatan dan informasi konteks -->
             <div class="space-y-6">
                 @if(!empty($faseBerikutnya))
-                <!-- Info Fase Berikutnya -->
+                <!-- Informasi persiapan untuk tahapan selanjutnya -->
                 <div class="border-l-4 border-brand-green bg-brand-offwhite p-6 rounded-r-2xl rounded-l-md space-y-4 next-phase-card">
                     <h3 class="font-bold text-base flex items-center gap-2 text-brand-green">
                         <i class="fa-solid fa-circle-info text-brand-green"></i> Persiapan Fase Berikutnya
@@ -573,7 +573,7 @@
                 @endif
 
                 @if(!empty($sesiAktif))
-                <!-- Mark Harvest Card -->
+                <!-- Kartu penanda penyelesaian panen -->
                 <div class="bg-red-50/50 p-6 rounded-2xl border border-red-100 space-y-4">
                     <h3 class="font-bold text-xs text-red-800 uppercase tracking-wider">
                         Siklus Penanaman Selesai

@@ -26,17 +26,17 @@ class RekomendasiController extends Controller
     {
         $tanaman = Tanaman::all();
 
-        // Ambil daftar fase per tanaman dari rule_nutrisi
+        // ambil daftar fase pertumbuhan yang tersedia untuk setiap tanaman
         $fasePerTanaman = \App\Models\RuleNutrisi::select('tanaman_id', 'fase')
             ->get()
             ->groupBy('tanaman_id')
             ->map(fn($rules) => $rules->pluck('fase')->values())
             ->toArray();
 
-        // Map ID tanaman ke Nama untuk memudahkan JS
+        // buat peta data ID ke nama tanaman untuk mempermudah operasi JavaScript
         $tanamanMap = $tanaman->pluck('nama', 'id')->toArray();
 
-        // Ambil durasi map dari engine
+        // ambil data panduan durasi per fase dari sistem pakar
         $durasiMap = $this->engine->getDurasiFaseMap();
 
         return view('pages.rekomendasi', compact('tanaman', 'fasePerTanaman', 'durasiMap', 'tanamanMap'));
@@ -50,21 +50,23 @@ class RekomendasiController extends Controller
         $validated = $request->validated();
 
         $tanaman = Tanaman::find($validated['tanaman_id']);
+        // hitung usia tanaman dalam hari dari tanggal mulai sampai hari ini
         $usiaHari = \Carbon\Carbon::parse($validated['tanggal_mulai'])->diffInDays(\Carbon\Carbon::today());
         
-        // Tentukan fase secara dinamis
+        // kalkulasi rentang fase saat ini berdasarkan usia tanaman
         $fase = $this->engine->determineFase($tanaman->nama, $usiaHari);
 
-        // Validasi bahwa kombinasi tanaman + fase ada di rule_nutrisi
+        // pastikan kombinasi tanaman dan fase memiliki target nutrisi di basis data
         $ruleExists = \App\Models\RuleNutrisi::where('tanaman_id', $validated['tanaman_id'])
             ->where('fase', $fase)
             ->exists();
 
+        // tolak pemrosesan jika fase tidak ditemukan
         if (!$ruleExists) {
             return back()->withErrors(['tanaman_id' => 'Gagal menentukan fase yang valid untuk usia tanaman ini.'])->withInput();
         }
 
-        // Otomatis simpan sebagai Sesi Tanam Aktif
+        // buat pencatatan sesi tanam baru dengan status aktif secara otomatis
         $sesi = SesiTanam::create([
             'tanaman_id' => $validated['tanaman_id'],
             'sistem_hidroponik' => $validated['sistem_hidroponik'],
@@ -109,15 +111,19 @@ class RekomendasiController extends Controller
         $tanggalMulai = session('rekomendasi_tanggal_mulai');
         $usiaHari = session('rekomendasi_usia_hari');
 
+        // ambil data sesi aktif yang tercatat di session
         $sesiAktif = session('aktif_sesi_id') 
             ? SesiTanam::where('id', session('aktif_sesi_id'))->where('status', 'aktif')->with('tanaman')->first()
             : null;
 
+        // periksa jika ada sesi tanam aktif terbaru sebagai cadangan
         if (!$sesiAktif) {
             $sesiAktif = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
         }
 
+        // redirect dengan peringatan jika informasi tanaman tidak lengkap di session
         if (!$tanamanId || !$fase || !$sistem) {
+            // otomatis redirect ke hasil dari sesi yang ada jika data session hilang
             if ($sesiAktif) {
                 return redirect('/hasil?sesi_id=' . $sesiAktif->id);
             }
@@ -127,11 +133,12 @@ class RekomendasiController extends Controller
         $tanaman = Tanaman::find($tanamanId);
         $rekomendasi = $this->engine->getRekomendasiNutrisi($tanamanId, $fase, $sistem);
 
+        // kembalikan error jika panduan untuk fase ini tidak ditemukan di basis data
         if (!$rekomendasi) {
             return redirect('/rekomendasi')->with('error', 'Aturan rekomendasi tidak ditemukan.');
         }
 
-        // --- Kalkulasi Data Jadwal & Siklus Tanam ---
+        // --- Perhitungan Data Siklus dan Kemajuan Pertumbuhan ---
         $rule = RuleNutrisi::where('tanaman_id', $tanamanId)
             ->where('fase', $fase)
             ->first();
@@ -139,17 +146,20 @@ class RekomendasiController extends Controller
         $durasiMap = $this->engine->getDurasiFaseMap();
         $namaTanaman = $tanaman ? $tanaman->nama : '';
         $fasesTanaman = $durasiMap[$namaTanaman] ?? null;
-        $durasiTotal = 35; // Default fallback
+        $durasiTotal = 35; // nilai sementara bawaan
 
+        // kalkulasi durasi maksimal dari hari terakhir fase penutup
         if ($fasesTanaman) {
             $lastFase = end($fasesTanaman);
             $durasiTotal = $lastFase['kumulatif'];
         }
 
         $usiaTotalTanaman = $usiaHari ?? 0;
+        
+        // hitung persentase kemajuan siklus tumbuh tanaman
         $progressPersen = min(100, ($usiaTotalTanaman / max(1, $durasiTotal)) * 100);
 
-        // Estimasi pindah fase
+        // perkirakan jumlah hari menuju tahap perkembangan selanjutnya
         $estimasiPindahFase = '';
         if ($fasesTanaman && isset($fasesTanaman[$fase])) {
             $faseKeys = array_keys($fasesTanaman);
@@ -173,10 +183,11 @@ class RekomendasiController extends Controller
             $estimasiPindahFase = "Data durasi fase belum tersedia.";
         }
 
-        // Generate Jadwal Perawatan Bulanan (Satu bulan kalender)
+        // buat susunan jadwal perawatan bulanan untuk antarmuka kalender
         $kalenderBulan = [];
         $logsByDate = [];
         
+        // kumpulkan semua riwayat penugasan berdasarkan tanggal jika ada sesi aktif
         if ($sesiAktif) {
             $logs = \App\Models\LogPerawatan::where('sesi_tanam_id', $sesiAktif->id)->get();
             foreach ($logs as $log) {
@@ -184,17 +195,17 @@ class RekomendasiController extends Controller
             }
         }
 
+        // buat pola hari untuk tampilan kalender bulan ini
         if ($rule) {
-            // Kita akan buat kalender bulan ini
             $startOfMonth = Carbon::today()->startOfMonth();
             $endOfMonth = Carbon::today()->endOfMonth();
             
-            // Padding untuk grid kalender (hari sebelum tanggal 1)
+            // berikan elemen spasi agar tanggal 1 jatuh di hari yang tepat
             $startDayOfWeek = $startOfMonth->dayOfWeekIso; // 1 (Senin) - 7 (Minggu)
             
             $currentDate = $startOfMonth->copy()->subDays($startDayOfWeek - 1);
             
-            // Buat grid 6 minggu x 7 hari = 42 sel (agar rapi)
+            // siapkan jumlah petak 6 baris kali 7 hari genap menjadi 42 buah
             for ($i = 0; $i < 42; $i++) {
                 $dateStr = $currentDate->format('Y-m-d');
                 $isCurrentMonth = $currentDate->month === Carbon::today()->month;
@@ -204,10 +215,9 @@ class RekomendasiController extends Controller
                 
                 $kegiatan = [];
                 
-                // Hanya jadwalkan tugas jika usianya positif (setelah tanggal mulai) 
-                // dan belum melebihi durasi total
+                // saring pembuatan jadwal hanya untuk usia aktif sebelum waktu panen tiba
                 if ($usiaTanamanPadaTanggalIni >= 0 && $usiaTanamanPadaTanggalIni <= $durasiTotal) {
-                    // Evaluasi rule cek pH/EC
+                    // periksa apakah harus pengecekan nutrisi di hari ini
                     $intervalCek = $rule->cek_ph_ec ?? 1;
                     if ($usiaTanamanPadaTanggalIni % $intervalCek === 0) {
                         $kegiatan[] = [
@@ -223,7 +233,7 @@ class RekomendasiController extends Controller
                         ];
                     }
 
-                    // Evaluasi rule isi ulang nutrisi
+                    // periksa apakah waktunya menambah volume air berdasarkan interval 
                     $intervalIsiUlang = $rule->isi_ulang ?? 2;
                     if ($usiaTanamanPadaTanggalIni > 0 && $usiaTanamanPadaTanggalIni % $intervalIsiUlang === 0) {
                         $kegiatan[] = [
@@ -248,7 +258,7 @@ class RekomendasiController extends Controller
             }
         }
 
-        // Tentukan fase berikutnya untuk card info
+        // tentukan catatan ringkas tahapan perkembangan yang menunggu selanjutnya
         $faseBerikutnya = '';
         $catatanFaseBerikutnya = '';
 

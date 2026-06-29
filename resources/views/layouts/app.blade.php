@@ -6,22 +6,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'HidroNutri - Sistem Pakar Hidroponik')</title>
     
-    <!-- Tailwind CSS via Vite -->
+    <!-- Pemuatan Tailwind CSS menggunakan Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- FontAwesome for Icons -->
+    <!-- Pemuatan FontAwesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- GSAP Core -->
+    <!-- Pemuatan pustaka inti animasi GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <!-- ScrollTrigger plugin (animasi saat scroll) -->
+    <!-- Plugin GSAP untuk memicu animasi saat menggulir halaman -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <!-- ScrollTo plugin -->
+    <!-- Plugin GSAP untuk animasi gulir halaman ke elemen tertentu -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-    <!-- TextPlugin (animasi teks) -->
+    <!-- Plugin GSAP untuk efek animasi teks -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
 
-    <!-- Custom Layout Styles dipindah ke css/pages/layout.css -->
+    <!-- Gaya tata letak kustom yang dipindahkan ke css/pages/layout.css -->
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -30,16 +30,16 @@
     </style>
 </head>
 <body class="bg-white text-brand-black antialiased selection:bg-brand-green selection:text-white">
-    {{-- navigasi utama --}}
+    {{-- Bilah navigasi utama halaman --}}
     <x-navbar />
 
-    <!-- Main Content -->
+    <!-- Konten utama halaman -->
     <main class="main-content relative bg-white z-10 rounded-b-[2.5rem] min-h-screen shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
         @hasSection('no-container')
             @yield('content')
         @else
             <div class="max-w-7xl w-full mx-auto px-6 md:px-8 py-12 md:py-16">
-                <!-- Toast Notification (Laravel Session Success/Error) -->
+                <!-- Notifikasi pesan aksi berhasil atau gagal -->
                 @if(session('success'))
                     <div class="mb-6 flex items-center p-4 text-brand-green border border-brand-greenlt/20 bg-brand-greenpal rounded-xl animate-fade-in" role="alert">
                         <i class="fa-solid fa-circle-check text-brand-green text-lg mr-3"></i>
@@ -64,13 +64,13 @@
         @endif
     </main>
 
-    {{-- footer halaman --}}
+    {{-- Bagian bawah halaman --}}
     <x-footer />
 
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
     <div class="page-progress" id="pageProgress"></div>
-    <!-- Script dipindah ke resources/js/pages/layout.js dan app.js -->
+    <!-- File skrip dipindahkan ke resources/js/pages/layout.js dan app.js -->
 </body>
 </html>
 

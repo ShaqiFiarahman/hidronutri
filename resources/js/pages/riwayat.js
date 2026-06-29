@@ -6,7 +6,7 @@ export function initRiwayat() {
 
     gsap.from('.riwayat-header', { y: -20, opacity: 0, duration: 0.4 });
 
-    // Progress bar tiap tanaman
+    // beri animasi merayap pada batang progres untuk setiap sesi tanaman
     document.querySelectorAll('.riwayat-progress').forEach(bar => {
         const target = bar.style.width;
         bar.style.width = '0%';
@@ -21,7 +21,7 @@ export function initRiwayat() {
         });
     });
 
-    // Hover card riwayat
+    // berikan efek melayang saat kursor menyentuh kartu riwayat
     document.querySelectorAll('.riwayat-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
             gsap.to(card, { y: -4, duration: 0.2, ease: 'power2.out' });

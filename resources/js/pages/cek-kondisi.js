@@ -6,7 +6,7 @@ export function initCekKondisi() {
 
     const { phMin, phMax, ecMin, ecMax, ppmMin, ppmMax, suhuMin, suhuMax } = window.cekKondisiData;
 
-    // Elements
+    // inisialisasi elemen DOM dari input dan tampilan
     const phInput = document.getElementById('ph_aktual');
     const phDisplay = document.getElementById('ph-val-display');
     const phBadge = document.getElementById('ph-status-badge');
@@ -28,9 +28,10 @@ export function initCekKondisi() {
         const val = parseFloat(input.value);
         display.textContent = val;
 
-        // Reset classes
+        // kembalikan styling badge ke bentuk awal sebelum penyesuaian kondisi
         badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors duration-200";
 
+        // atur tampilan warna dan teks berdasarkan rentang nilai ideal
         if (val >= min && val <= max) {
             badge.textContent = "Ideal";
             badge.classList.add('bg-brand-greenpal', 'text-brand-green', 'border-brand-green/20');
@@ -46,7 +47,7 @@ export function initCekKondisi() {
         }
     }
 
-    // Bind events
+    // daftarkan pendengar event untuk memperbarui tampilan saat input berubah
     if (phInput) phInput.addEventListener('input', () => evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH'));
     
     if (ecInput && ppmInput) {
@@ -65,7 +66,7 @@ export function initCekKondisi() {
 
     if (suhuInput) suhuInput.addEventListener('input', () => evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu'));
 
-    // Initialize values
+    // pasang nilai awal pada antarmuka saat halaman dimuat
     if (phInput) evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH');
     if (ecInput) evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
     if (ppmInput) evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
@@ -94,8 +95,9 @@ export function initCekKondisi() {
     }
     animateDiagnosaResult();
 
-    // Animasi slider thumb
+    // berikan efek denyut pada pegangan slider saat digeser
     document.querySelectorAll('input[type=range]').forEach(slider => {
+        // terapkan animasi pembesaran sementara pada elemen
         slider.addEventListener('input', function() {
             gsap.to(this, { '--thumb-scale': 1.2, duration: 0.1 });
             setTimeout(() => gsap.to(this, { '--thumb-scale': 1, duration: 0.1 }), 150);
@@ -103,7 +105,7 @@ export function initCekKondisi() {
     });
 }
 
-// Fungsi global untuk status jika dipanggil manual (dari outside)
+// daftarkan fungsi animasi ke window agar bisa diakses dari atribut onclick HTML
 window.animateStatus = function(statusEl, isNormal) {
     if (typeof gsap === 'undefined') return;
     gsap.from(statusEl, { 

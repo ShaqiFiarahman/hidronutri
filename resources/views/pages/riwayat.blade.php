@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-5xl mx-auto space-y-12 animate-fade-in page-wrapper">
     
-    <!-- Header -->
+    <!-- Bagian atas halaman -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-brand-graylt pb-8 riwayat-header">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-brand-black">
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <!-- Section 1: Aktif Sekarang -->
+    <!-- Bagian 1: Daftar sesi tanam yang sedang aktif -->
     <div class="space-y-6">
         <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-brand-green flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
@@ -57,7 +57,7 @@
                             </span>
                         </div>
 
-                        <!-- Info Grid -->
+                        <!-- Informasi ringkas sesi (tanggal mulai dan usia) -->
                         <div class="grid grid-cols-2 gap-4 text-xs bg-brand-offwhite p-4 rounded-xl border border-brand-graylt/75">
                             <div>
                                 <span class="text-brand-gray font-light block">Tanggal Mulai:</span>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
 
-                        <!-- Progress Bar -->
+                        <!-- Bilah persentase kemajuan fase -->
                         <div class="space-y-2">
                             <div class="w-full bg-brand-graylt rounded-full h-1">
                                 <div class="bg-brand-green h-full rounded-full transition-all duration-300 riwayat-progress" style="width: {{ $sesi->progress_persen }}%"></div>
@@ -80,7 +80,7 @@
                             </div>
                         </div>
 
-                        <!-- Actions Buttons -->
+                        <!-- Tombol aksi (agenda perawatan dan panen) -->
                         <div class="pt-2 flex justify-between gap-3 items-center">
                             <a href="/hasil?sesi_id={{ $sesi->id }}#jadwal" class="bg-white text-brand-black border border-brand-graylt rounded-xl px-4 py-2 text-xs font-medium hover:border-brand-green hover:text-brand-green transition-colors duration-200 flex items-center gap-1.5">
                                 <i class="fa-solid fa-calendar-check text-xs"></i> Agenda Perawatan
@@ -101,7 +101,7 @@
         @endif
     </div>
 
-    <!-- Section 2: Selesai / Panen -->
+    <!-- Bagian 2: Daftar riwayat sesi yang telah dipanen -->
     <div class="space-y-6">
         <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-brand-gray flex items-center gap-2">
             <i class="fa-solid fa-circle-check opacity-60"></i>

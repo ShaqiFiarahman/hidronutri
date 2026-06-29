@@ -27,9 +27,12 @@ class DiagnosaController extends Controller
     {
         $aktifSesiId = session('aktif_sesi_id');
         $sesiTanam = null;
+        // cari sesi tanam aktif berdasarkan session id
         if ($aktifSesiId) {
             $sesiTanam = SesiTanam::where('id', $aktifSesiId)->where('status', 'aktif')->with('tanaman')->first();
         }
+        
+        // cari sesi tanam aktif terbaru sebagai alternatif jika tidak ada id di session
         if (!$sesiTanam) {
             $sesiTanam = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
         }
@@ -38,6 +41,7 @@ class DiagnosaController extends Controller
         $fase = null;
         $rule = null;
 
+        // tetapkan target nutrisi berdasarkan sesi tanam aktif
         if ($sesiTanam) {
             $tanaman = $sesiTanam->tanaman;
             $fase = $sesiTanam->fase_saat_ini;
@@ -45,9 +49,11 @@ class DiagnosaController extends Controller
                 ->where('fase', $fase)
                 ->first();
         } else {
-            // Fallback ke Laravel Session jika tidak ada sesi tanam aktif di database
+            // gunakan data rekomendasi dari session jika belum ada sesi tanam di database
             $tanamanId = session('rekomendasi_tanaman_id');
             $fase = session('rekomendasi_fase');
+            
+            // tetapkan target nutrisi berdasarkan data sementara
             if ($tanamanId && $fase) {
                 $tanaman = Tanaman::find($tanamanId);
                 $rule = RuleNutrisi::where('tanaman_id', $tanamanId)
@@ -68,20 +74,23 @@ class DiagnosaController extends Controller
 
         $sesiTanamId = $validated['sesi_tanam_id'] ?? null;
         
+        // gunakan data dari sesi tanam spesifik jika tersedia
         if ($sesiTanamId) {
             $sesi = SesiTanam::findOrFail($sesiTanamId);
             $tanamanId = $sesi->tanaman_id;
             $fase = $sesi->fase_saat_ini;
         } else {
+            // gunakan input manual atau data dari session sebagai alternatif
             $tanamanId = $validated['tanaman_id'] ?? session('rekomendasi_tanaman_id');
             $fase = $validated['fase'] ?? session('rekomendasi_fase');
         }
 
+        // kembalikan pesan peringatan jika parameter untuk diagnosa tidak lengkap
         if (!$tanamanId || !$fase) {
             return redirect('/cek-kondisi')->with('error', 'Konteks tanaman atau fase tidak valid. Silakan lakukan rekomendasi terlebih dahulu.');
         }
 
-        // Jalankan engine diagnosa
+        // evaluasi input kondisi air untuk mencari potensi masalah nutrisi
         $hasil = $this->engine->diagnosaAbnormal(
             $tanamanId,
             $fase,
@@ -91,7 +100,7 @@ class DiagnosaController extends Controller
             $validated['suhu_aktual'] ?? null
         );
 
-        // Simpan ke database jika ada sesi tanam aktif
+        // rekam hasil diagnosa dan riwayat pengecekan ke database
         if ($sesiTanamId) {
             RiwayatDiagnosa::create([
                 'sesi_tanam_id' => $sesiTanamId,
@@ -103,6 +112,8 @@ class DiagnosaController extends Controller
 
             $status = 'selesai';
             $catatanPanduan = null;
+            
+            // ubah status menjadi peringatan jika ditemukan masalah pada air
             if (!empty($hasil)) {
                 $status = 'perlu_perhatian';
                 $panduanList = [];

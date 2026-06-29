@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="space-y-16 animate-fade-in page-wrapper">
-    <!-- Hero 2 Kolom Asimetris -->
+    <!-- Bagian utama halaman dengan dua kolom asimetris -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <!-- Kolom Kiri (60%) -->
+        <!-- Konten teks di kolom sisi kiri -->
         <div class="lg:col-span-7 space-y-6">
             <span class="bg-brand-greenpal text-brand-green rounded-full px-4 py-1 text-xs font-semibold inline-block">
                 SISTEM PAKAR HIDROPONIK
@@ -33,10 +33,10 @@
             </div>
         </div>
 
-        <!-- Kolom Kanan (40%) -->
+        <!-- Gambar visual di kolom sisi kanan -->
         <div class="lg:col-span-5">
             <div class="relative rounded-3xl overflow-hidden h-[420px]">
-              <!-- Foto utama hero -->
+              <!-- Gambar tanaman utama -->
               <img 
                 src="{{ asset('images/rekomendasi_hero.png') }}" 
                 alt="Tanaman hidroponik indoor segar"
@@ -44,10 +44,10 @@
                 loading="lazy"
               >
               
-              <!-- Overlay gradient bawah -->
+              <!-- Lapisan warna gradasi bagian bawah gambar -->
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               
-              <!-- Floating card di atas foto (tetap tampilkan metric) -->
+              <!-- Kartu informasi melayang di atas gambar -->
               <div class="absolute bottom-4 left-4 right-4">
                 <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 flex gap-4">
                   <div class="flex-1">
@@ -70,17 +70,17 @@
         </div>
     </div>
 
-    <!-- Divider -->
+    <!-- Garis pemisah antar bagian -->
     <div class="border-t border-brand-graylt my-8"></div>
 
-    <!-- Form -->
+    <!-- Formulir input rekomendasi -->
     <form action="/rekomendasi" method="POST" id="rekomendasi-form" class="space-y-12">
         @csrf
         
-        <!-- Hidden Inputs for JS Integration -->
+        <!-- Input tersembunyi untuk komunikasi dengan JavaScript -->
         <input type="hidden" name="tanaman_id" id="selected-tanaman-id" value="{{ old('tanaman_id') }}">
 
-        <!-- 1. Pilih Tanaman (Grid 4 Kolom) -->
+        <!-- 1. Pemilihan jenis tanaman -->
         <div class="space-y-6">
             <div class="flex items-center">
                 <span class="w-7 h-7 rounded-lg bg-brand-black text-white text-xs font-bold flex items-center justify-center mr-3 flex-shrink-0">1</span>
@@ -88,7 +88,7 @@
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 tanaman-grid" id="tanaman-grid">
-                <!-- Active Plants from DB -->
+                <!-- Daftar tanaman aktif dari database -->
                 @foreach($tanaman as $t)
                     @php
                         $isSelected = old('tanaman_id') == $t->id;
@@ -97,7 +97,7 @@
                          data-nama="{{ strtolower($t->nama) }}"
                          class="tanaman-card group relative bg-white border {{ $isSelected ? 'border-brand-green bg-brand-greenpal ring-2 ring-brand-greenpal/20' : 'border-brand-graylt' }} rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm active:scale-95">
                         
-                        <!-- Foto tanaman (atas card) -->
+                        <!-- Gambar ilustrasi tanaman pada kartu -->
                         <div class="relative h-28 md:h-36 overflow-hidden">
                             <img 
                                 src="{{ str_starts_with($t->foto_url, 'http') ? $t->foto_url : asset($t->foto_url) }}" 
@@ -108,16 +108,16 @@
                             <!-- Overlay gradient -->
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                             
-                            <!-- Badge kategori pojok kiri atas -->
+                            <!-- Label kategori pada sudut kiri atas -->
                             <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-brand-green text-xs font-semibold px-2 py-1 rounded-full">
                                 {{ $t->kategori }}
                             </span>
                             
-                            <!-- Checkmark saat selected (pojok kanan atas) -->
+                            <!-- Tanda centang saat opsi terpilih di sudut kanan atas -->
                             <span class="checkmark-indicator absolute top-3 right-3 w-6 h-6 rounded-full bg-brand-green text-white flex items-center justify-center text-xs transition-all duration-200 {{ $isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-75' }}">✓</span>
                         </div>
                         
-                        <!-- Info bawah card -->
+                        <!-- Informasi tambahan di bagian bawah kartu -->
                         <div class="p-4">
                             <div class="font-semibold text-brand-black text-sm">
                                 {{ $t->nama }}
@@ -129,7 +129,7 @@
                     </div>
                 @endforeach
 
-                <!-- Dummy Plants (Segera Hadir) -->
+                <!-- Daftar tanaman tiruan yang belum tersedia -->
                 @php
                     $dummies = [
                         ['nama' => 'Bayam', 'emoji' => '🥬', 'kategori' => 'daun', 'foto_url' => 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80&auto=format&fit=crop'],
@@ -143,7 +143,7 @@
                             Segera Hadir
                         </span>
                         
-                        <!-- Foto dummy tanaman (atas card) -->
+                        <!-- Gambar ilustrasi untuk tanaman yang belum tersedia -->
                         <div class="relative h-28 md:h-36 overflow-hidden grayscale">
                             <img 
                                 src="{{ str_starts_with($d['foto_url'], 'http') ? $d['foto_url'] : asset($d['foto_url']) }}" 
@@ -155,7 +155,7 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
 
-                        <!-- Info bawah card -->
+                        <!-- Informasi tambahan di bagian bawah kartu -->
                         <div class="p-4">
                             <div class="font-semibold text-brand-gray text-sm">
                                 {{ $d['nama'] }}
@@ -172,7 +172,7 @@
             @enderror
         </div>
 
-        <!-- 2. Pilih Tanggal Mulai Tanam -->
+        <!-- 2. Pemilihan tanggal mulai tanam -->
         <div class="space-y-6">
             <div class="flex items-center">
                 <span class="w-7 h-7 rounded-lg bg-brand-black text-white text-xs font-bold flex items-center justify-center mr-3 flex-shrink-0">2</span>
@@ -193,7 +193,7 @@
                         @enderror
                     </div>
                     
-                    <!-- Live Preview Box -->
+                    <!-- Kotak pratinjau hasil yang langsung diperbarui -->
                     <div id="phase-preview-box" class="w-full md:w-1/2 bg-brand-offwhite border border-brand-graylt rounded-xl p-4 hidden transition-all duration-300">
                         <div class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-1">Prediksi Fase Saat Ini</div>
                         <div class="flex items-center gap-3">
@@ -210,25 +210,25 @@
             </div>
         </div>
 
-        <!-- 3. Pilih Sistem Hidroponik -->
+        <!-- 3. Pemilihan metode sistem hidroponik -->
         <div class="space-y-6">
             <div class="flex items-center">
                 <span class="w-7 h-7 rounded-lg bg-brand-black text-white text-xs font-bold flex items-center justify-center mr-3 flex-shrink-0">3</span>
                 <h2 class="text-2xl font-bold tracking-tight text-brand-black">Pilih Sistem Hidroponik</h2>
             </div>
             
-            <!-- Hidden input untuk menyimpan nilai (ganti name select lama) -->
+            <!-- Input tersembunyi untuk menyimpan nilai pilihan sistem -->
             <input type="hidden" name="sistem_hidroponik" id="sistem_hidroponik" value="{{ old('sistem_hidroponik') }}">
 
-            <!-- Grid 4 card -->
+            <!-- Tata letak bersusun 4 kolom untuk kartu pilihan -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sistem-grid">
 
-              <!-- Card NFT -->
+              <!-- Kartu pilihan untuk metode NFT -->
               <div class="sistem-card bg-white border border-brand-graylt rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm group"
                    data-value="nft"
                    onclick="selectSistem(this, 'nft')">
                 
-                <!-- Foto sistem -->
+                <!-- Gambar ilustrasi metode hidroponik -->
                 <div class="relative h-40 overflow-hidden">
                   <img 
                     src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&q=80&auto=format&fit=crop"
@@ -238,18 +238,18 @@
                   >
                   <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                   
-                  <!-- Label di atas foto -->
+                  <!-- Teks label yang diletakkan di atas gambar -->
                   <span class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-brand-black text-xs font-bold px-2 py-1 rounded-full">
                     NFT
                   </span>
                   
-                  <!-- Checkmark saat selected -->
+                  <!-- Tanda centang ketika sistem telah dipilih -->
                   <span class="selected-check absolute top-3 right-3 w-6 h-6 rounded-full bg-brand-green text-white flex items-center justify-center text-xs font-bold hidden">
                     ✓
                   </span>
                 </div>
                 
-                <!-- Deskripsi -->
+                <!-- Deskripsi singkat metode -->
                 <div class="p-4">
                   <div class="font-semibold text-brand-black text-sm mb-1">
                     Nutrient Film Technique
@@ -257,7 +257,7 @@
                   <div class="text-xs text-brand-gray leading-relaxed">
                     Larutan mengalir tipis di dasar pipa. Cocok untuk sayuran daun, efisien air.
                   </div>
-                  <!-- Tag cocok untuk -->
+                  <!-- Label jenis tanaman yang cocok -->
                   <div class="mt-3 flex flex-wrap gap-1">
                     <span class="bg-brand-greenpal text-brand-green text-xs px-2 py-0.5 rounded-full font-medium">
                       Selada
@@ -269,7 +269,7 @@
                 </div>
               </div>
 
-              <!-- Card DFT -->
+              <!-- Kartu pilihan untuk metode DFT -->
               <div class="sistem-card bg-white border border-brand-graylt rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm group"
                    data-value="dft"
                    onclick="selectSistem(this, 'dft')">
@@ -308,7 +308,7 @@
                 </div>
               </div>
 
-              <!-- Card Rakit Apung -->
+              <!-- Kartu pilihan untuk metode Rakit Apung -->
               <div class="sistem-card bg-white border border-brand-graylt rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm group"
                    data-value="rakit_apung"
                    onclick="selectSistem(this, 'rakit_apung')">
@@ -344,7 +344,7 @@
                 </div>
               </div>
 
-              <!-- Card Wick System -->
+              <!-- Kartu pilihan untuk metode Wick System -->
               <div class="sistem-card bg-white border border-brand-graylt rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm group"
                    data-value="wick"
                    onclick="selectSistem(this, 'wick')">
@@ -382,7 +382,7 @@
 
             </div>
 
-            <!-- Validasi: tampilkan pesan jika belum pilih -->
+            <!-- Pesan validasi jika belum memilih sistem hidroponik -->
             @error('sistem_hidroponik')
                 <p id="sistem-error" class="text-red-500 text-sm font-semibold flex items-center gap-1 mt-2">
                     <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -394,7 +394,7 @@
             @enderror
         </div>
 
-        <!-- Submit Button -->
+        <!-- Tombol kirim formulir rekomendasi -->
         <div class="pt-6">
             <button type="submit" 
                     class="btn-submit w-full md:w-auto bg-brand-black text-white rounded-xl px-8 py-4 text-sm font-semibold hover:bg-brand-green transition-colors duration-200 flex items-center justify-center gap-2">

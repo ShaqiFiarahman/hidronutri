@@ -6,10 +6,10 @@
 
 @section('content')
 <div class="page-wrapper">
-    <!-- SECTION 1: HERO FULLWIDTH -->
+    <!-- BAGIAN 1: SPANDUK UTAMA PENUH -->
     <section class="hero-section relative h-[85vh] min-h-[600px] overflow-hidden">
       
-      <!-- Foto background -->
+      <!-- Latar belakang gambar utama -->
       <img 
         src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=1600&q=85&auto=format&fit=crop"
         alt="Kebun hidroponik modern"
@@ -17,23 +17,23 @@
         loading="lazy"
       >
       
-      <!-- Overlay gradient -->
+      <!-- Lapisan gradasi untuk teks -->
       <div class="absolute inset-0 bg-gradient-to-r 
                   from-black/70 via-black/40 to-transparent"></div>
       
-      <!-- Konten teks kiri -->
+      <!-- Bagian teks di sisi kiri -->
       <div class="relative z-10 h-full flex items-center">
         <div class="max-w-7xl mx-auto px-8 w-full">
           <div class="max-w-xl">
             
-            <!-- Label pill -->
+            <!-- Label berbentuk pil -->
             <span class="inline-block bg-brand-green text-white 
                          text-xs font-semibold px-4 py-1.5 
                          rounded-full mb-6 uppercase tracking-widest gsap-up">
               Sistem Pakar Hidroponik
             </span>
             
-            <!-- Heading besar -->
+            <!-- Judul utama halaman -->
             <h1 class="text-5xl md:text-6xl font-black text-white 
                        leading-none tracking-tighter mb-6">
               <span class="inline-block gsap-left">Tanam Lebih</span><br>
@@ -41,13 +41,13 @@
               <span class="inline-block gsap-left">Hidroponik</span>
             </h1>
             
-            <!-- Subjudul -->
+            <!-- Teks pendukung judul -->
             <p class="text-lg text-white/80 leading-relaxed mb-8 max-w-md gsap-up">
               Panduan lengkap nutrisi, pH, dan EC untuk hasil panen 
               optimal. Didukung sistem pakar berbasis literatur ilmiah.
             </p>
             
-            <!-- 2 tombol CTA -->
+            <!-- Tombol aksi utama ganda -->
             <div class="flex gap-4 flex-wrap gsap-stagger">
               <a href="{{ route('rekomendasi') }}" 
                  class="bg-white text-brand-black font-semibold 
@@ -69,7 +69,7 @@
         </div>
       </div>
       
-      <!-- Scroll indicator bawah -->
+      <!-- Indikator gulir ke bawah -->
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 
                   text-white/60 text-xs flex flex-col items-center gap-2">
         <span>Scroll untuk pelajari lebih</span>
@@ -78,7 +78,7 @@
       
     </section>
 
-    <!-- SECTION 2: STATISTIK FAKTA MENARIK -->
+    <!-- BAGIAN 2: STATISTIK DAN FAKTA -->
     <section class="bg-brand-black py-16">
       <div class="max-w-7xl mx-auto px-8">
         
@@ -116,11 +116,11 @@
       </div>
     </section>
 
-    <!-- SECTION 3: PANDUAN DASAR PARAMETER -->
+    <!-- BAGIAN 3: PANDUAN DASAR PARAMETER -->
     <section id="panduan" class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-8">
         
-        <!-- Label + heading -->
+        <!-- Label dan judul bagian -->
         <div class="mb-12">
           <span class="text-xs font-semibold uppercase tracking-widest 
                        text-brand-green">
@@ -132,10 +132,10 @@
           </h2>
         </div>
         
-        <!-- 3 card parameter -->
+        <!-- Tiga kartu penjelasan parameter -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <!-- Card pH -->
+          <!-- Kartu penjelasan pH -->
           <div class="bg-brand-offwhite rounded-3xl overflow-hidden gsap-scale">
             <div class="relative h-48">
               <img 
@@ -159,7 +159,7 @@
                 5.5 – 6.5. Di luar rentang ini, tanaman tidak 
                 bisa menyerap nutrisi meski dosisnya sudah tepat.
               </p>
-              <!-- Skala visual -->
+              <!-- Visualisasi skala rentang -->
               <div class="flex gap-1 items-center">
                 <span class="text-xs text-brand-gray">Asam</span>
                 <div class="flex-1 h-2 rounded-full overflow-hidden 
@@ -176,7 +176,7 @@
             </div>
           </div>
           
-          <!-- Card EC -->
+          <!-- Kartu penjelasan EC -->
           <div class="bg-brand-offwhite rounded-3xl overflow-hidden gsap-scale">
             <div class="relative h-48">
               <img 
@@ -200,7 +200,7 @@
                 banyak nutrisi. Terlalu tinggi merusak akar, 
                 terlalu rendah membuat tanaman kelaparan.
               </p>
-              <!-- Tabel range singkat -->
+              <!-- Tabel singkat rentang nilai -->
               <div class="space-y-1.5">
                 <div class="flex justify-between text-xs">
                   <span class="text-brand-gray">Sayuran daun</span>
@@ -218,7 +218,7 @@
             </div>
           </div>
           
-          <!-- Card PPM -->
+          <!-- Kartu penjelasan PPM -->
           <div class="bg-brand-offwhite rounded-3xl overflow-hidden gsap-scale">
             <div class="relative h-48">
               <img 
@@ -242,7 +242,7 @@
                 Diukur menggunakan TDS meter yang mudah didapat 
                 dengan harga terjangkau.
               </p>
-              <!-- Konversi visual -->
+              <!-- Visualisasi konversi nilai -->
               <div class="bg-white rounded-xl p-3 text-center">
                 <div class="text-xs text-brand-gray mb-1">Konversi</div>
                 <div class="font-black text-brand-black text-sm">
@@ -256,7 +256,7 @@
       </div>
     </section>
 
-    <!-- SECTION 4: JENIS SISTEM HIDROPONIK -->
+    <!-- BAGIAN 4: SISTEM HIDROPONIK -->
     <section class="py-20 bg-brand-offwhite">
       <div class="max-w-7xl mx-auto px-8">
         
@@ -330,7 +330,7 @@
       </div>
     </section>
 
-    <!-- SECTION 5: TIPS & ARTIKEL SINGKAT -->
+    <!-- BAGIAN 5: ARTIKEL DAN TIPS -->
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-8">
         
@@ -347,10 +347,10 @@
           </div>
         </div>
         
-        <!-- Layout: 1 artikel besar kiri + 2 kecil kanan -->
+        <!-- Tata letak artikel utama dan tambahan -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          <!-- Artikel besar -->
+          <!-- Artikel utama -->
           <a href="https://hidroponikpedia.com/kepadatan-tanam-salah-produktivitas-hidroponik/" target="_blank" class="block bg-brand-offwhite rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-brand-green/5 hover:-translate-y-2 transition-all duration-500 ease-out gsap-left group">
             <div class="relative h-64 overflow-hidden">
               <img 
@@ -392,7 +392,7 @@
             </div>
           </a>
           
-          <!-- 2 artikel kecil kanan (stack vertikal) -->
+          <!-- Artikel tambahan bersusun -->
           <div class="flex flex-col gap-6 gsap-right">
             
             <a href="https://farmee.id/tips-trik-penggunaan-nutrisi-ab-mix/" target="_blank" class="bg-brand-offwhite rounded-3xl overflow-hidden 
@@ -450,7 +450,7 @@
       </div>
     </section>
 
-    <!-- SECTION 6: CTA BAWAH -->
+    <!-- BAGIAN 6: AJAKAN BERTINDAK -->
     <section class="py-24 relative overflow-hidden cta-section"
              style="background: linear-gradient(135deg, 
                     #1a4a06 0%, 
@@ -458,7 +458,7 @@
                     #4A9020 70%, 
                     #3B6D11 100%); background-size: 200% 200%;">
 
-      <!-- Dekorasi lingkaran blur di background -->
+      <!-- Lingkaran buram penghias latar -->
       <div class="absolute top-0 left-0 w-96 h-96 rounded-full 
                   opacity-20 -translate-x-1/2 -translate-y-1/2 cta-circle-1"
            style="background: radial-gradient(circle, #97C459, transparent)">
@@ -468,12 +468,12 @@
            style="background: radial-gradient(circle, #C0DD97, transparent)">
       </div>
       
-      <!-- Noise texture overlay tipis -->
+      <!-- Tekstur bintik halus pada latar -->
       <div class="absolute inset-0 opacity-[0.03]"
            style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;200&quot; height=&quot;200&quot;><filter id=&quot;noise&quot;><feTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; stitchTiles=&quot;stitch&quot;/></filter><rect width=&quot;200&quot; height=&quot;200&quot; filter=&quot;url(%23noise)&quot; opacity=&quot;1&quot;/></svg>')">
       </div>
 
-      <!-- Konten CTA (tetap sama, hanya ubah warna teks) -->
+      <!-- Isi teks ajakan bertindak -->
       <div class="relative z-10 max-w-7xl mx-auto px-8 text-center">
         
         <h2 class="text-4xl md:text-5xl font-black text-white 
@@ -498,7 +498,7 @@
       </div>
     </section>
 
-    <!-- Pemisah gelombang CTA → Footer -->
+    <!-- Gelombang pemisah bagian bawah -->
     <div class="relative z-10 -mb-1"
          style="background: linear-gradient(135deg, 
                 #1a4a06 0%, #2D6A0F 40%, 

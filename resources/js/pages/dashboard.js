@@ -39,7 +39,7 @@ export function initDashboard() {
         }
     });
 
-    // Animasi angka statistik count up
+    // terapkan animasi perhitungan naik pada setiap elemen statistik
     gsap.utils.toArray('.stat-number').forEach(el => {
         const target = parseFloat(el.getAttribute('data-target'));
         const suffix = el.getAttribute('data-suffix') || '';
@@ -55,7 +55,7 @@ export function initDashboard() {
         });
     });
 
-    // Heading section muncul dengan split per kata
+    // pecah teks judul menjadi per kata untuk memberikan efek muncul berurutan
     gsap.utils.toArray('.gsap-heading').forEach(el => {
         const words = el.innerHTML.replace(/<br\s*\/?>/gi, ' <br> ').split(/\s+/);
         el.innerHTML = words.map(w => {

@@ -17,7 +17,7 @@ export function initNavbar() {
         }
     };
 
-    // Navbar scroll effect
+    // ubah tampilan bilah navigasi menjadi solid saat halaman digulir
     window.addEventListener('scroll', function() {
         const header = document.getElementById('navbar-header');
         if (!header) return;

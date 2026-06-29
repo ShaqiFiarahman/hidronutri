@@ -48,9 +48,10 @@ export function initHasil() {
             y: 20, opacity: 0, duration: 0.4
         }, '-=0.2');
 
-    // Animasi nilai metric (count up)
+    // jalankan efek angka naik perlahan pada setiap indikator metrik
     document.querySelectorAll('.metric-value').forEach(el => {
         const val = parseFloat(el.textContent);
+        // pastikan nilainya angka sebelum menjalankan perhitungan animasi
         if (!isNaN(val)) {
             const obj = { v: 0 };
             gsap.to(obj, {
@@ -62,13 +63,13 @@ export function initHasil() {
         }
     });
 
-    // GSAP Calendar elements
+    // sembunyikan sementara lalu tampilkan elemen kalender dengan animasi dari bawah
     tlHasil
         .from('#calendar-container', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
         .from('.progress-card', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
         .from('.next-phase-card', { x: 20, opacity: 0, duration: 0.4 }, '-=0.2');
 
-    // Animasi progress bar
+    // atur lebar batang progres perlahan untuk visualisasi tingkat pencapaian
     const progressFill = document.querySelector('.progress-fill');
     if (progressFill) {
         const targetWidth = progressFill.style.width;
@@ -93,7 +94,7 @@ export function initHasil() {
 
         if (!panel || !title || !container) return;
 
-        // Format Title
+        // susun dan tampilkan judul hari yang dipilih dalam bahasa indonesia
         const d = new Date(dateStr);
         title.textContent = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -193,7 +194,7 @@ export function initHasil() {
             const res = await response.json();
             
             if (res.success) {
-                // Update data in JS variable
+                // perbarui data riwayat pada memori aplikasi agar tampilan selaras
                 const dayData = window.hasilData.kalenderData.find(d => d.date === dateStr);
                 const existIdx = dayData.logs.findIndex(l => l.tipe === res.data.tipe);
                 if (existIdx >= 0) {
@@ -202,10 +203,10 @@ export function initHasil() {
                     dayData.logs.push(res.data);
                 }
                 
-                // Re-render panel
+                // gambar ulang panel detail untuk memunculkan perubahan status
                 window.openDayDetail(dateStr);
 
-                // Update kalender cell UI
+                // perbarui indikator ikon pada sel kalender agar mencerminkan status terbaru
                 const indicator = document.getElementById(`cal-indicator-${dateStr}`);
                 if (indicator) {
                     let indicatorHtml = '';

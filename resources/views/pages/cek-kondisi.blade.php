@@ -17,7 +17,7 @@
     </div>
 
     @if(!$tanaman)
-        <!-- No Context Alert -->
+        <!-- peringatan jika pengguna belum memilih sesi tanam aktif -->
         <div class="bg-brand-offwhite border border-brand-graylt rounded-3xl p-8 text-center max-w-xl mx-auto space-y-6">
             <span class="text-5xl block">⚠️</span>
             <h3 class="text-lg font-bold text-brand-black">Konteks Tanaman Belum Dipilih</h3>
@@ -34,7 +34,7 @@
             </div>
         </div>
     @else
-        <!-- Context Card -->
+        <!-- kartu informasi konteks tanaman yang sedang diperiksa -->
         <div class="bg-white border border-brand-graylt rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 konteks-card">
             <div class="flex items-center space-x-4">
                 <span class="text-4xl bg-brand-offwhite w-16 h-16 rounded-2xl flex items-center justify-center border border-brand-graylt/50 flex-shrink-0">
@@ -49,7 +49,7 @@
                 </div>
             </div>
             
-            <!-- Target Badges (Variabel PHP tetap dipertahankan untuk evaluasi slider) -->
+            <!-- tetapkan variabel target nutrisi dari backend untuk validasi slider -->
             @php
                 $ec_min = round($rule->ppm_min / 500, 2);
                 $ec_max = round($rule->ppm_max / 500, 2);
@@ -59,7 +59,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-            <!-- Slider Form (Col Span 3) -->
+            <!-- formulir penggeser input untuk memasukkan kondisi air aktual -->
             <form action="/cek-kondisi/diagnosa" method="POST" class="lg:col-span-3 bg-white p-6 sm:p-8 rounded-2xl border border-brand-graylt space-y-8">
                 @csrf
                 @if($sesiTanam)
@@ -69,7 +69,7 @@
                     <input type="hidden" name="fase" value="{{ $fase }}">
                 @endif
 
-                <!-- 1. pH Slider -->
+                <!-- 1. pengatur nilai tingkat keasaman (pH) -->
                 <div class="space-y-3 slider-card">
                     <div class="flex items-center justify-between">
                         <label for="ph_aktual" class="font-bold text-brand-black flex items-center gap-1.5">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
 
-                <!-- 2. EC Slider -->
+                <!-- 2. pengatur nilai konduktivitas listrik (EC) -->
                 <div class="space-y-3 slider-card">
                     <div class="flex items-center justify-between">
                         <label for="ec_aktual" class="font-bold text-brand-black flex items-center gap-1.5">
@@ -119,7 +119,7 @@
                     </div>
                 </div>
 
-                <!-- 3. PPM Slider -->
+                <!-- 3. pengatur nilai tingkat kelarutan padatan (PPM) -->
                 <div class="space-y-3 slider-card">
                     <div class="flex items-center justify-between">
                         <label for="ppm_aktual" class="font-bold text-brand-black flex items-center gap-1.5">
@@ -144,7 +144,7 @@
                     </div>
                 </div>
 
-                <!-- 4. Suhu Air Slider -->
+                <!-- 4. pengatur nilai temperatur air -->
                 <div class="space-y-3 slider-card">
                     <div class="flex items-center justify-between">
                         <label for="suhu_aktual" class="font-bold text-brand-black flex items-center gap-1.5">
@@ -177,7 +177,7 @@
                 </div>
             </form>
 
-            <!-- Diagnosis Result Card (Col Span 2) -->
+            <!-- kartu hasil diagnosis dari sistem pakar -->
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white p-6 rounded-2xl border border-brand-graylt h-full flex flex-col justify-between">
                     <div>
@@ -197,7 +197,7 @@
                             @endphp
 
                             @if(count($diagnosaResult) === 0)
-                                <!-- Normal Result [DIAGNOSA CARD - NORMAL] -->
+                                <!-- tampilan kartu jika seluruh parameter berada dalam rentang normal -->
                                 <div class="border border-brand-green rounded-xl overflow-hidden animate-fade-in diagnosa-result-card">
                                     <div class="bg-brand-greenpal px-4 py-3 text-sm font-bold text-brand-green flex items-center gap-1.5">
                                         <span class="w-2 h-2 rounded-full bg-brand-green"></span> Semua Parameter Normal
@@ -207,7 +207,7 @@
                                     </div>
                                 </div>
                             @else
-                                <!-- Abnormal Results [DIAGNOSA CARD - WARNING & DANGER] -->
+                                <!-- tampilan peringatan jika ditemukan kondisi yang tidak sesuai target -->
                                 <div class="space-y-4">
                                     <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center animate-fade-in diagnosa-result-card">
                                         <span class="text-2xl block mb-1">⚠️</span>
@@ -221,12 +221,12 @@
                                         @endphp
                                         
                                         <div class="border {{ $isWarning ? 'border-brand-amber' : 'border-red-300' }} rounded-xl overflow-hidden animate-fade-in diagnosa-result-card">
-                                            <!-- Card Header -->
+                                            <!-- bagian atas kartu peringatan -->
                                             <div class="px-4 py-3 text-xs font-semibold {{ $isWarning ? 'bg-amber-50 text-brand-amber' : 'bg-red-50 text-red-600' }} flex justify-between items-center">
                                                 <span class="uppercase font-bold tracking-wider">Parameter: {{ $err['parameter'] }}</span>
                                                 <span class="uppercase font-black text-[10px]">{{ $err['kondisi'] }}</span>
                                             </div>
-                                            <!-- Card Body -->
+                                            <!-- isi detail panduan penanganan -->
                                             <div class="bg-white p-4 space-y-3">
                                                 <div class="text-xs text-brand-gray">
                                                     Nilai Aktual: <strong class="text-brand-black">{{ $err['nilai_aktual'] }}</strong> (Target ideal: {{ $err['nilai_target'] }})
@@ -256,7 +256,7 @@
 </div>
 
 @if($tanaman)
-<!-- Interactive Vanilla JS for Range Slider real-time rendering -->
+<!-- sediakan data variabel PHP untuk diproses oleh file JavaScript eksternal -->
 <script>
     // Data untuk diolah oleh file JS eksternal (cek-kondisi.js)
     window.cekKondisiData = {

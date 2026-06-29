@@ -37,7 +37,7 @@ export function initRekomendasi() {
             return;
         }
 
-        // Hitung usia dalam hari
+        // hitung jumlah usia tanaman dalam hari sejak tanggal tanam
         const tglMulaiObj = new Date(tanggalMulai);
         tglMulaiObj.setHours(0,0,0,0);
         const today = new Date();
@@ -46,7 +46,7 @@ export function initRekomendasi() {
         const diffTime = Math.max(0, today.getTime() - tglMulaiObj.getTime());
         const usiaHari = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        // Tentukan fase
+        // cari fase pertumbuhan yang sesuai dengan usia hari ini
         let determinedFaseKey = 'semai';
         let found = false;
         
@@ -59,12 +59,12 @@ export function initRekomendasi() {
         }
         
         if (!found) {
-            // Ambil fase terakhir
+            // jadikan fase paling akhir sebagai pilihan bila usia melampaui masa panen
             const keys = Object.keys(mapFase);
             determinedFaseKey = keys[keys.length - 1];
         }
 
-        // Update UI
+        // terapkan pembaruan informasi fase pada antarmuka
         const meta = faseMetadata[determinedFaseKey] || { label: determinedFaseKey.replace(/_/g, ' '), icon: 'fa-leaf' };
         
         document.getElementById('preview-usia').innerText = `Usia: ${usiaHari} Hari`;
@@ -73,13 +73,13 @@ export function initRekomendasi() {
         
         previewBox.classList.remove('hidden');
         
-        // Animasi kecil
+        // jalankan efek muncul yang halus pada pratinjau
         if (typeof gsap !== 'undefined') {
             gsap.fromTo(previewBox, { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.5)' });
         }
     }
 
-    // Global function to update system availability based on selected plant
+    // sesuaikan opsi sistem hidroponik yang tersedia dengan karakteristik tanaman
     function updateSistemAvailability(tanamanNama) {
         if (!tanamanNama) return;
         const isRestricted = (tanamanNama === 'cabai' || tanamanNama === 'melon');
@@ -95,7 +95,7 @@ export function initRekomendasi() {
             const title = card.querySelector('.font-semibold');
             
             if (isRestricted && restrictedSystems.includes(val)) {
-                // Nonaktifkan kartu sistem
+                // bekukan pilihan sistem karena tidak direkomendasikan
                 card.classList.add('pointer-events-none', 'relative');
                 card.classList.remove('cursor-pointer', 'hover:border-brand-green', 'hover:shadow-sm');
                 
@@ -107,7 +107,7 @@ export function initRekomendasi() {
                     title.classList.add('text-brand-gray');
                 }
                 
-                // Deselect jika sebelumnya terpilih
+                // hapus pilihan sistem saat ini apabila masuk dalam kategori tidak cocok
                 if (currentSelected === val) {
                     card.classList.remove('border-brand-green', 'bg-brand-offwhite');
                     card.classList.add('border-brand-graylt');
@@ -127,7 +127,7 @@ export function initRekomendasi() {
                     card.appendChild(badge);
                 }
             } else {
-                // Aktifkan kembali kartu sistem
+                // normalkan kembali fungsi kartu sistem
                 card.classList.remove('pointer-events-none', 'relative');
                 card.classList.add('cursor-pointer', 'hover:border-brand-green', 'hover:shadow-sm');
                 
@@ -147,7 +147,7 @@ export function initRekomendasi() {
         });
     }
 
-    // Global function for system selection
+    // daftarkan fungsi pemilihan sistem ke ruang global agar terhubung dengan HTML
     window.selectSistem = function(el, nilai) {
         document.querySelectorAll('.sistem-card').forEach(card => {
             card.classList.remove('border-brand-green', 'bg-brand-offwhite');
@@ -175,7 +175,7 @@ export function initRekomendasi() {
         }
     };
 
-    // Initialize on page load (support old/existing value)
+    // periksa keberadaan nilai input sebelumnya saat pertama kali dimuat
     const initialSistem = document.getElementById('sistem_hidroponik');
     if (initialSistem && initialSistem.value) {
         const card = document.querySelector(`.sistem-card[data-value="${initialSistem.value}"]`);
@@ -184,7 +184,7 @@ export function initRekomendasi() {
         }
     }
 
-    // Validasi sebelum submit
+    // cegah pengiriman formulir jika sistem hidroponik belum dipilih
     const form = document.getElementById('rekomendasi-form') || document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -217,7 +217,7 @@ export function initRekomendasi() {
         .to(el, { scale: 1, duration: 0.1 });
     }
 
-    // Handle plant cards click
+    // pasang pendengar event pada semua kartu tanaman untuk menangani interaksi klik
     tanamanCards.forEach(card => {
         card.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
@@ -275,7 +275,7 @@ export function initRekomendasi() {
         }
     }
 
-    // ─── GSAP PAGE-SPECIFIC ANIMATIONS ──────────────────────────
+    // --- ANIMASI KHUSUS HALAMAN INI ---
     if (typeof gsap !== 'undefined') {
         // Heading hero
         gsap.fromTo('.hero-heading', 

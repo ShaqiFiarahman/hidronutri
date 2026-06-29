@@ -21,10 +21,11 @@ class RiwayatController extends Controller
                 $tanggalMulai = Carbon::parse($sesi->tanggal_mulai);
                 $usiaHari = max(0, $tanggalMulai->diffInDays(Carbon::today()));
                 
-                // Tambahkan atribut dinamis
+                // lampirkan perhitungan usia ke objek untuk ditampilkan di tampilan
                 $sesi->usia_hari = $usiaHari;
                 
-                $durasiTotal = 35; // Estimasi total hari sampai panen
+                // tetapkan perkiraan waktu total dan kemajuan pertumbuhan
+                $durasiTotal = 35;
                 $sesi->progress_persen = min(100, ($usiaHari / $durasiTotal) * 100);
                 
                 return $sesi;
@@ -39,7 +40,7 @@ class RiwayatController extends Controller
                 $tanggalSelesai = Carbon::parse($sesi->updated_at);
                 $durasi = max(1, $tanggalMulai->diffInDays($tanggalSelesai));
                 
-                // Tambahkan atribut dinamis
+                // lampirkan perhitungan rentang waktu ke objek untuk ditampilkan di tampilan
                 $sesi->durasi_hari = $durasi;
                 
                 return $sesi;

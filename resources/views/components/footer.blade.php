@@ -1,10 +1,10 @@
-{{-- footer halaman, terungkap di akhir scroll --}}
+{{-- Bagian bawah halaman, muncul saat menggulir ke paling bawah --}}
 <footer class="footer-reveal bg-brand-black sticky bottom-0 z-0 border-t-0">
   
   <div class="max-w-7xl mx-auto px-8 py-16">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
       
-      <!-- Kolom 1: Brand -->
+      <!-- Kolom 1: Merek dan Deskripsi Singkat -->
       <div class="md:col-span-2">
         <div class="flex items-center gap-2 mb-4">
           <span class="text-2xl">🌿</span>
@@ -25,7 +25,7 @@
         </div>
       </div>
       
-      <!-- Kolom 2: Navigasi -->
+      <!-- Kolom 2: Tautan Navigasi Utama -->
       <div>
         <h4 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-5">Navigasi</h4>
         <ul class="space-y-3">
@@ -37,7 +37,7 @@
         </ul>
       </div>
       
-      <!-- Kolom 3: Tentang -->
+      <!-- Kolom 3: Informasi Tentang Sistem -->
       <div>
         <h4 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-5">Tentang</h4>
         <ul class="space-y-3">
@@ -51,7 +51,7 @@
     </div>
   </div>
   
-  <!-- Bottom bar -->
+  <!-- Bilah informasi hak cipta di bagian paling bawah -->
   <div class="border-t border-white/10">
     <div class="max-w-7xl mx-auto px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
       <span class="text-xs text-white/40">© HidroNutri 2026. Tugas Akhir Kecerdasan Buatan.</span>

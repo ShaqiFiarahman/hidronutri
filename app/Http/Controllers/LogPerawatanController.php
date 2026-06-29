@@ -21,7 +21,7 @@ class LogPerawatanController extends Controller
 
         $sesi = SesiTanam::findOrFail($validated['sesi_tanam_id']);
         
-        // Cek rule nutrisi yang sesuai
+        // ambil data target nutrisi sesuai tanaman dan fase saat ini
         $rule = RuleNutrisi::where('tanaman_id', $sesi->tanaman_id)
             ->where('fase', $sesi->fase_saat_ini)
             ->first();
@@ -29,7 +29,7 @@ class LogPerawatanController extends Controller
         $status = 'selesai';
         $catatanPanduan = $validated['catatan'] ?? null;
         
-        // Tentukan status jika ada input cek
+        // periksa potensi masalah jika jenis kegiatan adalah pengecekan dan aturan target ditemukan
         if ($validated['tipe'] === 'cek' && $rule) {
             $isPhValid = $validated['ph'] === null || ($validated['ph'] >= $rule->ph_min && $validated['ph'] <= $rule->ph_max);
             $isPpmValid = $validated['ppm'] === null || ($validated['ppm'] >= $rule->ppm_min && $validated['ppm'] <= $rule->ppm_max);
@@ -37,6 +37,7 @@ class LogPerawatanController extends Controller
                            ($rule->suhu_min === null && $rule->suhu_max === null) ||
                            ($validated['suhu'] >= $rule->suhu_min && $validated['suhu'] <= $rule->suhu_max);
 
+            // tetapkan status perlu perhatian jika salah satu parameter di luar batas ideal
             if (!$isPhValid || !$isPpmValid || !$isSuhuValid) {
                 $status = 'perlu_perhatian';
                 
@@ -49,16 +50,19 @@ class LogPerawatanController extends Controller
                 foreach ($diagnosa as $diag) {
                     $panduanList[] = "• [" . $diag['parameter'] . " " . ucfirst($diag['kondisi']) . "]: " . $diag['tindakan'];
                 }
+                // gabungkan pesan panduan untuk suhu air jika bermasalah
                 if (!$isSuhuValid && $validated['suhu'] !== null) {
                     $panduanList[] = "• [Suhu Air Abnormal]: Suhu saat ini {$validated['suhu']}°C (Target: {$rule->suhu_min}-{$rule->suhu_max}°C). Tambahkan es batu bersih atau letakkan tandon di area teduh.";
                 }
+                
+                // tetapkan catatan perbaikan jika ada rekomendasi langkah dari mesin aturan
                 if (!empty($panduanList)) {
                     $catatanPanduan = implode("\n", $panduanList);
                 }
             }
         }
 
-        // Cek apakah log untuk tanggal & tipe ini sudah ada
+        // buat catatan baru atau perbarui riwayat berdasarkan id sesi dan tanggal
         $log = LogPerawatan::updateOrCreate(
             [
                 'sesi_tanam_id' => $validated['sesi_tanam_id'],

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto space-y-12 animate-fade-in page-wrapper">
-    <!-- Header -->
+    <!-- Bagian atas halaman -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-brand-graylt pb-8 jadwal-header">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-brand-black">
@@ -17,7 +17,7 @@
     </div>
 
     @if(!$sesi)
-        <!-- No Active Session Placeholder -->
+        <!-- Tampilan alternatif jika tidak ada sesi aktif -->
         <div class="bg-brand-offwhite border border-brand-graylt rounded-3xl p-8 sm:p-12 text-center max-w-xl mx-auto space-y-6">
             <span class="text-6xl block">📅</span>
             <div class="space-y-2">
@@ -33,10 +33,10 @@
             </div>
         </div>
     @else
-        <!-- Active Session Status Panel -->
+        <!-- Panel indikator status sesi aktif -->
         <div class="bg-white border border-brand-graylt rounded-2xl p-6 sm:p-8 space-y-6 progress-card">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <!-- Sesi Context -->
+                <!-- Informasi ringkas sesi saat ini -->
                 <div class="flex items-center space-x-4">
                     <span class="text-4xl bg-brand-offwhite w-16 h-16 rounded-2xl flex items-center justify-center border border-brand-graylt/50">
                         {{ $sesi->tanaman->emoji }}
@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                <!-- Phase Badge -->
+                <!-- Lencana penanda fase pertumbuhan -->
                 <div class="text-left md:text-right space-y-1">
                     <span class="text-[10px] text-brand-gray font-bold uppercase tracking-wider block">Fase Saat Ini</span>
                     <div class="flex items-center gap-2 md:justify-end">
@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            <!-- Progress Bar -->
+            <!-- Bilah persentase kemajuan siklus -->
             <div class="space-y-2">
                 <div class="w-full bg-brand-graylt rounded-full h-2">
                     <div class="bg-brand-green h-full rounded-full transition-all duration-700 ease-out progress-fill" style="width: {{ $progressPersen }}%"></div>
@@ -81,7 +81,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Weekly Schedule (Col Span 2) -->
+            <!-- Daftar agenda pemeliharaan mingguan -->
             <div class="lg:col-span-2 space-y-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-bold text-brand-black flex items-center gap-2">
@@ -102,13 +102,13 @@
                                 </div>
                             @endif
 
-                            <!-- Date Badge -->
+                            <!-- Lencana penanda tanggal kalender -->
                             <div class="flex-shrink-0 flex flex-col justify-center items-center {{ $isToday ? 'bg-brand-black text-white border-brand-black' : 'bg-brand-offwhite text-brand-gray border-brand-graylt' }} border w-16 h-16 rounded-xl text-center self-start justify-items-center">
                                 <span class="text-[10px] font-extrabold uppercase leading-none block pt-1">{{ $item['hari'] }}</span>
                                 <span class="text-xs font-bold block mt-1 leading-none">{{ str_replace(date(' Y'), '', $item['tanggal']) }}</span>
                             </div>
 
-                            <!-- Tasks list -->
+                            <!-- Daftar kegiatan pemeliharaan harian -->
                             <div class="flex-grow space-y-3 pt-1">
                                 @foreach($item['kegiatan'] as $keg)
                                     <div class="flex items-start space-x-3 text-xs leading-normal">
@@ -141,9 +141,9 @@
                 </div>
             </div>
 
-            <!-- Notes & Context Info (Col Span 1) -->
+            <!-- Area catatan dan informasi konteks tambahan -->
             <div class="space-y-6">
-                <!-- Info Fase Berikutnya (DIAGNOSA CARD style: Normal/Info style) -->
+                <!-- Informasi persiapan untuk tahapan selanjutnya -->
                 <div class="border-l-4 border-brand-green bg-brand-offwhite p-6 rounded-r-2xl rounded-l-md space-y-4 next-phase-card">
                     <h3 class="font-bold text-base flex items-center gap-2 text-brand-green">
                         <i class="fa-solid fa-circle-info text-brand-green"></i> Persiapan Fase Berikutnya
@@ -157,7 +157,7 @@
                     </p>
                 </div>
 
-                <!-- Quick Action Diagnose Card -->
+                <!-- Kartu akses cepat untuk fitur diagnosis -->
                 <div class="bg-white p-6 rounded-2xl border border-brand-graylt space-y-4">
                     <h3 class="font-bold text-xs text-brand-black uppercase tracking-wider">
                         Diagnosis Cepat
@@ -170,7 +170,7 @@
                     </a>
                 </div>
 
-                <!-- Mark Harvest Card -->
+                <!-- Kartu tindakan untuk menandai selesai panen -->
                 <div class="bg-red-50/50 p-6 rounded-2xl border border-red-100 space-y-4">
                     <h3 class="font-bold text-xs text-red-800 uppercase tracking-wider">
                         Siklus Penanaman Selesai

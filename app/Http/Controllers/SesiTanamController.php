@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class SesiTanamController extends Controller
 {
-    // Mapping durasi fase sekarang ada di App\Services\RuleBasedEngine
+    // pemetaan durasi fase sekarang dikelola oleh RuleBasedEngine
 
     /**
      * Memulai sesi tanam baru
@@ -20,17 +20,15 @@ class SesiTanamController extends Controller
     {
         $validated = $request->validated();
 
-        // Validasi bahwa fase valid untuk tanaman ini
+        // periksa ketersediaan panduan nutrisi untuk tanaman dan fasenya
         $ruleExists = RuleNutrisi::where('tanaman_id', $validated['tanaman_id'])
             ->where('fase', $validated['fase_saat_ini'])
             ->exists();
 
+        // peringatkan pengguna bila panduan fase belum terdaftar
         if (!$ruleExists) {
             return back()->withErrors(['fase_saat_ini' => 'Fase yang dipilih tidak tersedia untuk tanaman ini.'])->withInput();
         }
-
-        // Cek jika ada sesi tanam aktif sebelumnya, selesaikan secara otomatis (atau boleh ada banyak, tapi untuk kemudahan monitoring, kita selesaikan sesi aktif sebelumnya)
-        // SesiTanam::where('status', 'aktif')->update(['status' => 'panen']);
 
         $sesi = SesiTanam::create([
             'tanaman_id' => $validated['tanaman_id'],
@@ -40,7 +38,7 @@ class SesiTanamController extends Controller
             'status' => 'aktif',
         ]);
 
-        // Simpan juga ke session rekomendasi untuk sinkronisasi halaman cek-kondisi
+        // rekam data rujukan ke dalam session untuk keperluan diagnosa selanjutnya
         session([
             'rekomendasi_tanaman_id' => $sesi->tanaman_id,
             'rekomendasi_fase' => $sesi->fase_saat_ini,

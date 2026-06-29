@@ -3,7 +3,7 @@
  */
 export function initFooter() {
     if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-        // Deteksi saat footer mulai terlihat
+        // hilangkan lengkungan sudut bawah konten utama saat elemen footer mulai muncul
         ScrollTrigger.create({
             trigger: '.footer-reveal',
             start: 'top bottom',
@@ -26,7 +26,7 @@ export function initFooter() {
             }
         });
 
-        // Animasi konten footer saat muncul
+        // jalankan efek kemunculan berurutan untuk setiap bagian di dalam footer
         gsap.from('.footer-reveal .grid > div', {
             y: 30,
             opacity: 0,
@@ -39,7 +39,7 @@ export function initFooter() {
             }
         });
 
-        // Link footer hover dengan GSAP
+        // berikan animasi pergeseran ke kanan saat tautan footer disorot
         document.querySelectorAll('footer a').forEach(link => {
             link.addEventListener('mouseenter', () => {
                 gsap.to(link, { x: 4, duration: 0.2, ease: 'power2.out' });
