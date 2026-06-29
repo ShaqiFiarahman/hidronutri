@@ -7,20 +7,17 @@ use App\Models\LogPerawatan;
 use App\Models\SesiTanam;
 use App\Models\RuleNutrisi;
 use App\Services\RuleBasedEngine;
+use App\Http\Requests\LogPerawatanRequest;
+
 
 class LogPerawatanController extends Controller
 {
-    public function store(Request $request, RuleBasedEngine $engine)
+    /**
+     * Menyimpan data log perawatan (pengecekan nutrisi atau isi ulang)
+     */
+    public function store(LogPerawatanRequest $request, RuleBasedEngine $engine)
     {
-        $validated = $request->validate([
-            'sesi_tanam_id' => 'required|exists:sesi_tanam,id',
-            'tanggal' => 'required|date',
-            'tipe' => 'required|in:cek,isi_ulang',
-            'ph' => 'nullable|numeric',
-            'ppm' => 'nullable|integer',
-            'suhu' => 'nullable|numeric',
-            'catatan' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $sesi = SesiTanam::findOrFail($validated['sesi_tanam_id']);
         

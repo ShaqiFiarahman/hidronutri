@@ -7,6 +7,7 @@ use App\Models\RiwayatDiagnosa;
 use App\Models\LogPerawatan;
 use App\Models\RuleNutrisi;
 use App\Models\Tanaman;
+use App\Http\Requests\DiagnosaRequest;
 use Illuminate\Http\Request;
 use App\Services\RuleBasedEngine;
 
@@ -19,6 +20,9 @@ class DiagnosaController extends Controller
         $this->engine = $engine;
     }
 
+    /**
+     * Menampilkan halaman cek kondisi dan form diagnosa
+     */
     public function index()
     {
         $aktifSesiId = session('aktif_sesi_id');
@@ -55,17 +59,12 @@ class DiagnosaController extends Controller
         return view('pages.cek-kondisi', compact('sesiTanam', 'tanaman', 'fase', 'rule'));
     }
 
-    public function diagnosa(Request $request)
+    /**
+     * Memproses diagnosa kondisi nutrisi air
+     */
+    public function diagnosa(DiagnosaRequest $request)
     {
-        $validated = $request->validate([
-            'ph_aktual' => 'required|numeric|min:0|max:14',
-            'ec_aktual' => 'required|numeric|min:0|max:10',
-            'ppm_aktual' => 'required|integer|min:0|max:5000',
-            'suhu_aktual' => 'nullable|numeric|min:0|max:50',
-            'sesi_tanam_id' => 'nullable|exists:sesi_tanam,id',
-            'tanaman_id' => 'nullable|exists:tanaman,id',
-            'fase' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $sesiTanamId = $validated['sesi_tanam_id'] ?? null;
         

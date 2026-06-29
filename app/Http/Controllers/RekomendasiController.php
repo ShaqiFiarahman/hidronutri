@@ -6,8 +6,9 @@ use App\Models\Tanaman;
 use App\Models\SesiTanam;
 use App\Models\RuleNutrisi;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Services\RuleBasedEngine;
+use App\Http\Requests\RekomendasiProsesRequest;
+use Illuminate\Http\Request;
 
 class RekomendasiController extends Controller
 {
@@ -18,6 +19,9 @@ class RekomendasiController extends Controller
         $this->engine = $engine;
     }
 
+    /**
+     * Menampilkan halaman pemilihan tanaman dan sistem untuk rekomendasi
+     */
     public function index()
     {
         $tanaman = Tanaman::all();
@@ -38,13 +42,12 @@ class RekomendasiController extends Controller
         return view('pages.rekomendasi', compact('tanaman', 'fasePerTanaman', 'durasiMap', 'tanamanMap'));
     }
 
-    public function proses(Request $request)
+    /**
+     * Memproses input rekomendasi dan membuat sesi tanam aktif
+     */
+    public function proses(RekomendasiProsesRequest $request)
     {
-        $validated = $request->validate([
-            'tanaman_id' => 'required|exists:tanaman,id',
-            'tanggal_mulai' => 'required|date|before_or_equal:today',
-            'sistem_hidroponik' => 'required|in:nft,dft,rakit_apung,wick',
-        ]);
+        $validated = $request->validated();
 
         $tanaman = Tanaman::find($validated['tanaman_id']);
         $usiaHari = \Carbon\Carbon::parse($validated['tanggal_mulai'])->diffInDays(\Carbon\Carbon::today());
@@ -82,6 +85,9 @@ class RekomendasiController extends Controller
         return redirect('/hasil?sesi_id=' . $sesi->id);
     }
 
+    /**
+     * Menampilkan hasil rekomendasi berdasarkan sesi aktif atau session
+     */
     public function hasil(Request $request)
     {
         if ($request->has('sesi_id')) {

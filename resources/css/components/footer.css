@@ -1,0 +1,17 @@
+/* main content dan footer styling */
+.main-content {
+  position: relative;
+  z-index: 10;
+  background: white;
+  border-bottom-left-radius: 2.5rem;
+  border-bottom-right-radius: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  margin-bottom: 0;
+  transition: border-radius 0.3s ease;
+}
+
+.footer-reveal {
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
+}

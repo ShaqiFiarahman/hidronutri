@@ -258,122 +258,17 @@
 @if($tanaman)
 <!-- Interactive Vanilla JS for Range Slider real-time rendering -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Range Target boundaries
-        const phMin = parseFloat("{{ $rule->ph_min ?? 6.0 }}");
-        const phMax = parseFloat("{{ $rule->ph_max ?? 6.5 }}");
-        const ecMin = parseFloat("{{ $ec_min ?? 1.2 }}");
-        const ecMax = parseFloat("{{ $ec_max ?? 1.6 }}");
-        const ppmMin = parseInt("{{ $rule->ppm_min ?? 600 }}");
-        const ppmMax = parseInt("{{ $rule->ppm_max ?? 800 }}");
-        const suhuMin = parseFloat("{{ $suhu_min ?? 22 }}");
-        const suhuMax = parseFloat("{{ $suhu_max ?? 28 }}");
-
-        // Elements
-        const phInput = document.getElementById('ph_aktual');
-        const phDisplay = document.getElementById('ph-val-display');
-        const phBadge = document.getElementById('ph-status-badge');
-
-        const ecInput = document.getElementById('ec_aktual');
-        const ecDisplay = document.getElementById('ec-val-display');
-        const ecBadge = document.getElementById('ec-status-badge');
-
-        const ppmInput = document.getElementById('ppm_aktual');
-        const ppmDisplay = document.getElementById('ppm-val-display');
-        const ppmBadge = document.getElementById('ppm-status-badge');
-
-        const suhuInput = document.getElementById('suhu_aktual');
-        const suhuDisplay = document.getElementById('suhu-val-display');
-        const suhuBadge = document.getElementById('suhu-status-badge');
-
-        function evaluateSlider(input, display, badge, min, max, label) {
-            const val = parseFloat(input.value);
-            display.textContent = val;
-
-            // Reset classes
-            badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors duration-200";
-
-            if (val >= min && val <= max) {
-                badge.textContent = "Ideal";
-                badge.classList.add('bg-brand-greenpal', 'text-brand-green', 'border-brand-green/20');
-                input.style.setProperty('--thumb-color', '#2D6A0F');
-            } else if (val < min) {
-                badge.textContent = "Rendah";
-                badge.classList.add('bg-red-50', 'text-red-700', 'border-red-200');
-                input.style.setProperty('--thumb-color', '#EF4444');
-            } else {
-                badge.textContent = "Tinggi";
-                badge.classList.add('bg-red-50', 'text-red-700', 'border-red-200');
-                input.style.setProperty('--thumb-color', '#EF4444');
-            }
-        }
-
-        // Bind events
-        phInput.addEventListener('input', () => evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH'));
-        
-        ecInput.addEventListener('input', () => {
-            evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
-            // Sinkronisasi otomatis ke PPM (PPM = EC * 500)
-            ppmInput.value = Math.round(parseFloat(ecInput.value) * 500);
-            evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
-        });
-        
-        ppmInput.addEventListener('input', () => {
-            evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
-            // Sinkronisasi otomatis ke EC (EC = PPM / 500)
-            ecInput.value = (parseFloat(ppmInput.value) / 500).toFixed(1);
-            evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
-        });
-
-        suhuInput.addEventListener('input', () => evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu'));
-
-        // Initialize values
-        evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH');
-        evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
-        evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
-        evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu');
-
-        // Masuk halaman
-        gsap.from('.cek-header', { y: -30, opacity: 0, duration: 0.5 });
-        gsap.from('.konteks-card', { 
-          scale: 0.95, opacity: 0, duration: 0.5, delay: 0.2,
-          ease: 'back.out(1.2)' 
-        });
-        gsap.from('.slider-card', { 
-          y: 30, opacity: 0, stagger: 0.15, duration: 0.5, delay: 0.3 
-        });
-
-        // Animasi saat diagnosa selesai
-        function animateDiagnosaResult() {
-          const cards = document.querySelectorAll('.diagnosa-result-card');
-          if (cards.length > 0) {
-            gsap.from(cards, {
-              y: 30, opacity: 0, scale: 0.95,
-              stagger: 0.15, duration: 0.5,
-              ease: 'back.out(1.2)'
-            });
-          }
-        }
-
-        // Panggil animateDiagnosaResult() jika hasil diagnosa muncul
-        animateDiagnosaResult();
-
-        // Animasi slider thumb
-        document.querySelectorAll('input[type=range]').forEach(slider => {
-          slider.addEventListener('input', function() {
-            gsap.to(this, { '--thumb-scale': 1.2, duration: 0.1 });
-            setTimeout(() => gsap.to(this, { '--thumb-scale': 1, duration: 0.1 }), 150);
-          });
-        });
-    });
-
-    // Animasi status badge real-time (saat slider bergerak) - di luar karena dipanggil dinamis di helper luar
-    function animateStatus(statusEl, isNormal) {
-      gsap.from(statusEl, { 
-        scale: 0.8, opacity: 0, duration: 0.3, 
-        ease: 'back.out(1.4)' 
-      });
-    }
+    // Data untuk diolah oleh file JS eksternal (cek-kondisi.js)
+    window.cekKondisiData = {
+        phMin: parseFloat("{{ $rule->ph_min ?? 6.0 }}"),
+        phMax: parseFloat("{{ $rule->ph_max ?? 6.5 }}"),
+        ecMin: parseFloat("{{ $ec_min ?? 1.2 }}"),
+        ecMax: parseFloat("{{ $ec_max ?? 1.6 }}"),
+        ppmMin: parseInt("{{ $rule->ppm_min ?? 600 }}"),
+        ppmMax: parseInt("{{ $rule->ppm_max ?? 800 }}"),
+        suhuMin: parseFloat("{{ $suhu_min ?? 22 }}"),
+        suhuMax: parseFloat("{{ $suhu_max ?? 28 }}")
+    };
 </script>
 @endif
 @endsection

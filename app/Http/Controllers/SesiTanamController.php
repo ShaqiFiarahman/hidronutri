@@ -5,21 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\SesiTanam;
 use App\Models\RuleNutrisi;
 use App\Models\Tanaman;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Http\Requests\SesiTanamRequest;
+use Illuminate\Http\Request;
 
 class SesiTanamController extends Controller
 {
     // Mapping durasi fase sekarang ada di App\Services\RuleBasedEngine
 
-    public function store(Request $request)
+    /**
+     * Memulai sesi tanam baru
+     */
+    public function store(SesiTanamRequest $request)
     {
-        $validated = $request->validate([
-            'tanaman_id' => 'required|exists:tanaman,id',
-            'sistem_hidroponik' => 'required|in:nft,dft,rakit_apung,wick',
-            'fase_saat_ini' => 'required|string|max:50',
-            'tanggal_mulai' => 'required|date|before_or_equal:today',
-        ]);
+        $validated = $request->validated();
 
         // Validasi bahwa fase valid untuk tanaman ini
         $ruleExists = RuleNutrisi::where('tanaman_id', $validated['tanaman_id'])
@@ -51,6 +50,9 @@ class SesiTanamController extends Controller
         return redirect('/hasil#jadwal')->with('success', 'Sesi tanam baru berhasil dimulai!');
     }
 
+    /**
+     * Menyelesaikan sesi tanam (panen)
+     */
     public function panen($id)
     {
         $sesi = SesiTanam::findOrFail($id);
@@ -64,6 +66,9 @@ class SesiTanamController extends Controller
         return redirect('/riwayat')->with('success', 'Sesi tanam berhasil diselesaikan dan dicatat dalam riwayat panen!');
     }
 
+    /**
+     * Redirect ke halaman hasil tab jadwal
+     */
     public function jadwal()
     {
         return redirect('/hasil#jadwal');

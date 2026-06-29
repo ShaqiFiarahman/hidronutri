@@ -8,6 +8,9 @@ use Carbon\Carbon;
 
 class RiwayatController extends Controller
 {
+    /**
+     * Menampilkan daftar riwayat sesi tanam (aktif & panen)
+     */
     public function index()
     {
         $sesiAktif = SesiTanam::where('status', 'aktif')

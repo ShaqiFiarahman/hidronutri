@@ -115,7 +115,10 @@
 .delay-100 { animation-delay: 0.1s; }
 .delay-150 { animation-delay: 0.15s; }
 .delay-200 { animation-delay: 0.2s; }
-.delay-250 { animation-delay: 0.25s; }
+
 .delay-300 { animation-delay: 0.3s; }
 
-
+/* Import komponen dan halaman */
+@import 'components/navbar.css';
+@import 'components/footer.css';
+@import 'pages/layout.css';
