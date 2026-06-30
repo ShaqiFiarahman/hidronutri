@@ -199,6 +199,8 @@ class RuleNutrisiSeeder extends Seeder
                     [
                         'ph_min' => 5.5,  // Universal (RpH-01 s/d RpH-04)
                         'ph_max' => 6.5,
+                        'ph_optimal_min' => 5.8, // RpH-03
+                        'ph_optimal_max' => 6.2,
                         'ppm_min' => $rule['ppm_min'],
                         'ppm_max' => $rule['ppm_max'],
                         'dosis_a' => $dosis,  // Formula: (PPM/1000) * 5 ml/L

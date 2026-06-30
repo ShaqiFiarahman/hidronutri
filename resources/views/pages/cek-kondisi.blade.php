@@ -89,7 +89,11 @@
                     </div>
                     <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
                         <span>0.0 (Asam Kuat)</span>
-                        <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ph_min, 1) }}{{ $rule->ph_min != $rule->ph_max ? ' - ' . number_format($rule->ph_max, 1) : '' }}</span>
+                        @if(isset($rule->ph_optimal_min))
+                            <span class="text-brand-green font-semibold">Optimal: {{ number_format($rule->ph_optimal_min, 1) }} - {{ number_format($rule->ph_optimal_max, 1) }} (Aman: {{ number_format($rule->ph_min, 1) }} - {{ number_format($rule->ph_max, 1) }})</span>
+                        @else
+                            <span class="text-brand-green font-semibold">Ideal: {{ number_format($rule->ph_min, 1) }}{{ $rule->ph_min != $rule->ph_max ? ' - ' . number_format($rule->ph_max, 1) : '' }}</span>
+                        @endif
                         <span>14.0 (Basa Kuat)</span>
                     </div>
                 </div>

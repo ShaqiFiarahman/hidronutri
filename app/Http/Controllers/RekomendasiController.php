@@ -146,9 +146,9 @@ class RekomendasiController extends Controller
         $durasiMap = $this->engine->getDurasiFaseMap();
         $namaTanaman = $tanaman ? $tanaman->nama : '';
         $fasesTanaman = $durasiMap[$namaTanaman] ?? null;
-        $durasiTotal = 35; // nilai sementara bawaan
 
-        // kalkulasi durasi maksimal dari hari terakhir fase penutup
+        // kalkulasi durasi total dari kumulatif fase terakhir (data dari tabel fase_tanaman)
+        $durasiTotal = 0;
         if ($fasesTanaman) {
             $lastFase = end($fasesTanaman);
             $durasiTotal = $lastFase['kumulatif'];
@@ -270,30 +270,15 @@ class RekomendasiController extends Controller
             if ($nextIdx < count($faseKeys)) {
                 $nextFaseKey = $faseKeys[$nextIdx];
                 $faseBerikutnya = ucwords(str_replace('_', ' ', $nextFaseKey));
-
-                $catatanMap = [
-                    'vegetatif_awal' => 'Fase di mana daun sejati mulai tumbuh lebar. Kebutuhan EC dan PPM akan meningkat.',
-                    'vegetatif_akhir' => 'Fase pembesaran batang dan rimbun daun. Tanaman rakus nutrisi, pastikan pasokan air lancar.',
-                    'panen' => 'Persiapan panen. Untuk sayur daun, turunkan konsentrasi EC 3 hari sebelum panen agar rasa manis.',
-                    'vegetatif' => 'Tanaman akan mulai tumbuh vegetatif. Naikkan konsentrasi nutrisi secara bertahap.',
-                    'pembungaan' => 'Fase pembungaan dimulai. Tanaman butuh nutrisi lebih tinggi untuk pembentukan bunga.',
-                    'pembuahan' => 'Fase pembuahan. Nutrisi pada titik tertinggi untuk pengisian buah.',
-                    'pembesaran' => 'Fase pembesaran buah. Pastikan nutrisi mencukupi dan suhu air terjaga.',
-                    'transisi' => 'Masa transisi menuju fase generatif. Naikkan konsentrasi PPM secara bertahap.',
-                    'pematangan' => 'Fase pematangan buah. Kurangi nutrisi agar gula buah meningkat.',
-                ];
-
-                $catatanFaseBerikutnya = $catatanMap[$nextFaseKey] ?? 'Bersihkan modul hidroponik sebelum memulai siklus tanam baru.';
             } else {
                 $faseBerikutnya = 'Selesai';
-                $catatanFaseBerikutnya = 'Bersihkan modul hidroponik secara menyeluruh sebelum memulai siklus tanam baru agar steril dari spora jamur.';
             }
         }
 
         return view('pages.hasil', compact(
             'tanaman', 'fase', 'sistem', 'rekomendasi', 'tanggalMulai', 'usiaHari',
             'sesiAktif', 'rule', 'progressPersen', 'durasiTotal', 'estimasiPindahFase',
-            'kalenderBulan', 'logsByDate', 'faseBerikutnya', 'catatanFaseBerikutnya'
+            'kalenderBulan', 'logsByDate', 'faseBerikutnya'
         ));
     }
 }

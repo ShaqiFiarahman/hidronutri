@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\RuleNutrisi;
+use App\Models\FaseTanaman;
 
 class RuleBasedEngine
 {
@@ -99,15 +100,13 @@ class RuleBasedEngine
         // ═══════════════════════════════════════════════════
 
         if ($ppmAktual < $rule->ppm_min) {
-            $kekurangan = $rule->ppm_min - $ppmAktual;
-            $koreksiMlPerLiter = round(($kekurangan / 100) * 5, 1);
-            $baseTindakan = $tindakan->has('PPM') ? $tindakan['PPM']->where('kondisi', 'rendah')->first()->tindakan ?? '' : '';
+            $baseTindakan = $tindakan->has('PPM') ? $tindakan['PPM']->where('kondisi', 'rendah')->first()->tindakan ?? 'Tambahkan nutrisi.' : 'Tambahkan nutrisi.';
             $hasil[] = [
                 'parameter' => 'PPM',
                 'kondisi' => 'rendah',
                 'nilai_aktual' => $ppmAktual,
                 'nilai_target' => $rule->ppm_min . ' - ' . $rule->ppm_max,
-                'tindakan' => "Kekurangan {$kekurangan} PPM. Maka Anda perlu menambahkan racikan {$koreksiMlPerLiter} ml nutrisi A dan {$koreksiMlPerLiter} ml nutrisi B untuk setiap liternya. " . $baseTindakan,
+                'tindakan' => $baseTindakan,
             ];
         }
         // Rule PPM Tinggi (RKor-04)
@@ -150,42 +149,30 @@ class RuleBasedEngine
 
     /**
      * Map durasi fase (dalam hari) untuk setiap tanaman.
+     * Data dibaca dari tabel fase_tanaman di database (sebelumnya hardcoded).
+     * Sumber: Tabel RULE FASE – Durasi Transisi Antar Fase Pertumbuhan (narasumber).
+     *
+     * @return array<string, array<string, array{durasi: int, kumulatif: int}>>
      */
-    public function getDurasiFaseMap()
+    public function getDurasiFaseMap(): array
     {
-        return [
-            'Selada' => [
-                'semai' => ['durasi' => 14, 'kumulatif' => 14],           // RFase-01: 14 hari
-                'vegetatif_awal' => ['durasi' => 14, 'kumulatif' => 28],  // RFase-02: 14 hari
-                'vegetatif_akhir' => ['durasi' => 12, 'kumulatif' => 40], // RFase-03: sisa hari hingga panen
-                'panen' => ['durasi' => 0, 'kumulatif' => 40],            // Total 40 hari
-            ],
-            'Kangkung' => [
-                'semai' => ['durasi' => 10, 'kumulatif' => 10],           // RFase-04: 7-10 hari
-                'vegetatif_awal' => ['durasi' => 5, 'kumulatif' => 15],
-                'vegetatif_akhir' => ['durasi' => 6, 'kumulatif' => 21],  // RFase-05: total 21 hari
-                'panen' => ['durasi' => 0, 'kumulatif' => 21],
-            ],
-            'Pakcoy' => [
-                'semai' => ['durasi' => 10, 'kumulatif' => 10],           // RFase-06: 7-10 hari
-                'vegetatif_awal' => ['durasi' => 10, 'kumulatif' => 20],
-                'vegetatif_akhir' => ['durasi' => 10, 'kumulatif' => 30], // RFase-07: total 28-30 hari
-                'panen' => ['durasi' => 0, 'kumulatif' => 30],
-            ],
-            'Cabai' => [
-                'semai' => ['durasi' => 30, 'kumulatif' => 30],           // RFase-08: 25-30 hari
-                'vegetatif' => ['durasi' => 15, 'kumulatif' => 45],       // RFase-09: 14-15 hari
-                'pembungaan' => ['durasi' => 20, 'kumulatif' => 65],
-                'pembuahan' => ['durasi' => 20, 'kumulatif' => 85],
-                'pembesaran' => ['durasi' => 15, 'kumulatif' => 100],     // Total ~100 hari (indikatif)
-            ],
-            'Melon' => [
-                'semai' => ['durasi' => 14, 'kumulatif' => 14],           // RFase-10: 14 hari
-                'vegetatif' => ['durasi' => 16, 'kumulatif' => 30],       // RFase-11: 25-30 hari
-                'pembesaran' => ['durasi' => 30, 'kumulatif' => 60],      // RFase-12: 30 hari
-                'pematangan' => ['durasi' => 20, 'kumulatif' => 80],      // Total ~80 hari
-            ],
-        ];
+        $rows = FaseTanaman::with('tanaman')
+            ->orderBy('tanaman_id')
+            ->orderBy('urutan')
+            ->get();
+
+        $map = [];
+        foreach ($rows as $row) {
+            $namaTanaman = $row->tanaman->nama ?? null;
+            if (!$namaTanaman) continue;
+
+            $map[$namaTanaman][$row->fase] = [
+                'durasi'    => $row->durasi_hari,
+                'kumulatif' => $row->kumulatif_hari,
+            ];
+        }
+
+        return $map;
     }
 
     /**

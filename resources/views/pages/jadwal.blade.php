@@ -152,9 +152,6 @@
                         <span class="text-xs text-brand-gray block">Fase Selanjutnya:</span>
                         <span class="text-lg font-extrabold text-brand-black block">Fase {{ $faseBerikutnya }}</span>
                     </div>
-                    <p class="text-xs text-brand-gray leading-relaxed font-light">
-                        {{ $catatanFaseBerikutnya }}
-                    </p>
                 </div>
 
                 <!-- Kartu akses cepat untuk fitur diagnosis -->

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             TanamanSeeder::class,
+            FaseTanamanSeeder::class,
             RuleNutrisiSeeder::class,
             TindakanKorektifSeeder::class,
         ]);

@@ -232,15 +232,25 @@
                 <div>
                     <span class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-3 block">Kadar pH</span>
                     <span class="block text-4xl font-black text-brand-black leading-none">
-                        <span class="metric-value">{{ number_format($rekomendasi['ph_min'], 1) }}</span>
-                        @if($rekomendasi['ph_min'] != $rekomendasi['ph_max'])
-                            - <span class="metric-value">{{ number_format($rekomendasi['ph_max'], 1) }}</span>
+                        @if(isset($rekomendasi['ph_optimal_min']) && isset($rekomendasi['ph_optimal_max']))
+                            <span class="metric-value">{{ number_format($rekomendasi['ph_optimal_min'], 1) }}</span>
+                            - <span class="metric-value">{{ number_format($rekomendasi['ph_optimal_max'], 1) }}</span>
+                        @else
+                            <span class="metric-value">{{ number_format($rekomendasi['ph_min'], 1) }}</span>
+                            @if($rekomendasi['ph_min'] != $rekomendasi['ph_max'])
+                                - <span class="metric-value">{{ number_format($rekomendasi['ph_max'], 1) }}</span>
+                            @endif
                         @endif
                     </span>
                 </div>
                 <div
                     class="mt-4 pt-4 border-t border-brand-graylt text-xs text-brand-green font-medium flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-brand-green"></span> Target Ideal
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-green"></span> 
+                    @if(isset($rekomendasi['ph_optimal_min']))
+                        Target Optimal (Batas Aman: {{ number_format($rekomendasi['ph_min'], 1) }} - {{ number_format($rekomendasi['ph_max'], 1) }})
+                    @else
+                        Target Ideal
+                    @endif
                 </div>
             </div>
 
@@ -566,9 +576,6 @@
                         <span class="text-xs text-brand-gray block">Fase Selanjutnya:</span>
                         <span class="text-lg font-extrabold text-brand-black block">Fase {{ $faseBerikutnya }}</span>
                     </div>
-                    <p class="text-xs text-brand-gray leading-relaxed font-light">
-                        {{ $catatanFaseBerikutnya }}
-                    </p>
                 </div>
                 @endif
 
