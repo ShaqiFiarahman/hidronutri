@@ -220,8 +220,20 @@
             <!-- Input tersembunyi untuk menyimpan nilai pilihan sistem -->
             <input type="hidden" name="sistem_hidroponik" id="sistem_hidroponik" value="{{ old('sistem_hidroponik') }}">
 
+            <div class="bg-brand-offwhite border border-brand-green/30 rounded-xl p-4 flex gap-3 items-start mt-2">
+                <div class="flex-shrink-0 text-brand-green mt-0.5">
+                    <i class="fa-solid fa-lightbulb text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-semibold tracking-wider text-brand-green uppercase">Rekomendasi Pakar</h3>
+                    <p class="mt-1 text-xs text-brand-gray leading-relaxed font-medium">
+                        Berdasarkan literatur dan pengalaman, sistem <strong>NFT</strong> adalah yang <strong>paling direkomendasikan</strong> (diikuti oleh DFT) untuk budidaya sayuran daun. Hal ini ditinjau dari kualitas hasil panen dan kemudahan dalam perawatan budidaya.
+                    </p>
+                </div>
+            </div>
+
             <!-- Tata letak bersusun 4 kolom untuk kartu pilihan -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sistem-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sistem-grid mt-4">
 
               <!-- Kartu pilihan untuk metode NFT -->
               <div class="sistem-card bg-white border border-brand-graylt rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:border-brand-green hover:shadow-sm group"

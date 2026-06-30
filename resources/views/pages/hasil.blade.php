@@ -120,6 +120,32 @@
                     Metode: <span class="font-semibold text-brand-black uppercase">{{ $sistem }}</span> • Kategori: Tanaman
                     Sayur {{ ucwords($tanaman->kategori) }}
                 </p>
+                
+                @if(in_array(strtolower($sistem), ['rakit apung', 'wick', 'rakit_apung']))
+                    <div class="mt-4 border-l-4 border-amber-400 bg-amber-50 p-4 rounded-r-xl">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-xs font-medium text-amber-800">Catatan Sistem: {{ strtoupper($sistem) }}</h3>
+                                <p class="mt-1 text-xs text-amber-700">Pada instalasi yang airnya tidak bergerak seperti {{ $sistem }}, Anda perlu lebih teliti memantau kondisi air. Ketersediaan oksigen sangat krusial.</p>
+                            </div>
+                        </div>
+                    </div>
+                @elseif(strtolower($sistem) == 'nft' || strtolower($sistem) == 'dft')
+                    <div class="mt-4 border-l-4 border-brand-green bg-brand-offwhite p-4 rounded-r-xl">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fa-solid fa-circle-info text-brand-green"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-xs font-medium text-brand-green">Catatan Sistem: {{ strtoupper($sistem) }}</h3>
+                                <p class="mt-1 text-xs text-brand-gray">Untuk sistem bersirkulasi (khususnya NFT), harus ekstra hati-hati menjaga sirkulasi pompa air. Jika tidak tersirkulasi, tanaman bisa langsung mati.</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
             <div class="flex flex-wrap gap-3">
 
@@ -294,20 +320,7 @@
             </div>
         </div>
 
-        <!-- Kotak pesan peringatan khusus -->
-        @if(!empty($rekomendasi['peringatan']))
-            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start warning-box">
-                <div class="flex-shrink-0 text-brand-amber mt-0.5">
-                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
-                </div>
-                <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-brand-amber">Perhatian Khusus</h3>
-                    <p class="mt-1 text-sm text-amber-800 leading-relaxed font-medium">
-                        "{{ $rekomendasi['peringatan'] }}"
-                    </p>
-                </div>
-            </div>
-        @endif
+
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Kartu perhitungan kalkulator dosis nutrisi -->
@@ -348,6 +361,13 @@
                                     {{ $rekomendasi['dosis_b'] * 10 }} ml
                                 </span>
                             </div>
+                        </div>
+
+                        <div class="mt-4 bg-brand-offwhite p-3 rounded-lg border border-brand-graylt">
+                            <p class="text-[10px] text-brand-gray font-medium leading-relaxed">
+                                <i class="fa-solid fa-circle-info text-brand-green mr-1"></i> Catatan Pakar:
+                                Rasio takaran Nutrisi A & B <strong>wajib selalu sama (1:1)</strong>. Gunakan alat ukur TDS/EC meter untuk hasil yang lebih presisi. Jika ada anomali pertumbuhan (seperti tanaman <em>stuck</em> atau warna daun tidak normal), Anda dapat menaikkan target PPM mendekati batas maksimal.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -523,7 +543,7 @@
                                                 $logExists = collect($day['logs'])->where('tipe', $k['tipe'])->first();
                                                 $isDone = $logExists && $logExists->status === 'selesai';
                                                 $isWarning = $logExists && $logExists->status === 'perlu_perhatian';
-                                                $iconClass = $k['tipe'] === 'cek' ? 'fa-eye-dropper' : 'fa-flask';
+                                                $iconClass = str_starts_with($k['tipe'], 'cek') ? 'fa-eye-dropper' : 'fa-flask';
                                                 
                                                 if ($isDone) {
                                                     $colorClass = 'bg-brand-green text-white border-brand-green';

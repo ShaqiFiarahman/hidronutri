@@ -20,6 +20,7 @@ class RuleNutrisiSeeder extends Seeder
      */
     public function run(): void
     {
+        RuleNutrisi::truncate();
         $tanamanMap = Tanaman::all()->pluck('id', 'nama');
 
         // pH universal: 5.5 - 6.5 (berlaku semua tanaman & fase)
@@ -34,26 +35,22 @@ class RuleNutrisiSeeder extends Seeder
             [
                 'tanaman' => 'Selada', 'fase' => 'semai',
                 'ppm_min' => 500, 'ppm_max' => 700,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Dosis rendah, akar belum kuat. Semai selada butuh 10-14 hari sebelum pindah tanam.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Selada', 'fase' => 'vegetatif_awal',
                 'ppm_min' => 800, 'ppm_max' => 1000,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Pantau ketat, fase pertumbuhan aktif. Daun sejati mulai tumbuh lebar.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Selada', 'fase' => 'vegetatif_akhir',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Jaga suhu air tetap sejuk. Fase pembesaran batang dan daun rimbun.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Selada', 'fase' => 'panen',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Turunkan konsentrasi EC 3 hari sebelum panen agar rasa sayur manis dan tidak pahit. Total hingga panen ~40 hari.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
 
             // ═══════════════════════════════════════════════════
@@ -62,26 +59,22 @@ class RuleNutrisiSeeder extends Seeder
             [
                 'tanaman' => 'Kangkung', 'fase' => 'semai',
                 'ppm_min' => 500, 'ppm_max' => 700,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Kangkung toleran suhu tinggi. Semai 7-10 hari sebelum pindah tanam.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Kangkung', 'fase' => 'vegetatif_awal',
                 'ppm_min' => 800, 'ppm_max' => 1000,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => null
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Kangkung', 'fase' => 'vegetatif_akhir',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => null
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Kangkung', 'fase' => 'panen',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Total hingga panen ~21 hari.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
 
             // ═══════════════════════════════════════════════════
@@ -90,26 +83,22 @@ class RuleNutrisiSeeder extends Seeder
             [
                 'tanaman' => 'Pakcoy', 'fase' => 'semai',
                 'ppm_min' => 500, 'ppm_max' => 700,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Semai 7-10 hari sebelum pindah tanam.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Pakcoy', 'fase' => 'vegetatif_awal',
                 'ppm_min' => 800, 'ppm_max' => 1000,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => null
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Pakcoy', 'fase' => 'vegetatif_akhir',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => null
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Pakcoy', 'fase' => 'panen',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Total hingga panen ~28-30 hari.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
 
             // ═══════════════════════════════════════════════════
@@ -119,32 +108,27 @@ class RuleNutrisiSeeder extends Seeder
             [
                 'tanaman' => 'Cabai', 'fase' => 'semai',
                 'ppm_min' => 800, 'ppm_max' => 800,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Semai cabai dari bibit 21-30 hari sebelum pindah tanam.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Cabai', 'fase' => 'vegetatif',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => null
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Cabai', 'fase' => 'pembungaan',
                 'ppm_min' => 1300, 'ppm_max' => 1500,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Masuk fase generatif ±45 hari (dari bibit). Tingkatkan nutrisi untuk bunga.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Cabai', 'fase' => 'pembuahan',
                 'ppm_min' => 1500, 'ppm_max' => 1500,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Butuh nutrisi paling tinggi untuk pengisian buah.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Cabai', 'fase' => 'pembesaran',
                 'ppm_min' => 1200, 'ppm_max' => 1200,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Kurangi air saat buah mulai memerah.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
 
             // ═══════════════════════════════════════════════════
@@ -152,34 +136,29 @@ class RuleNutrisiSeeder extends Seeder
             // Fase: vegetatif, transisi, pembesaran, pematangan, panen
             // ═══════════════════════════════════════════════════
             [
-                'tanaman' => 'Melon', 'fase' => 'semai',
+                'tanaman' => 'Melon', 'fase' => 'vegetatif',
                 'ppm_min' => 900, 'ppm_max' => 1000,
-                'ganti_larutan' => 7, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Semai melon 14 hari sebelum pindah tanam.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
-                'tanaman' => 'Melon', 'fase' => 'vegetatif',
+                'tanaman' => 'Melon', 'fase' => 'transisi',
                 'ppm_min' => 1200, 'ppm_max' => 1500,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Masuk fase generatif ±25-30 hari.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Melon', 'fase' => 'pembesaran',
                 'ppm_min' => 1500, 'ppm_max' => 1500,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Butuh nutrisi paling tinggi untuk pembesaran buah.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Melon', 'fase' => 'pematangan',
                 'ppm_min' => 1200, 'ppm_max' => 1300,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Kurangi nutrisi agar gula dalam buah meningkat.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
             [
                 'tanaman' => 'Melon', 'fase' => 'panen',
                 'ppm_min' => 1100, 'ppm_max' => 1100,
-                'ganti_larutan' => 5, 'isi_ulang' => 2, 'cek_ph_ec' => 1,
-                'peringatan' => 'Siap panen. Ciri kematangan: tangkai mulai retak, aroma harum kuat.'
+                'ganti_larutan' => 30, 'cek_ph_ec' => 1,
             ],
         ];
 
@@ -206,11 +185,10 @@ class RuleNutrisiSeeder extends Seeder
                         'dosis_a' => $dosis,  // Formula: (PPM/1000) * 5 ml/L
                         'dosis_b' => $dosis,
                         'ganti_larutan' => $rule['ganti_larutan'],
-                        'isi_ulang' => $rule['isi_ulang'],
+                        
                         'cek_ph_ec' => $rule['cek_ph_ec'],
                         'suhu_min' => 22,  // RSuhu-02: batas bawah
                         'suhu_max' => 28,  // RSuhu-01: batas atas aman
-                        'peringatan' => $rule['peringatan'],
                     ]
                 );
             }

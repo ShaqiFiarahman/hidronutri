@@ -112,7 +112,7 @@
                             <div class="flex-grow space-y-3 pt-1">
                                 @foreach($item['kegiatan'] as $keg)
                                     <div class="flex items-start space-x-3 text-xs leading-normal">
-                                        @if($keg['tipe'] === 'cek')
+                                        @if(str_starts_with($keg['tipe'], 'cek'))
                                             <span class="w-6 h-6 rounded-full bg-amber-50 text-brand-amber border border-brand-amber/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                                                 <i class="fa-solid fa-eye-dropper"></i>
                                             </span>

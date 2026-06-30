@@ -25,7 +25,6 @@ class RuleNutrisi extends Model
         'cek_ph_ec',
         'suhu_min',
         'suhu_max',
-        'peringatan',
     ];
 
     protected $casts = [

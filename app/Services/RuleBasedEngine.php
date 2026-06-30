@@ -120,7 +120,7 @@ class RuleBasedEngine
             ];
         }
 
-        // Rule Suhu (Suhu tidak ada di DB tindakan_korektif awalnya, kita set manual)
+        // Rule Suhu
         if ($suhuAktual !== null) {
             $suhuMin = $rule->suhu_min ?? 22;
             $suhuMax = $rule->suhu_max ?? 28;
@@ -131,15 +131,14 @@ class RuleBasedEngine
                     'kondisi' => 'rendah',
                     'nilai_aktual' => $suhuAktual,
                     'nilai_target' => $suhuMin . ' - ' . $suhuMax,
-                    'tindakan' => 'Suhu air terlalu dingin. Gunakan pemanas air akuarium (heater) jika suhu terus drop, atau kurangi intensitas pendingin jika menggunakan water chiller.',
+                    'tindakan' => $tindakan->has('Suhu') ? $tindakan['Suhu']->where('kondisi', 'rendah')->first()->tindakan ?? 'Suhu air terlalu dingin.' : 'Suhu air terlalu dingin.',
                 ];
             } elseif ($suhuAktual > $suhuMax) {
                 $hasil[] = [
                     'parameter' => 'Suhu',
                     'kondisi' => 'tinggi',
                     'nilai_aktual' => $suhuAktual,
-                    'nilai_target' => $suhuMin . ' - ' . $suhuMax,
-                    'tindakan' => 'Suhu air terlalu panas. Tambahkan bongkahan es batu bersih (atau di dalam botol tertutup) ke dalam tandon, pindahkan tandon ke area yang lebih teduh, atau lapisi tandon dengan styrofoam/aluminium foil.',
+                    'tindakan' => $tindakan->has('Suhu') ? $tindakan['Suhu']->where('kondisi', 'tinggi')->first()->tindakan ?? 'Suhu air terlalu panas.' : 'Suhu air terlalu panas.',
                 ];
             }
         }

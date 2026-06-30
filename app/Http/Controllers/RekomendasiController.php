@@ -217,13 +217,24 @@ class RekomendasiController extends Controller
                 
                 // saring pembuatan jadwal hanya untuk usia aktif sebelum waktu panen tiba
                 if ($usiaTanamanPadaTanggalIni >= 0 && $usiaTanamanPadaTanggalIni <= $durasiTotal) {
-                    // periksa apakah harus pengecekan nutrisi di hari ini
+                    // periksa apakah harus pengecekan nutrisi di hari ini (Cek 2x sehari sesuai SOP)
                     $intervalCek = $rule->cek_ph_ec ?? 1;
                     if ($usiaTanamanPadaTanggalIni % $intervalCek === 0) {
                         $kegiatan[] = [
-                            'tipe' => 'cek',
-                            'judul' => 'Cek Kondisi Air',
-                            'deskripsi' => "Target: pH {$rule->ph_min}-{$rule->ph_max}, PPM {$rule->ppm_min}-{$rule->ppm_max}, Suhu Air {$rule->suhu_min}-{$rule->suhu_max}°C.",
+                            'tipe' => 'cek_pagi',
+                            'judul' => 'Cek Kondisi Air (Pagi)',
+                            'deskripsi' => "Waktu ideal: 07:00-09:00. Pastikan ketersediaan air (isi ulang jika sisa ≤ 80%). Target: pH {$rule->ph_min}-{$rule->ph_max}, PPM {$rule->ppm_min}-{$rule->ppm_max}.",
+                            'ph_min' => $rule->ph_min,
+                            'ph_max' => $rule->ph_max,
+                            'ppm_min' => $rule->ppm_min,
+                            'ppm_max' => $rule->ppm_max,
+                            'suhu_min' => $rule->suhu_min,
+                            'suhu_max' => $rule->suhu_max,
+                        ];
+                        $kegiatan[] = [
+                            'tipe' => 'cek_sore',
+                            'judul' => 'Cek Kondisi Air (Sore)',
+                            'deskripsi' => "Waktu ideal: 15:00-17:00. Cek pH, PPM, & Suhu. Target: pH {$rule->ph_min}-{$rule->ph_max}, PPM {$rule->ppm_min}-{$rule->ppm_max}, Suhu {$rule->suhu_min}-{$rule->suhu_max}°C.",
                             'ph_min' => $rule->ph_min,
                             'ph_max' => $rule->ph_max,
                             'ppm_min' => $rule->ppm_min,
@@ -233,13 +244,13 @@ class RekomendasiController extends Controller
                         ];
                     }
 
-                    // periksa apakah waktunya menambah volume air berdasarkan interval 
-                    $intervalIsiUlang = $rule->isi_ulang ?? 2;
-                    if ($usiaTanamanPadaTanggalIni > 0 && $usiaTanamanPadaTanggalIni % $intervalIsiUlang === 0) {
+                    // periksa jadwal kuras/ganti larutan (Setiap bulan / 30 hari atau di akhir siklus sesuai SOP)
+                    $intervalGanti = $rule->ganti_larutan ?? 30;
+                    if ($usiaTanamanPadaTanggalIni > 0 && ($usiaTanamanPadaTanggalIni % $intervalGanti === 0 || $usiaTanamanPadaTanggalIni === $durasiTotal)) {
                         $kegiatan[] = [
-                            'tipe' => 'isi_ulang',
-                            'judul' => 'Isi Ulang Air & Nutrisi',
-                            'deskripsi' => "Tambahkan air bersih dan nutrisi susulan jika perlu."
+                            'tipe' => 'ganti_larutan',
+                            'judul' => 'Kuras & Ganti Larutan',
+                            'deskripsi' => "Kuras tandon dan bersihkan instalasi secara menyeluruh (Siklus panen / 1 bulan) untuk hindari penumpukan kotoran dan penyakit."
                         ];
                     }
                 }

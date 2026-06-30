@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SesiTanam;
-use App\Models\RiwayatDiagnosa;
+
 use App\Models\LogPerawatan;
 use App\Models\RuleNutrisi;
 use App\Models\Tanaman;
@@ -102,13 +102,7 @@ class DiagnosaController extends Controller
 
         // rekam hasil diagnosa dan riwayat pengecekan ke database
         if ($sesiTanamId) {
-            RiwayatDiagnosa::create([
-                'sesi_tanam_id' => $sesiTanamId,
-                'ph_aktual' => $validated['ph_aktual'],
-                'ec_aktual' => $validated['ec_aktual'],
-                'ppm_aktual' => $validated['ppm_aktual'],
-                'hasil_diagnosa' => $hasil,
-            ]);
+
 
             $status = 'selesai';
             $catatanPanduan = null;
@@ -127,7 +121,7 @@ class DiagnosaController extends Controller
                 [
                     'sesi_tanam_id' => $sesiTanamId,
                     'tanggal' => now()->format('Y-m-d'),
-                    'tipe' => 'cek',
+                    'tipe' => now()->format('H') < 12 ? 'cek_pagi' : 'cek_sore',
                 ],
                 [
                     'ph' => $validated['ph_aktual'],

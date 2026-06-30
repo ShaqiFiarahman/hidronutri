@@ -111,7 +111,7 @@ export function initHasil() {
                 const isPast = dayData.isPast;
 
                 let cardBg = isDone ? 'bg-brand-greenpal/20 border-brand-green/30' : (isWarning ? 'bg-amber-50/70 border-amber-300' : (isPast && !isToday ? 'bg-red-50/50 border-red-200' : 'bg-brand-offwhite'));
-                let iconHtml = isDone ? '<i class="fa-solid fa-circle-check text-lg text-brand-green"></i>' : (isWarning ? '<i class="fa-solid fa-triangle-exclamation text-lg text-amber-600"></i>' : (isPast && !isToday ? '<i class="fa-solid fa-clock text-lg text-red-500"></i>' : (keg.tipe === 'cek' ? '<i class="fa-solid fa-eye-dropper text-lg text-brand-gray"></i>' : '<i class="fa-solid fa-flask text-lg text-brand-gray"></i>')));
+                let iconHtml = isDone ? '<i class="fa-solid fa-circle-check text-lg text-brand-green"></i>' : (isWarning ? '<i class="fa-solid fa-triangle-exclamation text-lg text-amber-600"></i>' : (isPast && !isToday ? '<i class="fa-solid fa-clock text-lg text-red-500"></i>' : (keg.tipe.startsWith('cek') ? '<i class="fa-solid fa-eye-dropper text-lg text-brand-gray"></i>' : '<i class="fa-solid fa-flask text-lg text-brand-gray"></i>')));
 
                 let html = `
                 <div class="border border-brand-graylt rounded-xl p-4 transition-colors ${cardBg}">
@@ -132,7 +132,7 @@ export function initHasil() {
                         html += `<div class="mt-3 text-xs text-amber-700 font-bold bg-amber-100 inline-block px-2.5 py-1 rounded-md border border-amber-300 shadow-2xs"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Selesai (Perlu Tindakan Koreksi)</div>`;
                     }
 
-                    if (keg.tipe === 'cek') {
+                    if (keg.tipe.startsWith('cek')) {
                         html += `<div class="mt-2 text-[10px] text-brand-gray grid grid-cols-3 gap-2">
                             <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">pH: <strong>${logExists.ph ?? '-'}</strong></div>
                             <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">PPM: <strong>${logExists.ppm ?? '-'}</strong></div>
@@ -141,11 +141,11 @@ export function initHasil() {
                     }
                 } else if (isToday || (isPast && !isToday)) {
                     if (isPast && !isToday) {
-                        html += `<div class="mt-3 text-xs text-red-700 font-bold bg-red-100 inline-block px-2.5 py-1 rounded-md border border-red-300 shadow-2xs"><i class="fa-solid fa-clock mr-1"></i>Terlewat</div>`;
+                        html += `<div class="mt-3 text-xs text-red-700 font-bold bg-red-100 inline-block px-2.5 py-1 rounded-md border border-red-300 shadow-2xs">Terlewat</div>`;
                     }
                     
                     if (isToday) {
-                        if (keg.tipe === 'cek') {
+                        if (keg.tipe.startsWith('cek')) {
                             html += `<div class="mt-4 border-t border-brand-graylt pt-4">
                                 <a href="/cek-kondisi" class="bg-brand-black hover:bg-brand-green text-white px-4 py-2 rounded-xl text-xs font-semibold transition-colors duration-200 inline-block">
                                     Lakukan Pengecekan
