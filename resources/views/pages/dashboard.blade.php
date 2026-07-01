@@ -99,7 +99,7 @@
           </div>
           
           <div class="text-center">
-            <div class="text-5xl font-black text-white stat-number" data-target="22" data-suffix="">0</div>
+            <div class="text-5xl font-black text-white stat-number" data-target="50" data-suffix="">0</div>
             <div class="text-sm text-white/60 leading-relaxed mt-2">
               Rule pengetahuan dalam sistem pakar HidroNutri
             </div>

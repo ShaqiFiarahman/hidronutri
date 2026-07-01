@@ -125,15 +125,7 @@ class RuleBasedEngine
             $suhuMin = $rule->suhu_min ?? 22;
             $suhuMax = $rule->suhu_max ?? 28;
             
-            if ($suhuAktual < $suhuMin) {
-                $hasil[] = [
-                    'parameter' => 'Suhu',
-                    'kondisi' => 'rendah',
-                    'nilai_aktual' => $suhuAktual,
-                    'nilai_target' => $suhuMin . ' - ' . $suhuMax,
-                    'tindakan' => $tindakan->has('Suhu') ? $tindakan['Suhu']->where('kondisi', 'rendah')->first()->tindakan ?? 'Suhu air terlalu dingin.' : 'Suhu air terlalu dingin.',
-                ];
-            } elseif ($suhuAktual > $suhuMax) {
+            if ($suhuAktual > $suhuMax) {
                 $hasil[] = [
                     'parameter' => 'Suhu',
                     'kondisi' => 'tinggi',
