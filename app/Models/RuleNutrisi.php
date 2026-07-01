@@ -23,8 +23,6 @@ class RuleNutrisi extends Model
         'ganti_larutan',
         'isi_ulang',
         'cek_ph_ec',
-        'suhu_min',
-        'suhu_max',
     ];
 
     protected $casts = [
@@ -39,8 +37,6 @@ class RuleNutrisi extends Model
         'ganti_larutan' => 'integer',
         'isi_ulang' => 'integer',
         'cek_ph_ec' => 'integer',
-        'suhu_min' => 'integer',
-        'suhu_max' => 'integer',
     ];
 
     public function tanaman(): BelongsTo

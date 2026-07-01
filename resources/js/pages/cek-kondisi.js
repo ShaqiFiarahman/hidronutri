@@ -4,7 +4,7 @@
 export function initCekKondisi() {
     if (!window.cekKondisiData || typeof gsap === 'undefined') return;
 
-    const { phMin, phMax, ecMin, ecMax, ppmMin, ppmMax, suhuMin, suhuMax } = window.cekKondisiData;
+    const { phMin, phMax, ecMin, ecMax, ppmMin, ppmMax } = window.cekKondisiData;
 
     // inisialisasi elemen DOM dari input dan tampilan
     const phInput = document.getElementById('ph_aktual');
@@ -19,9 +19,6 @@ export function initCekKondisi() {
     const ppmDisplay = document.getElementById('ppm-val-display');
     const ppmBadge = document.getElementById('ppm-status-badge');
 
-    const suhuInput = document.getElementById('suhu_aktual');
-    const suhuDisplay = document.getElementById('suhu-val-display');
-    const suhuBadge = document.getElementById('suhu-status-badge');
 
     function evaluateSlider(input, display, badge, min, max, label) {
         if (!input || !display || !badge) return;
@@ -64,13 +61,12 @@ export function initCekKondisi() {
         });
     }
 
-    if (suhuInput) suhuInput.addEventListener('input', () => evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu'));
 
     // pasang nilai awal pada antarmuka saat halaman dimuat
     if (phInput) evaluateSlider(phInput, phDisplay, phBadge, phMin, phMax, 'pH');
     if (ecInput) evaluateSlider(ecInput, ecDisplay, ecBadge, ecMin, ecMax, 'EC');
     if (ppmInput) evaluateSlider(ppmInput, ppmDisplay, ppmBadge, ppmMin, ppmMax, 'PPM');
-    if (suhuInput) evaluateSlider(suhuInput, suhuDisplay, suhuBadge, suhuMin, suhuMax, 'Suhu');
+
 
     // Masuk halaman
     gsap.from('.cek-header', { y: -30, opacity: 0, duration: 0.5 });

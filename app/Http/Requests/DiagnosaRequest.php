@@ -23,7 +23,6 @@ class DiagnosaRequest extends FormRequest
             'ph_aktual'     => 'required|numeric|min:0|max:14',
             'ec_aktual'     => 'required|numeric|min:0|max:10',
             'ppm_aktual'    => 'required|integer|min:0|max:5000',
-            'suhu_aktual'   => 'nullable|numeric|min:0|max:50',
             'sesi_tanam_id' => 'nullable|exists:sesi_tanam,id',
             'tanaman_id'    => 'nullable|exists:tanaman,id',
             'fase'          => 'nullable|string',

@@ -26,8 +26,7 @@ return new class extends Migration
             $table->integer('ganti_larutan');
             $table->integer('isi_ulang')->nullable();
             $table->integer('cek_ph_ec')->nullable();
-            $table->integer('suhu_min')->nullable();
-            $table->integer('suhu_max')->nullable();
+
             $table->text('peringatan')->nullable();
             $table->timestamps();
         });

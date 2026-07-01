@@ -187,8 +187,6 @@ class RuleNutrisiSeeder extends Seeder
                         'ganti_larutan' => $rule['ganti_larutan'],
                         
                         'cek_ph_ec' => $rule['cek_ph_ec'],
-                        'suhu_min' => 22,  // RSuhu-02: batas bawah
-                        'suhu_max' => 28,  // RSuhu-01: batas atas aman
                     ]
                 );
             }

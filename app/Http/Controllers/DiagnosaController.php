@@ -96,8 +96,7 @@ class DiagnosaController extends Controller
             $fase,
             $validated['ph_aktual'],
             $validated['ec_aktual'],
-            $validated['ppm_aktual'],
-            $validated['suhu_aktual'] ?? null
+            $validated['ppm_aktual']
         );
 
         // rekam hasil diagnosa dan riwayat pengecekan ke database
@@ -126,7 +125,7 @@ class DiagnosaController extends Controller
                 [
                     'ph' => $validated['ph_aktual'],
                     'ppm' => $validated['ppm_aktual'],
-                    'suhu' => $validated['suhu_aktual'] ?? null,
+
                     'catatan' => $catatanPanduan,
                     'status' => $status,
                 ]
@@ -138,7 +137,7 @@ class DiagnosaController extends Controller
             'ph_input' => $validated['ph_aktual'],
             'ec_input' => $validated['ec_aktual'],
             'ppm_input' => $validated['ppm_aktual'],
-            'suhu_input' => $validated['suhu_aktual'] ?? null,
+
             'success_diagnosa' => true
         ]);
     }

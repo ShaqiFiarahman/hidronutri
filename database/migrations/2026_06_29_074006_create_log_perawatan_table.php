@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('tipe', ['cek', 'isi_ulang']);
             $table->decimal('ph', 4, 2)->nullable();
             $table->integer('ppm')->nullable();
-            $table->decimal('suhu', 4, 1)->nullable();
+
             $table->text('catatan')->nullable();
             $table->enum('status', ['selesai', 'perlu_perhatian'])->default('selesai');
             $table->timestamps();

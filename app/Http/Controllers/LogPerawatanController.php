@@ -33,12 +33,10 @@ class LogPerawatanController extends Controller
         if ($validated['tipe'] === 'cek' && $rule) {
             $isPhValid = $validated['ph'] === null || ($validated['ph'] >= $rule->ph_min && $validated['ph'] <= $rule->ph_max);
             $isPpmValid = $validated['ppm'] === null || ($validated['ppm'] >= $rule->ppm_min && $validated['ppm'] <= $rule->ppm_max);
-            $isSuhuValid = $validated['suhu'] === null || 
-                           ($rule->suhu_min === null && $rule->suhu_max === null) ||
-                           ($validated['suhu'] >= $rule->suhu_min && $validated['suhu'] <= $rule->suhu_max);
+
 
             // tetapkan status perlu perhatian jika salah satu parameter di luar batas ideal
-            if (!$isPhValid || !$isPpmValid || !$isSuhuValid) {
+            if (!$isPhValid || !$isPpmValid) {
                 $status = 'perlu_perhatian';
                 
                 $phAktual = $validated['ph'] ?? $rule->ph_min;
@@ -50,10 +48,7 @@ class LogPerawatanController extends Controller
                 foreach ($diagnosa as $diag) {
                     $panduanList[] = "• [" . $diag['parameter'] . " " . ucfirst($diag['kondisi']) . "]: " . $diag['tindakan'];
                 }
-                // gabungkan pesan panduan untuk suhu air jika bermasalah
-                if (!$isSuhuValid && $validated['suhu'] !== null) {
-                    $panduanList[] = "• [Suhu Air Abnormal]: Suhu saat ini {$validated['suhu']}°C (Target: {$rule->suhu_min}-{$rule->suhu_max}°C). Tambahkan es batu bersih atau letakkan tandon di area teduh.";
-                }
+
                 
                 // tetapkan catatan perbaikan jika ada rekomendasi langkah dari mesin aturan
                 if (!empty($panduanList)) {
@@ -72,7 +67,7 @@ class LogPerawatanController extends Controller
             [
                 'ph' => $validated['ph'] ?? null,
                 'ppm' => $validated['ppm'] ?? null,
-                'suhu' => $validated['suhu'] ?? null,
+
                 'catatan' => $catatanPanduan,
                 'status' => $status,
             ]

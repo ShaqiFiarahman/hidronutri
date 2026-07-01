@@ -133,10 +133,9 @@ export function initHasil() {
                     }
 
                     if (keg.tipe.startsWith('cek')) {
-                        html += `<div class="mt-2 text-[10px] text-brand-gray grid grid-cols-3 gap-2">
+                        html += `<div class="mt-2 text-[10px] text-brand-gray grid grid-cols-2 gap-2">
                             <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">pH: <strong>${logExists.ph ?? '-'}</strong></div>
                             <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">PPM: <strong>${logExists.ppm ?? '-'}</strong></div>
-                            <div class="bg-white p-1.5 rounded text-center border border-brand-graylt">Suhu: <strong>${logExists.suhu ?? '-'}°C</strong></div>
                         </div>`;
                     }
                 } else if (isToday || (isPast && !isToday)) {

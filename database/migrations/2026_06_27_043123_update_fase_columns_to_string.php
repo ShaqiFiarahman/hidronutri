@@ -12,8 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // PostgreSQL: ubah tipe kolom langsung via ALTER
+        // PostgreSQL: ubah tipe kolom langsung via ALTER dan hapus check constraint
+        DB::statement("ALTER TABLE rule_nutrisi DROP CONSTRAINT IF EXISTS rule_nutrisi_fase_check");
         DB::statement("ALTER TABLE rule_nutrisi ALTER COLUMN fase TYPE VARCHAR(50)");
+        
+        DB::statement("ALTER TABLE sesi_tanam DROP CONSTRAINT IF EXISTS sesi_tanam_fase_saat_ini_check");
         DB::statement("ALTER TABLE sesi_tanam ALTER COLUMN fase_saat_ini TYPE VARCHAR(50)");
     }
 

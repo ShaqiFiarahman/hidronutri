@@ -14,7 +14,6 @@ class LogPerawatan extends Model
         'tipe',
         'ph',
         'ppm',
-        'suhu',
         'catatan',
         'status',
     ];
@@ -23,7 +22,6 @@ class LogPerawatan extends Model
         'tanggal' => 'date',
         'ph' => 'decimal:2',
         'ppm' => 'integer',
-        'suhu' => 'decimal:1',
     ];
 
     public function sesiTanam()

@@ -44,10 +44,9 @@ class RuleBasedEngine
      * @param float $phAktual
      * @param float $ecAktual
      * @param int $ppmAktual
-     * @param float|null $suhuAktual
      * @return array
      */
-    public function diagnosaAbnormal($tanamanId, $fase, $phAktual, $ecAktual, $ppmAktual, $suhuAktual = null)
+    public function diagnosaAbnormal($tanamanId, $fase, $phAktual, $ecAktual, $ppmAktual)
     {
         $rule = RuleNutrisi::where('tanaman_id', $tanamanId)
             ->where('fase', $fase)
@@ -120,20 +119,6 @@ class RuleBasedEngine
             ];
         }
 
-        // Rule Suhu
-        if ($suhuAktual !== null) {
-            $suhuMin = $rule->suhu_min ?? 22;
-            $suhuMax = $rule->suhu_max ?? 28;
-            
-            if ($suhuAktual > $suhuMax) {
-                $hasil[] = [
-                    'parameter' => 'Suhu',
-                    'kondisi' => 'tinggi',
-                    'nilai_aktual' => $suhuAktual,
-                    'tindakan' => $tindakan->has('Suhu') ? $tindakan['Suhu']->where('kondisi', 'tinggi')->first()->tindakan ?? 'Suhu air terlalu panas.' : 'Suhu air terlalu panas.',
-                ];
-            }
-        }
 
         return $hasil;
     }

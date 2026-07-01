@@ -201,7 +201,7 @@ class RekomendasiController extends Controller
             $endOfMonth = Carbon::today()->endOfMonth();
             
             // berikan elemen spasi agar tanggal 1 jatuh di hari yang tepat
-            $startDayOfWeek = $startOfMonth->dayOfWeekIso; // 1 (Senin) - 7 (Minggu)
+            $startDayOfWeek = $startOfMonth->dayOfWeekIso;
             
             $currentDate = $startOfMonth->copy()->subDays($startDayOfWeek - 1);
             
@@ -228,19 +228,17 @@ class RekomendasiController extends Controller
                             'ph_max' => $rule->ph_max,
                             'ppm_min' => $rule->ppm_min,
                             'ppm_max' => $rule->ppm_max,
-                            'suhu_min' => $rule->suhu_min,
-                            'suhu_max' => $rule->suhu_max,
+
                         ];
                         $kegiatan[] = [
                             'tipe' => 'cek_sore',
                             'judul' => 'Cek Kondisi Air (Sore)',
-                            'deskripsi' => "Waktu ideal: 15:00-17:00. Cek pH, PPM, & Suhu. Target: pH {$rule->ph_min}-{$rule->ph_max}, PPM {$rule->ppm_min}-{$rule->ppm_max}, Suhu {$rule->suhu_min}-{$rule->suhu_max}°C.",
+                            'deskripsi' => "Waktu ideal: 15:00-17:00. Cek pH & PPM. Target: pH {$rule->ph_min}-{$rule->ph_max}, PPM {$rule->ppm_min}-{$rule->ppm_max}.",
                             'ph_min' => $rule->ph_min,
                             'ph_max' => $rule->ph_max,
                             'ppm_min' => $rule->ppm_min,
                             'ppm_max' => $rule->ppm_max,
-                            'suhu_min' => $rule->suhu_min,
-                            'suhu_max' => $rule->suhu_max,
+
                         ];
                     }
 

@@ -251,7 +251,7 @@
         </div>
 
         <!-- Tiga kartu metrik utama -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Kartu nilai target pH -->
             <div
                 class="bg-white border border-brand-graylt rounded-2xl p-6 hover:border-brand-green transition-colors duration-200 flex flex-col justify-between metric-card">
@@ -300,24 +300,7 @@
                 </div>
             </div>
 
-            <!-- Kartu nilai target Suhu Air -->
-            <div
-                class="bg-white border border-brand-graylt rounded-2xl p-6 hover:border-brand-green transition-colors duration-200 flex flex-col justify-between metric-card">
-                <div>
-                    <span class="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-3 block">Suhu Air</span>
-                    <span class="block text-4xl font-black text-brand-black leading-none">
-                        <span class="metric-value">{{ $rekomendasi['suhu_min'] ?? 20 }}</span>
-                        @if(($rekomendasi['suhu_min'] ?? 20) != ($rekomendasi['suhu_max'] ?? 28))
-                            - <span class="metric-value">{{ $rekomendasi['suhu_max'] ?? 28 }}</span>
-                        @endif
-                    </span>
-                    <span class="text-xs text-brand-gray block mt-1">Celcius (°C)</span>
-                </div>
-                <div
-                    class="mt-4 pt-4 border-t border-brand-graylt text-xs text-brand-green font-medium flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-brand-green"></span> Rentang Suhu Ideal
-                </div>
-            </div>
+
         </div>
 
 

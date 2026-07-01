@@ -53,8 +53,7 @@
             @php
                 $ec_min = round($rule->ppm_min / 500, 2);
                 $ec_max = round($rule->ppm_max / 500, 2);
-                $suhu_min = $rule->suhu_min ?? 22;
-                $suhu_max = $rule->suhu_max ?? 28;
+
             @endphp
         </div>
 
@@ -148,30 +147,6 @@
                     </div>
                 </div>
 
-                <!-- 4. pengatur nilai temperatur air -->
-                <div class="space-y-3 slider-card">
-                    <div class="flex items-center justify-between">
-                        <label for="suhu_aktual" class="font-bold text-brand-black flex items-center gap-1.5">
-                            <i class="fa-solid fa-temperature-half text-brand-green"></i> Parameter Suhu Air
-                        </label>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xl font-black text-brand-black" id="suhu-val-display">{{ old('suhu_aktual', session('suhu_input', round(($suhu_min + $suhu_max) / 2, 1))) }}</span>
-                            <span id="suhu-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full border">
-                                Normal
-                            </span>
-                        </div>
-                    </div>
-                    <div class="relative py-2">
-                        <input type="range" name="suhu_aktual" id="suhu_aktual" min="15" max="40" step="0.5" 
-                               value="{{ old('suhu_aktual', session('suhu_input', round(($suhu_min + $suhu_max) / 2, 1))) }}"
-                               class="custom-range-slider">
-                    </div>
-                    <div class="flex justify-between text-[10px] text-brand-gray font-medium px-1">
-                        <span>15°C</span>
-                        <span class="text-brand-green font-semibold">Ideal: {{ $suhu_min }} - {{ $suhu_max }}°C</span>
-                        <span>40°C</span>
-                    </div>
-                </div>
 
                 <div class="pt-4 mt-8">
                     <button type="submit" id="btn-submit-diagnosa"
@@ -269,9 +244,7 @@
         ecMin: parseFloat("{{ $ec_min ?? 1.2 }}"),
         ecMax: parseFloat("{{ $ec_max ?? 1.6 }}"),
         ppmMin: parseInt("{{ $rule->ppm_min ?? 600 }}"),
-        ppmMax: parseInt("{{ $rule->ppm_max ?? 800 }}"),
-        suhuMin: parseFloat("{{ $suhu_min ?? 22 }}"),
-        suhuMax: parseFloat("{{ $suhu_max ?? 28 }}")
+        ppmMax: parseInt("{{ $rule->ppm_max ?? 800 }}")
     };
 </script>
 @endif

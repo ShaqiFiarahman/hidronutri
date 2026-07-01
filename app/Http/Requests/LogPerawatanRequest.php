@@ -25,7 +25,6 @@ class LogPerawatanRequest extends FormRequest
             'tipe'          => 'required|in:cek,isi_ulang',
             'ph'            => 'nullable|numeric',
             'ppm'           => 'nullable|integer',
-            'suhu'          => 'nullable|numeric',
             'catatan'       => 'nullable|string',
         ];
     }
