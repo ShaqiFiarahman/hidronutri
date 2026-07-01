@@ -70,6 +70,10 @@
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
     <div class="page-progress" id="pageProgress"></div>
+    
+    <!-- Modal Global -->
+    <x-modal-panen />
+    
     <!-- File skrip dipindahkan ke resources/js/pages/layout.js dan app.js -->
 </body>
 </html>

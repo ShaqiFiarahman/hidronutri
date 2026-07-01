@@ -184,10 +184,10 @@
                     Jika Anda sudah melakukan pemanenan total tanaman ini, harap tandai penanaman ini sebagai telah dipanen untuk disimpan ke riwayat.
                 </p>
                 
-                <form action="/sesi-tanam/{{ $sesiAktif->id }}/panen" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menyelesaikan sesi tanam ini dan menandainya sebagai telah panen?');">
+                <form id="form-panen-{{ $sesiAktif->id }}" action="/sesi-tanam/{{ $sesiAktif->id }}/panen" method="POST">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" 
+                    <button type="button" onclick="openModalPanen('form-panen-{{ $sesiAktif->id }}')"
                             class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-semibold text-xs py-3 rounded-xl block transition-colors duration-200">
                         <i class="fa-solid fa-basket-shopping mr-1 text-[10px]"></i> Tandai Telah Panen
                     </button>

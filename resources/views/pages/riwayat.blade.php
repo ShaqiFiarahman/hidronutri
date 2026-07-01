@@ -86,10 +86,10 @@
                                 <i class="fa-solid fa-calendar-check text-xs"></i> Agenda Perawatan
                             </a>
                             
-                            <form action="/sesi-tanam/{{ $sesi->id }}/panen" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menandai sesi tanam ini sebagai panen?');">
+                            <form id="form-panen-{{ $sesi->id }}" action="/sesi-tanam/{{ $sesi->id }}/panen" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" 
+                                <button type="button" onclick="openModalPanen('form-panen-{{ $sesi->id }}')"
                                         class="bg-red-600 hover:bg-red-700 text-white rounded-xl px-4 py-2 text-[10px] font-semibold transition-all duration-200 flex items-center gap-1">
                                     <i class="fa-solid fa-basket-shopping text-[9px]"></i> Panen
                                 </button>
