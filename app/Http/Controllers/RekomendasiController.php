@@ -48,6 +48,11 @@ class RekomendasiController extends Controller
     public function proses(RekomendasiProsesRequest $request)
     {
         $validated = $request->validated();
+        $user = session('supabase_user');
+
+        if (!$user) {
+            return redirect()->route('register')->with('warning', 'Silakan daftar akun terlebih dahulu untuk menyimpan rekomendasi dan mulai sesi tanam Anda.');
+        }
 
         $tanaman = Tanaman::find($validated['tanaman_id']);
         // hitung usia tanaman dalam hari dari tanggal mulai sampai hari ini
@@ -68,6 +73,7 @@ class RekomendasiController extends Controller
 
         // buat pencatatan sesi tanam baru dengan status aktif secara otomatis
         $sesi = SesiTanam::create([
+            'user_id' => $user ? $user['user']['id'] : null,
             'tanaman_id' => $validated['tanaman_id'],
             'sistem_hidroponik' => $validated['sistem_hidroponik'],
             'fase_saat_ini' => $fase,
@@ -118,16 +124,23 @@ class RekomendasiController extends Controller
 
         // periksa jika ada sesi tanam aktif terbaru sebagai cadangan
         if (!$sesiAktif) {
-            $sesiAktif = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
+            $user = session('supabase_user');
+            $userId = $user ? $user['user']['id'] : null;
+            $sesiAktif = SesiTanam::where('status', 'aktif')
+                ->where('user_id', $userId)
+                ->with('tanaman')
+                ->latest()
+                ->first();
+        }
+
+        // Jika tidak ada sesi aktif, langsung alihkan ke halaman rekomendasi
+        if (!$sesiAktif) {
+            return redirect('/rekomendasi')->with('warning', 'Anda belum memiliki sesi tanam aktif. Silakan buat sesi tanam baru.');
         }
 
         // redirect dengan peringatan jika informasi tanaman tidak lengkap di session
         if (!$tanamanId || !$fase || !$sistem) {
-            // otomatis redirect ke hasil dari sesi yang ada jika data session hilang
-            if ($sesiAktif) {
-                return redirect('/hasil?sesi_id=' . $sesiAktif->id);
-            }
-            return redirect('/rekomendasi')->with('warning', 'Silakan pilih tanaman dan fase pertumbuhan terlebih dahulu.');
+            return redirect('/hasil?sesi_id=' . $sesiAktif->id);
         }
 
         $tanaman = Tanaman::find($tanamanId);

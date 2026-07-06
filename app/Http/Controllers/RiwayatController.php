@@ -13,7 +13,11 @@ class RiwayatController extends Controller
      */
     public function index()
     {
+        $user = session('supabase_user');
+        $userId = $user ? $user['user']['id'] : null;
+
         $sesiAktif = SesiTanam::where('status', 'aktif')
+            ->where('user_id', $userId)
             ->with('tanaman')
             ->orderBy('created_at', 'desc')
             ->get()
@@ -32,6 +36,7 @@ class RiwayatController extends Controller
             });
 
         $sesiPanen = SesiTanam::where('status', 'panen')
+            ->where('user_id', $userId)
             ->with('tanaman')
             ->orderBy('updated_at', 'desc')
             ->get()

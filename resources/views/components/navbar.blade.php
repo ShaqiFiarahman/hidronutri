@@ -30,6 +30,24 @@
                 </a>
             </nav>
 
+            <!-- Authentication Buttons -->
+            <div class="hidden md:flex items-center space-x-4">
+                @if(Session::has('supabase_user'))
+                    <span class="text-sm font-semibold text-brand-black mr-2">Halo, {{ Session::get('supabase_user')['user']['user_metadata']['name'] ?? 'User' }}</span>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" title="Logout" class="flex items-center justify-center w-8 h-8 rounded-full text-brand-gray hover:text-red-500 hover:bg-red-50 transition-colors border border-transparent hover:border-red-100">
+                            <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm font-bold text-brand-gray hover:text-brand-black transition-colors">Masuk</a>
+                    <a href="{{ route('register') }}" class="px-5 py-2 text-sm font-bold text-white bg-brand-green hover:bg-brand-green/90 rounded-xl shadow-md shadow-brand-green/20 transition-all transform hover:-translate-y-0.5">
+                        Daftar
+                    </a>
+                @endif
+            </div>
+
             <!-- Tombol menu hamburger untuk tampilan layar kecil -->
             <div class="flex md:hidden">
                 <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-brand-gray hover:text-brand-black hover:bg-brand-grayultra focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
@@ -58,6 +76,26 @@
             <a href="/riwayat" class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->is('riwayat*') ? 'bg-brand-greenpal text-brand-green font-bold' : 'text-brand-gray hover:bg-brand-grayultra hover:text-brand-black' }}">
                 Riwayat
             </a>
+            
+            <div class="border-t border-brand-graylt my-2 pt-2">
+                @if(Session::has('supabase_user'))
+                    <div class="px-3 py-2 text-sm font-semibold text-brand-black">Halo, {{ Session::get('supabase_user')['user']['user_metadata']['name'] ?? 'User' }}</div>
+                    <form action="{{ route('logout') }}" method="POST" class="block">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm font-medium text-brand-gray hover:text-red-600 hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            Logout
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-brand-gray hover:bg-brand-grayultra hover:text-brand-black">
+                        Masuk
+                    </a>
+                    <a href="{{ route('register') }}" class="block px-3 py-2 mt-1 rounded-lg text-base font-bold text-center text-white bg-brand-green hover:bg-brand-green/90">
+                        Daftar
+                    </a>
+                @endif
+            </div>
         </div>
     </div>
 </header>

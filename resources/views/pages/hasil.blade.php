@@ -30,7 +30,12 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-brand-graylt pb-8 mt-6">
             <div class="space-y-2">
                 @php
-                    $activeSessions = \App\Models\SesiTanam::where('status', 'aktif')->with('tanaman')->get();
+                    $user = session('supabase_user');
+                    $userId = $user ? $user['user']['id'] : null;
+                    $activeSessions = \App\Models\SesiTanam::where('status', 'aktif')
+                        ->where('user_id', $userId)
+                        ->with('tanaman')
+                        ->get();
                 @endphp
                 @if($activeSessions->count() > 0)
                     <div class="relative inline-block text-left" id="tanamanDropdownContainer">

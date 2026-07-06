@@ -11,6 +11,7 @@ class SesiTanam extends Model
     protected $table = 'sesi_tanam';
 
     protected $fillable = [
+        'user_id',
         'tanaman_id',
         'sistem_hidroponik',
         'fase_saat_ini',

@@ -34,7 +34,13 @@ class DiagnosaController extends Controller
         
         // cari sesi tanam aktif terbaru sebagai alternatif jika tidak ada id di session
         if (!$sesiTanam) {
-            $sesiTanam = SesiTanam::where('status', 'aktif')->with('tanaman')->latest()->first();
+            $user = session('supabase_user');
+            $userId = $user ? $user['user']['id'] : null;
+            $sesiTanam = SesiTanam::where('status', 'aktif')
+                ->where('user_id', $userId)
+                ->with('tanaman')
+                ->latest()
+                ->first();
         }
         
         $tanaman = null;

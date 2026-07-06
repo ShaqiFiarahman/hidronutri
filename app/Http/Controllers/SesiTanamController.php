@@ -30,7 +30,10 @@ class SesiTanamController extends Controller
             return back()->withErrors(['fase_saat_ini' => 'Fase yang dipilih tidak tersedia untuk tanaman ini.'])->withInput();
         }
 
+        $user = session('supabase_user');
+        
         $sesi = SesiTanam::create([
+            'user_id' => $user ? $user['user']['id'] : null,
             'tanaman_id' => $validated['tanaman_id'],
             'sistem_hidroponik' => $validated['sistem_hidroponik'],
             'fase_saat_ini' => $validated['fase_saat_ini'],

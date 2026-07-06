@@ -64,8 +64,10 @@
         @endif
     </main>
 
-    {{-- Bagian bawah halaman --}}
-    <x-footer />
+    @if(!request()->routeIs('login') && !request()->routeIs('register'))
+        {{-- Bagian bawah halaman --}}
+        <x-footer />
+    @endif
 
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
