@@ -69,53 +69,66 @@ class RuleBasedEngine
         // RpH-04: pH > 6.5 → terlalu tinggi
         // ═══════════════════════════════════════════════════
 
+        $suffix = " Setelah setiap tindakan korektif, aduk larutan hingga tercampur merata, tunggu sirkulasi stabil, ukur kembali pH, EC, dan PPM, baru lakukan tindakan berikutnya apabila masih diperlukan.";
+
         // Rule pH Rendah (RKor-01)
         if ($phAktual < $rule->ph_min) {
+            if ($phAktual < 4.0) {
+                $tindakanText = "Disarankan mengganti sumber air baku dengan air yang memiliki pH lebih netral sebelum melakukan penyesuaian pH.";
+            } else {
+                $tindakanText = "Pastikan terlebih dahulu nutrisi (A dan B) telah disesuaikan hingga target PPM tercapai. Aduk larutan hingga tercampur merata. Ukur kembali pH. Apabila pH masih berada di luar rentang ideal, barulah gunakan pH Up sedikit demi sedikit.";
+            }
             $hasil[] = [
                 'parameter' => 'pH',
                 'kondisi' => 'rendah',
                 'nilai_aktual' => $phAktual,
                 'nilai_target' => $rule->ph_min . ' - ' . $rule->ph_max,
-                'tindakan' => $tindakan->has('pH') ? $tindakan['pH']->where('kondisi', 'rendah')->first()->tindakan ?? 'Tambahkan pH Up.' : 'Tambahkan pH Up.',
+                'tindakan' => $tindakanText . $suffix,
             ];
         }
+
         // Rule pH Tinggi (RKor-02)
         if ($phAktual > $rule->ph_max) {
+            if ($phAktual > 8.0) {
+                $tindakanText = "Disarankan mengganti sumber air baku dengan air yang memiliki pH lebih netral sebelum melakukan penyesuaian pH.";
+            } else {
+                $tindakanText = "Pastikan terlebih dahulu nutrisi (A dan B) telah disesuaikan hingga target PPM tercapai. Aduk larutan hingga tercampur merata. Ukur kembali pH. Apabila pH masih berada di luar rentang ideal, barulah gunakan pH Down sedikit demi sedikit.";
+            }
             $hasil[] = [
                 'parameter' => 'pH',
                 'kondisi' => 'tinggi',
                 'nilai_aktual' => $phAktual,
                 'nilai_target' => $rule->ph_min . ' - ' . $rule->ph_max,
-                'tindakan' => $tindakan->has('pH') ? $tindakan['pH']->where('kondisi', 'tinggi')->first()->tindakan ?? 'Tambahkan pH Down.' : 'Tambahkan pH Down.',
+                'tindakan' => $tindakanText . $suffix,
             ];
         }
 
 
         // ═══════════════════════════════════════════════════
         // Evaluasi Rule PPM — RULE KOREKSI
-        // RKor-03: PPM kurang → tambah 5ml/L per 100 ppm kekurangan
-        // RKor-04: PPM berlebih → encerkan larutan
-        // Formula: 5ml A + 5ml B per 1000ml air = 1000 PPM
+        // RKor-03: PPM kurang → tambah nutrisi secara bertahap
+        // RKor-04: PPM berlebih → encerkan larutan (prioritas air baku)
         // ═══════════════════════════════════════════════════
 
         if ($ppmAktual < $rule->ppm_min) {
-            $baseTindakan = $tindakan->has('PPM') ? $tindakan['PPM']->where('kondisi', 'rendah')->first()->tindakan ?? 'Tambahkan nutrisi.' : 'Tambahkan nutrisi.';
+            $tindakanText = "Tambahkan larutan nutrisi AB Mix secara bertahap sedikit demi sedikit, kemudian ukur kembali hingga target PPM tercapai.";
             $hasil[] = [
                 'parameter' => 'PPM',
                 'kondisi' => 'rendah',
                 'nilai_aktual' => $ppmAktual,
                 'nilai_target' => $rule->ppm_min . ' - ' . $rule->ppm_max,
-                'tindakan' => $baseTindakan,
+                'tindakan' => $tindakanText . $suffix,
             ];
         }
         // Rule PPM Tinggi (RKor-04)
         if ($ppmAktual > $rule->ppm_max) {
+            $tindakanText = "Prioritaskan penambahan air baku hingga PPM mendekati target. Penggantian larutan hanya direkomendasikan apabila kondisi benar-benar ekstrem.";
             $hasil[] = [
                 'parameter' => 'PPM',
                 'kondisi' => 'tinggi',
                 'nilai_aktual' => $ppmAktual,
                 'nilai_target' => $rule->ppm_min . ' - ' . $rule->ppm_max,
-                'tindakan' => $tindakan->has('PPM') ? $tindakan['PPM']->where('kondisi', 'tinggi')->first()->tindakan ?? 'Encerkan larutan dengan menambahkan air murni.' : 'Encerkan larutan dengan menambahkan air murni.',
+                'tindakan' => $tindakanText . $suffix,
             ];
         }
 
